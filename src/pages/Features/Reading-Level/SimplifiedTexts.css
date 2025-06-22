@@ -1,0 +1,221 @@
+.simplified-root {
+  width: 100%;
+  min-height: 100vh;
+  background: #faf8f6;
+}
+
+.simplified-features-section {
+  background: #e3f0fa;
+  padding: 85px 0 80px 0;
+  text-align: center;
+  color: #1B263B;
+}
+
+.simplified-explore-btn {
+  background: #fff !important;
+  color: #0B3A3E !important;
+  font-weight: 600 !important;
+  border-radius: 10px !important;
+  font-size: 1rem !important;
+  margin-bottom: 32px !important;
+  padding: 10px 32px !important;
+  box-shadow: none !important;
+  text-transform: none !important;
+}
+
+.simplified-features-title {
+  color: #1B263B !important;
+  font-family: serif !important;
+  font-weight: 600 !important;
+  margin-bottom: 40px !important;
+}
+
+.simplified-features-grid {
+  margin-top: 0;
+}
+
+.simplified-feature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.simplified-feature-icon {
+  margin-bottom: 18px;
+}
+
+.simplified-feature-heading {
+  color: #1B263B !important;
+  font-family: serif !important;
+  font-weight: 600 !important;
+  margin-bottom: 12px !important;
+  font-size: 1.4rem !important;
+}
+
+.simplified-feature-desc {
+  color: #1B263B !important;
+  font-size: 1rem !important;
+  font-family: 'Segoe UI', serif;
+  max-width: 320px;
+  margin-bottom: 0;
+}
+
+.simplified-compare-section {
+  background: #faf8f6;
+  padding: 64px 0 80px 0;
+  text-align: left;
+}
+
+.simplified-compare-title {
+  color: #20403C !important;
+  font-family: serif !important;
+  font-weight: 600 !important;
+  text-align: center;
+  margin-bottom: 24px !important;
+}
+
+.leveled-text-section {
+  background: #e3f0fa;
+  padding: 64px 0 48px 0;
+  color: #1B263B;
+}
+
+.leveled-text-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 48px;
+}
+
+.leveled-text-left {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.leveled-text-title {
+  font-family: serif !important;
+  font-weight: 600 !important;
+  margin-bottom: 18px !important;
+}
+
+.leveled-text-desc {
+  font-size: 1.1rem;
+  font-family: 'Segoe UI', serif;
+  max-width: 520px;
+}
+
+.leveled-text-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.leveled-text-meet {
+  font-family: serif !important;
+  font-weight: 600 !important;
+  text-align: center;
+  margin-bottom: 12px !important;
+}
+
+.leveled-text-img {
+  width: 180px;
+  margin-bottom: 10px;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+}
+
+.leveled-text-caption {
+  font-size: 1rem;
+  text-align: center;
+  font-style: italic;
+}
+
+.leveled-benefits-section {
+  background: #faf8f6;
+  padding: 64px 0 80px 0;
+}
+
+.leveled-benefits-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.leveled-benefits-title {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.leveled-benefits-heading {
+  font-family: serif !important;
+  font-weight: 600 !important;
+  color: #20403C !important;
+}
+
+.leveled-benefits-content {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 48px;
+}
+
+.leveled-benefits-imgs {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.leveled-benefit-img {
+  width: 140px;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+}
+
+.leveled-benefits-texts {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.leveled-benefits-subheading {
+  font-family: serif !important;
+  font-weight: 600 !important;
+  color: #20403C !important;
+  margin-bottom: 8px !important;
+}
+
+.leveled-benefits-desc {
+  color: #20403C;
+  font-size: 1.05rem;
+  font-family: 'Segoe UI', serif;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 900px) {
+  .simplified-features-section,
+  .simplified-compare-section {
+    padding: 32px 0 40px 0;
+  }
+  .leveled-text-container,
+  .leveled-benefits-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  .leveled-text-section,
+  .leveled-benefits-section {
+    padding: 32px 0 40px 0;
+  }
+  .leveled-text-img,
+  .leveled-benefit-img {
+    width: 110px;
+  }
+}

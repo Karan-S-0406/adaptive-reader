@@ -1,0 +1,230 @@
+.audio-root {
+  margin-top: 60px;
+  width: 100%;
+  min-height: 100vh;
+  background: #faf8f6;
+}
+
+.audio-features-section {
+  background: #e3f0fa;
+  padding: 48px 0 32px 0;
+  text-align: center;
+}
+
+.audio-features-title {
+  color: #20403C !important;
+  font-family: serif !important;
+  font-weight: 600 !important;
+  margin-bottom: 32px !important;
+}
+
+.audio-features-grid {
+  margin-top: 0;
+}
+
+.audio-feature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.audio-feature-heading {
+  color: #20403C !important;
+  font-family: serif !important;
+  font-weight: 600 !important;
+  margin: 12px 0 8px 0 !important;
+  font-size: 1.2rem !important;
+}
+
+.audio-feature-desc {
+  color: #20403C !important;
+  font-size: 1rem !important;
+  font-family: 'Segoe UI', serif;
+  max-width: 260px;
+  margin-bottom: 0;
+  text-align: center;
+}
+
+.audio-what-section {
+  background: #e3f0fa;
+  padding: 32px 0 48px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.audio-what-container {
+  max-width: 900px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 48px;
+}
+
+.audio-what-left {
+  flex: 2;
+}
+
+.audio-what-title {
+  color: #20403C !important;
+  font-family: serif !important;
+  font-weight: 600 !important;
+  margin-bottom: 18px !important;
+}
+
+.audio-what-desc {
+  color: #20403C;
+  font-size: 1.1rem;
+  font-family: 'Segoe UI', serif;
+  max-width: 420px;
+}
+
+.audio-what-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.audio-what-img {
+  width: 200px;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+}
+
+.audio-benefits-section {
+  background: #faf8f6;
+  padding: 48px 0 32px 0;
+}
+
+.audio-benefits-title {
+  color: #20403C !important;
+  font-family: serif !important;
+  font-weight: 600 !important;
+  text-align: center;
+  margin-bottom: 32px !important;
+}
+
+.audio-benefits-container {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 48px;
+}
+
+.audio-benefits-img {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.audio-benefit-tablet {
+  width: 180px;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+}
+
+.audio-benefit-wave {
+  width: 120px;
+  margin-top: 12px;
+}
+
+.audio-benefits-texts {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.audio-benefits-subheading {
+  color: #20403C !important;
+  font-family: serif !important;
+  font-weight: 600 !important;
+  margin-bottom: 8px !important;
+}
+
+.audio-benefits-desc {
+  color: #20403C;
+  font-size: 1.05rem;
+  font-family: 'Segoe UI', serif;
+  margin-bottom: 8px;
+}
+
+.audio-how-section {
+  background: #e3f0fa;
+  padding: 32px 0 64px 0;
+  text-align: center;
+}
+
+.audio-how-title {
+  color: #20403C !important;
+  font-family: serif !important;
+  font-weight: 600 !important;
+  margin-bottom: 12px !important;
+}
+
+.audio-how-desc {
+  color: #20403C;
+  font-size: 1.1rem;
+  font-family: 'Segoe UI', serif;
+  margin-bottom: 32px;
+}
+
+.audio-how-cards {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.audio-how-card {
+  background: #1B6CA8;
+  color: #fff;
+  border-radius: 12px;
+  padding: 24px 20px;
+  min-width: 220px;
+  max-width: 260px;
+  flex: 1 1 220px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.audio-how-card-title {
+  font-family: serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.audio-how-card-desc {
+  font-size: 1rem;
+  font-family: 'Segoe UI', serif;
+}
+
+@media (max-width: 900px) {
+  .audio-features-section,
+  .audio-what-section,
+  .audio-benefits-section,
+  .audio-how-section {
+    padding: 24px 0 24px 0;
+  }
+  .audio-what-container,
+  .audio-benefits-container,
+  .audio-how-cards {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  .audio-what-img,
+  .audio-benefit-tablet {
+    width: 120px;
+  }
+}

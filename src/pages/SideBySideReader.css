@@ -1,0 +1,95 @@
+.reader-root {
+  background: #f7f6f2;
+  min-height: 100vh;
+  padding: 0;
+  margin-top: 60px;
+}
+
+.reader-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 24px 48px 0 48px;
+  background: #f7f6f2;
+  font-family: 'Segoe UI', serif;
+  font-size: 1.1rem;
+  color: #222;
+  gap: 24px;
+}
+
+.reader-chapter {
+  font-weight: 500;
+  color: #444;
+  flex: 2;
+}
+
+.reader-page {
+  color: #888;
+  font-size: 1rem;
+  margin-left: 16px;
+}
+
+.reader-toolbar-option {
+  color: #888;
+  font-size: 1rem;
+  margin-left: 24px;
+}
+
+.reader-cols {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 32px 0 32px 0;
+}
+
+.reader-col {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+  padding: 32px 28px 32px 28px;
+  width: 40vw;
+  min-width: 340px;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+.reader-col-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 18px;
+  gap: 0;
+}
+
+.reader-select {
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  min-width: 110px;
+}
+
+.reader-col-content {
+  font-size: 1.1rem;
+  color: #222;
+  font-family: 'Segoe UI', serif;
+}
+
+@media (max-width: 1100px) {
+  .reader-cols {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  .reader-col {
+    width: 90vw;
+    min-width: 0;
+    max-width: 98vw;
+  }
+  .reader-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 18px 12px 0 12px;
+  }
+}

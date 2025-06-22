@@ -1,0 +1,376 @@
+.pricing-root {
+  margin-top: 90px;
+  min-height: 100vh;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.pricing-title {
+  font-family: serif !important;
+  font-weight: 600 !important;
+  color: #20403C !important;
+  margin-top: 48px !important;
+  margin-bottom: 8px !important;
+}
+
+.pricing-subtitle {
+  color: #6b7c7c;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  margin-bottom: 32px;
+}
+
+.pricing-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.pricing-tab,
+.pricing-tab-active {
+  min-width: 160px;
+  font-weight: 500 !important;
+  font-size: 1rem !important;
+  text-transform: none !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+}
+
+.pricing-tab-active {
+  background: #eaeaea !important;
+  color: #20403C !important;
+  border: 1px solid #d1d1d1 !important;
+}
+
+.pricing-cards {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0;
+  margin: 0 auto 32px auto;
+  max-width: 900px;
+}
+
+.pricing-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+  padding: 32px 32px 24px 32px;
+  margin: 0;
+  min-width: 320px;
+  max-width: 420px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pricing-card-left {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 1px solid #f0f0f0;
+}
+
+.pricing-card-right {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.pricing-card-title {
+  font-family: serif !important;
+  font-weight: 600 !important;
+  color: #20403C !important;
+  font-size: 1.3rem !important;
+  margin-bottom: 2px !important;
+}
+
+.pricing-card-desc {
+  color: #6b7c7c;
+  font-size: 1rem;
+  margin-bottom: 18px;
+  text-align: center;
+}
+
+.pricing-card-btn {
+  width: 160px;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  border-radius: 6px !important;
+  margin-bottom: 8px !important;
+  margin-top: 8px !important;
+  text-transform: none !important;
+  box-shadow: none !important;
+}
+
+.pricing-card-btn-free {
+  background: #E07A5F !important;
+  color: #fff !important;
+}
+
+.pricing-card-btn-quote {
+  background: #20403C !important;
+  color: #fff !important;
+}
+
+.pricing-card-note {
+  color: #b0b0b0;
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.pricing-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: #20403C;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.pricing-list li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+.pricing-check {
+  color: #E07A5F;
+  margin-right: 8px;
+  font-size: 1.1em;
+}
+
+.pricing-info {
+  color: #b0b0b0;
+  margin-left: 4px;
+  font-size: 1em;
+}
+
+.pricing-coming-soon {
+  color: #b0b0b0;
+  font-size: 0.98em;
+  margin-top: 8px;
+  margin-bottom: 0;
+  font-style: italic;
+}
+
+.pricing-commitment {
+  margin: 64px auto 0 auto;
+  max-width: 800px;
+  text-align: center;
+}
+
+.pricing-commitment-title {
+  color: #b0b0b0;
+  font-size: 0.95rem;
+  letter-spacing: 2px;
+  margin-bottom: 18px;
+  text-transform: uppercase;
+}
+
+.pricing-commitment-desc {
+  color: #20403C;
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+}
+
+.pricing-contact-link {
+  color: #20403C;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.pricing-testimonials-section {
+  background: #e3f0fa;
+  color: #fff;
+  padding: 56px 0 64px 0;
+  text-align: center;
+}
+
+.pricing-testimonials-title {
+  font-family: serif !important;
+  font-weight: 600 !important;
+  margin-bottom: 8px !important;
+  color: #1B263B !important;
+}
+
+.pricing-testimonials-subtitle {
+  color: #b0b0b0;
+  font-size: 1rem;
+  margin-bottom: 32px;
+}
+
+.pricing-testimonials-slider {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pricing-testimonials-quote {
+  margin-bottom: 32px;
+}
+
+.pricing-testimonials-quote-text {
+  font-size: 2rem;
+  font-family: serif;
+  font-weight: 600;
+  margin-bottom: 18px;
+  color: #fff;
+}
+
+.pricing-testimonials-author {
+  color: #b0b0b0;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-top: 12px;
+  text-transform: uppercase;
+}
+
+.pricing-testimonials-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.pricing-testimonials-dot {
+  color: #b0b0b0 !important;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.pricing-testimonials-dot.active {
+  color: #fff !important;
+}
+
+.creative-bg {
+  background: linear-gradient(120deg, #f7f4f1 60%, #e0f7fa 100%);
+}
+
+.creative-title {
+  letter-spacing: 2px;
+  font-size: 2.5rem !important;
+  background: linear-gradient(90deg, #20403C 60%, #E07A5F 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.creative-subtitle {
+  font-size: 1.25rem;
+  color: #20403C;
+  margin-bottom: 36px;
+}
+
+.creative-card {
+  border: 2px solid #e0f7fa;
+  box-shadow: 0 4px 24px rgba(32, 64, 60, 0.07);
+  transition: transform 0.2s;
+}
+.creative-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 8px 32px rgba(32, 64, 60, 0.13);
+}
+
+.creative-card-premium {
+  border: 2px solid #20403C;
+  background: linear-gradient(120deg, #f7f4f1 70%, #e0f7fa 100%);
+  box-shadow: 0 4px 32px rgba(32, 64, 60, 0.09);
+  transition: transform 0.2s;
+}
+.creative-card-premium:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 12px 36px rgba(32, 64, 60, 0.18);
+}
+
+.creative-commitment {
+  background: #e0f7fa;
+  border-radius: 12px;
+  padding: 32px 24px;
+  margin-top: 48px;
+  box-shadow: 0 2px 16px rgba(32, 64, 60, 0.06);
+}
+
+.pricing-star-icon {
+  color: #E07A5F;
+  font-size: 2rem !important;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+.creative-quote-bg {
+  background: linear-gradient(90deg, #163d5c 60%, #2ec4b6 100%);
+  border-radius: 14px;
+  padding: 32px 24px;
+  box-shadow: 0 2px 16px rgba(32, 64, 60, 0.09);
+  margin-bottom: 32px;
+  position: relative;
+}
+
+@media (max-width: 900px) {
+  .pricing-cards {
+    flex-direction: column;
+    max-width: 95vw;
+  }
+  .pricing-card {
+    border-radius: 14px !important;
+    border-right: none !important;
+    border-left: none !important;
+    margin-top: 0 !important;
+  }
+  .pricing-card-left {
+    border-top-right-radius: 14px !important;
+    border-bottom-right-radius: 14px !important;
+    border-right: none !important;
+  }
+  .pricing-card-right {
+    border-top-left-radius: 14px !important;
+    border-bottom-left-radius: 14px !important;
+    border-left: none !important;
+  }
+  .pricing-title {
+    font-size: 2rem !important;
+    margin-top: 32px !important;
+  }
+  .pricing-subtitle {
+    font-size: 1.2rem !important;
+    margin-bottom: 24px !important;
+  }
+  .pricing-tab,
+  .pricing-tab-active {
+    min-width: 120px;
+    font-size: 0.9rem !important;
+  }
+  .pricing-card-title {
+    font-size: 1.2rem !important;
+  }
+  .pricing-card-desc {
+    font-size: 0.9rem;
+  }
+  .pricing-card-btn {
+    width: 140px;
+    font-size: 0.9rem !important;
+  }
+  .pricing-list li {
+    font-size: 0.9rem;
+  }
+  .pricing-commitment {
+    margin: 32px auto 0 auto;
+  }
+  .pricing-commitment-title {
+    font-size: 0.85rem;
+  }
+  .pricing-commitment-desc {
+    font-size: 1rem;
+  }
+  .pricing-testimonials-quote-text {
+    font-size: 1.2rem;
+  }
+  .creative-title {
+    font-size: 1.5rem !important;
+  }
+}
