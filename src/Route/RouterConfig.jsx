@@ -7,54 +7,40 @@ import AudioBooks from "../pages/Features/Audio-Books/AudioBooks";
 import Pricing from "../pages/Pricing";
 import Footer from "../components/Footer";
 import SideBySideReader from "../pages/SideBySideReader";
-
-// Placeholder components for each route
-const Features = () => <div>Features Page</div>;
-const PrintOnDemand = () => <div>Print On Demand</div>;
-
-const Resources = () => <div>Resources Page</div>;
-const VideoTutorials = () => <div>Video Tutorials</div>;
-const TeacherGuide = () => <div>Teacher Guide</div>;
-const FreeDownloads = () => <div>Free Downloads</div>;
-
-const About = () => <div>About Page</div>;
-const Story = () => <div>Story</div>;
-const Mission = () => <div>Mission</div>;
-const Careers = () => <div>Careers</div>;
-
-const Library = () => <div>Library Page</div>;
-const Login = () => <div>Login Page</div>;
-const SignUp = () => <div>Sign Up Page</div>;
+import FreeDownloads from "../pages/Resources/FreeDownloads/FreeDownloads";
+import RequestContent from "../pages/Resources/RequestContent/RequestContent";
+import Library from "../pages/Resources/Library/Library";
+import Story from "../pages/About/Story/Story";
+import Mission from "../pages/About/Mission/Mission";
+import Login from "../pages/Login";
+import SignUp from "../pages/SignUp";
 
 export default function RouterConfig() {
   return (
     <>
       <Header />
-      <div style={{marginTop: "64px"}}>
+      <div style={{ marginTop: "64px" }}>
         <Routes>
           <Route path="/" element={<Home />} />
           {/* Features */}
-          <Route path="/features" element={<Features />} />
           <Route path="/features/translations" element={<Translations />} />
           <Route
             path="/features/reading-levels"
             element={<SimplifiedTexts />}
           />
           <Route path="/features/audio-books" element={<AudioBooks />} />
-          <Route path="/features/print-on-demand" element={<PrintOnDemand />} />
+          {/* <Route path="/features/print-on-demand" element={<PrintOnDemand />} /> */}
           {/* Resources */}
-          <Route path="/resources" element={<Resources />} />
+          <Route path="/resources/library" element={<Library />} />
           <Route
-            path="/resources/video-tutorials"
-            element={<VideoTutorials />}
+            path="/resources/request-content"
+            element={<RequestContent />}
           />
-          <Route path="/resources/teacher-guide" element={<TeacherGuide />} />
           <Route path="/resources/free-downloads" element={<FreeDownloads />} />
           {/* About */}
-          <Route path="/about" element={<About />} />
           <Route path="/about/story" element={<Story />} />
           <Route path="/about/mission" element={<Mission />} />
-          <Route path="/about/careers" element={<Careers />} />
+          {/* <Route path="/about/careers" element={<Careers />} /> */}
           {/* Other */}
           <Route path="/live-demo" element={<SideBySideReader />} />
           <Route path="/pricing" element={<Pricing />} />

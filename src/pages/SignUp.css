@@ -1,0 +1,36 @@
+.signup-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 40px 0 rgba(0,0,0,0.10);
+  font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
+}
+
+.signup-container h6 {
+  font-size: 1.45rem;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+  text-align: left;
+  color: #222;
+  letter-spacing: 0.5px;
+}
+
+.signup-container p,
+.signup-container .MuiTypography-body2 {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #333;
+  margin-bottom: 1.2rem;
+}
+
+.signup-container .MuiButton-root {
+  font-weight: 700;
+  border-radius: 8px;
+}
+
+.signup-container .MuiTextField-root {
+  background: #fafafa;
+  border-radius: 6px;
+}

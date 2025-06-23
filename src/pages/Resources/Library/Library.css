@@ -1,0 +1,62 @@
+.library-bg {
+  background: #faf8f6;
+  min-height: 100vh;
+  padding: 32px 0;
+}
+
+.library-sidebar {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+  padding: 24px 18px;
+  margin-bottom: 0;
+}
+
+@media (max-width: 960px) {
+  .library-sidebar {
+    margin-bottom: 24px;
+  }
+}
+
+.library-filter-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #225386;
+}
+
+.library-main {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+  padding: 28px 22px;
+  min-height: 80vh;
+}
+
+.library-toolbar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.library-book-card {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.library-book-card:hover {
+  box-shadow: 0 6px 32px rgba(34,83,134,0.13);
+}
+
+.library-book-img {
+  object-fit: cover;
+}
+
+.library-book-title {
+  font-weight: 700;
+  color: #225386;
+  margin-top: 4px;
+  margin-bottom: 2px;
+}

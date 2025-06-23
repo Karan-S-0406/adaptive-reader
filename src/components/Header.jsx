@@ -15,17 +15,17 @@ const menuItems = {
     { label: "Translations", path: "/features/translations" },
     { label: "Reading Levels", path: "/features/reading-levels" },
     { label: "AudioBooks", path: "/features/audio-books" },
-    { label: "Print On Demand", path: "/features/print-on-demand" },
+    // { label: "Print On Demand", path: "/features/print-on-demand" },
   ],
   Resources: [
-    { label: "Video Tutorials", path: "/resources/video-tutorials" },
-    { label: "Teacher Guide", path: "/resources/teacher-guide" },
+    { label: "Library", path: "/resources/library" },
     { label: "Free Downloads", path: "/resources/free-downloads" },
+    { label: "Request Content", path: "/resources/request-content" },
   ],
   About: [
     { label: "Story", path: "/about/story" },
     { label: "Mission", path: "/about/mission" },
-    { label: "Careers", path: "/about/careers" },
+    // { label: "Careers", path: "/about/careers" },
   ],
 };
 
