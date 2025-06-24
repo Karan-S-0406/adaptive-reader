@@ -1,95 +1,145 @@
-.reader-root {
-  background: #f7f6f2;
+.dual-reader-root {
+  background: linear-gradient(120deg, #f7f6f2 60%, #e9f7fa 100%);
   min-height: 100vh;
   padding: 0;
-  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
-.reader-toolbar {
+.dual-reader-card {
+  margin: 48px auto;
+  border-radius: 24px;
+  max-width: 1200px;
+  width: 98vw;
+  padding: 0;
+  overflow: visible;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+}
+
+.dual-reader-header {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  padding: 24px 48px 0 48px;
-  background: #f7f6f2;
+  justify-content: space-between;
+  padding: 32px 48px 0 48px;
+  background: transparent;
   font-family: 'Segoe UI', serif;
   font-size: 1.1rem;
   color: #222;
   gap: 24px;
 }
 
-.reader-chapter {
-  font-weight: 500;
+.dual-chapter {
+  font-weight: 600;
   color: #444;
   flex: 2;
 }
 
-.reader-page {
+.dual-page {
   color: #888;
   font-size: 1rem;
   margin-left: 16px;
 }
 
-.reader-toolbar-option {
-  color: #888;
-  font-size: 1rem;
-  margin-left: 24px;
-}
-
-.reader-cols {
+.dual-reader-body {
   display: flex;
   flex-direction: row;
-  gap: 32px;
+  align-items: stretch;
   justify-content: center;
-  align-items: flex-start;
-  padding: 32px 0 32px 0;
+  gap: 0;
+  position: relative;
+  min-height: 480px;
 }
 
-.reader-col {
+.dual-panel {
   background: #fff;
   border-radius: 18px;
   box-shadow: 0 2px 16px rgba(0,0,0,0.04);
   padding: 32px 28px 32px 28px;
   width: 40vw;
-  min-width: 340px;
-  max-width: 600px;
+  min-width: 320px;
+  max-width: 520px;
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 1;
+  transition: box-shadow 0.2s;
 }
 
-.reader-col-header {
+.dual-panel-left {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.dual-panel-right {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.dual-panel-controls {
   display: flex;
   align-items: center;
-  margin-bottom: 18px;
-  gap: 0;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 2;
+  padding-bottom: 12px;
 }
 
-.reader-select {
+.dual-select {
   font-weight: 600 !important;
   font-size: 1rem !important;
   min-width: 110px;
 }
 
-.reader-col-content {
+.dual-panel-content {
   font-size: 1.1rem;
   color: #222;
   font-family: 'Segoe UI', serif;
+  margin-top: 12px;
+}
+
+.dual-divider {
+  width: 2px !important;
+  background: linear-gradient(to bottom, #e0e0e0 60%, #b0e0e6 100%);
+  margin: 0 0;
+  border-radius: 2px;
+  z-index: 2;
+}
+
+.dual-swap-btn-box {
+  position: absolute;
+  left: 50%;
+  top: 24px;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.dual-swap-btn {
+  background: #e9f7fa;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(76,173,168,0.10);
+  transition: background 0.2s;
+}
+.dual-swap-btn:hover {
+  background: #b0e0e6;
 }
 
 @media (max-width: 1100px) {
-  .reader-cols {
+  .dual-reader-body {
     flex-direction: column;
     align-items: center;
-    gap: 24px;
+    min-height: unset;
   }
-  .reader-col {
+  .dual-panel {
     width: 90vw;
     min-width: 0;
     max-width: 98vw;
+    border-radius: 18px !important;
+    margin-bottom: 24px;
   }
-  .reader-toolbar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    padding: 18px 12px 0 12px;
+  .dual-divider, .dual-swap-btn-box {
+    display: none;
   }
 }

@@ -1,9 +1,19 @@
 import React, { useState } from "react";
-import { Typography, MenuItem, Select, IconButton, Tooltip } from "@mui/material";
+import {
+  Typography,
+  MenuItem,
+  Select,
+  IconButton,
+  Tooltip,
+  Divider,
+  Box,
+  Paper,
+} from "@mui/material";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import PauseIcon from "@mui/icons-material/Pause";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import StopIcon from "@mui/icons-material/Stop";
+import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import "./SideBySideReader.css";
 
 const content = {
@@ -50,42 +60,54 @@ function speak(text, lang) {
   }
 }
 
-function ReaderColumn({ language, setLanguage, level, setLevel, content, audioLang }) {
+function ReaderPanel({
+  language,
+  setLanguage,
+  level,
+  setLevel,
+  content,
+  audioLang,
+  side,
+}) {
   return (
-    <section className="reader-col">
-      <div className="reader-col-header">
+    <Box className={`dual-panel dual-panel-${side}`}>
+      <Box className="dual-panel-controls">
         <Select
           value={language}
-          onChange={e => setLanguage(e.target.value)}
+          onChange={(e) => setLanguage(e.target.value)}
           variant="standard"
-          className="reader-select"
+          className="dual-select"
         >
-          {LANGUAGES.map(l => (
-            <MenuItem key={l.value} value={l.value}>{l.label}</MenuItem>
+          {LANGUAGES.map((l) => (
+            <MenuItem key={l.value} value={l.value}>
+              {l.label}
+            </MenuItem>
           ))}
         </Select>
         <Select
           value={level}
-          onChange={e => setLevel(e.target.value)}
+          onChange={(e) => setLevel(e.target.value)}
           variant="standard"
-          className="reader-select"
+          className="dual-select"
           sx={{
             ml: 2,
             fontWeight: 600,
-            color: LEVELS.find(l => l.value === level)?.color,
+            color: LEVELS.find((l) => l.value === level)?.color,
           }}
         >
-          {LEVELS.map(l => (
+          {LEVELS.map((l) => (
             <MenuItem key={l.value} value={l.value}>
-              <span style={{
-                display: "inline-block",
-                width: 8,
-                height: 8,
-                borderRadius: "50%",
-                background: l.color,
-                marginRight: 8,
-                verticalAlign: "middle"
-              }} />
+              <span
+                style={{
+                  display: "inline-block",
+                  width: 8,
+                  height: 8,
+                  borderRadius: "50%",
+                  background: l.color,
+                  marginRight: 8,
+                  verticalAlign: "middle",
+                }}
+              />
               {l.label}
             </MenuItem>
           ))}
@@ -99,66 +121,97 @@ function ReaderColumn({ language, setLanguage, level, setLevel, content, audioLa
             <VolumeUpIcon />
           </IconButton>
         </Tooltip>
-        <IconButton onClick={() => window.speechSynthesis.pause()} aria-label="Pause">
+        <IconButton
+          onClick={() => window.speechSynthesis.pause()}
+          aria-label="Pause"
+        >
           <PauseIcon />
         </IconButton>
-        <IconButton onClick={() => window.speechSynthesis.resume()} aria-label="Resume">
+        <IconButton
+          onClick={() => window.speechSynthesis.resume()}
+          aria-label="Resume"
+        >
           <PlayArrowIcon />
         </IconButton>
-        <IconButton onClick={() => window.speechSynthesis.cancel()} aria-label="Stop">
+        <IconButton
+          onClick={() => window.speechSynthesis.cancel()}
+          aria-label="Stop"
+        >
           <StopIcon />
         </IconButton>
-      </div>
-      <div className="reader-col-content">
-        <Typography sx={{ fontSize: 16, color: "#222", whiteSpace: "pre-line" }}>
+      </Box>
+      <Box className="dual-panel-content">
+        <Typography
+          sx={{ fontSize: 16, color: "#222", whiteSpace: "pre-line" }}
+        >
           {content}
         </Typography>
-      </div>
-    </section>
+      </Box>
+    </Box>
   );
 }
 
 export default function SideBySideReader() {
   const [leftLang, setLeftLang] = useState("en");
-  const [rightLang, setRightLang] = useState("en");
+  const [rightLang, setRightLang] = useState("es");
   const [leftLevel, setLeftLevel] = useState("original");
   const [rightLevel, setRightLevel] = useState("gold");
 
+  // Swap languages and levels
+  const handleSwap = () => {
+    setLeftLang(rightLang);
+    setRightLang(leftLang);
+    setLeftLevel(rightLevel);
+    setRightLevel(leftLevel);
+  };
+
   return (
-    <div className="reader-root">
-      <div className="reader-toolbar">
-        <Typography className="reader-chapter" variant="subtitle1">
-          <span role="img" aria-label="book">📖</span> CHAPTER I. Mrs. Rachel Lynde
-        </Typography>
-        <Typography className="reader-page" variant="body2">
-          1 / 428
-        </Typography>
-        <div style={{ flex: 1 }} />
-        <Typography className="reader-toolbar-option">
-          <span style={{ marginRight: 8 }}>Default</span>
-        </Typography>
-        <Typography className="reader-toolbar-option">
-          <span style={{ marginRight: 8 }}>2 Columns</span>
-        </Typography>
-      </div>
-      <div className="reader-cols">
-        <ReaderColumn
-          language={leftLang}
-          setLanguage={setLeftLang}
-          level={leftLevel}
-          setLevel={setLeftLevel}
-          content={leftLang === "en" ? content[leftLevel] : content_es[leftLevel]}
-          audioLang={leftLang}
-        />
-        <ReaderColumn
-          language={rightLang}
-          setLanguage={setRightLang}
-          level={rightLevel}
-          setLevel={setRightLevel}
-          content={rightLang === "en" ? content[rightLevel] : content_es[rightLevel]}
-          audioLang={rightLang}
-        />
-      </div>
+    <div className="dual-reader-root">
+      <Paper elevation={3} className="dual-reader-card">
+        <Box className="dual-reader-header">
+          <Typography className="dual-chapter" variant="subtitle1">
+            <span role="img" aria-label="book">
+              📖
+            </span>{" "}
+            CHAPTER I. Mrs. Rachel Lynde
+          </Typography>
+          <Typography className="dual-page" variant="body2">
+            1 / 428
+          </Typography>
+        </Box>
+        <Box className="dual-reader-body">
+          <ReaderPanel
+            language={leftLang}
+            setLanguage={setLeftLang}
+            level={leftLevel}
+            setLevel={setLeftLevel}
+            content={
+              leftLang === "en" ? content[leftLevel] : content_es[leftLevel]
+            }
+            audioLang={leftLang}
+            side="left"
+          />
+          <Divider orientation="vertical" flexItem className="dual-divider" />
+          <Box className="dual-swap-btn-box">
+            <Tooltip title="Swap Sides">
+              <IconButton className="dual-swap-btn" onClick={handleSwap}>
+                <SwapHorizIcon fontSize="large" />
+              </IconButton>
+            </Tooltip>
+          </Box>
+          <ReaderPanel
+            language={rightLang}
+            setLanguage={setRightLang}
+            level={rightLevel}
+            setLevel={setRightLevel}
+            content={
+              rightLang === "en" ? content[rightLevel] : content_es[rightLevel]
+            }
+            audioLang={rightLang}
+            side="right"
+          />
+        </Box>
+      </Paper>
     </div>
   );
 }
