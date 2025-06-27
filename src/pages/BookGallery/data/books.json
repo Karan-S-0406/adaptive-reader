@@ -1,0 +1,122 @@
+[
+  {
+    "title": "The Alchemist",
+    "author": "Paulo Coelho",
+    "genre": "Fable",
+    "image": "alchemist.png"
+  },
+  {
+    "title": "Sapiens: A Brief History of Humankind",
+    "author": "Yuval Noah Harari",
+    "genre": "Non-Fiction",
+    "image": "sapiens.png"
+  },
+  {
+    "title": "The Martian",
+    "author": "Andy Weir",
+    "genre": "Science Fiction",
+    "image": "martian.png"
+  },
+  {
+    "title": "The Shining",
+    "author": "Stephen King",
+    "genre": "Horror",
+    "image": "shining.png"
+  },
+  {
+    "title": "Becoming",
+    "author": "Michelle Obama",
+    "genre": "Memoir",
+    "image": "obama.png"
+  },
+  {
+    "title": "The Fault in Our Stars",
+    "author": "John Green",
+    "genre": "Young Adult",
+    "image": "stars.png"
+  },
+  {
+    "title": "Norwegian Wood",
+    "author": "Haruki Murakami",
+    "genre": "Literary Fiction",
+    "image": "woods.png"
+  },
+  {
+    "title": "Educated",
+    "author": "Tara Westover",
+    "genre": "Autobiography",
+    "image": "romeo.png"
+  },
+  {
+    "title": "The Silent Patient",
+    "author": "Alex Michaelides",
+    "genre": "Psychological Thriller",
+    "image": "odyssey.png"
+  },
+  {
+    "title": "Circe",
+    "author": "Madeline Miller",
+    "genre": "Mythological Fiction",
+    "image": "castle.png"
+  },
+  {
+    "title": "Atomic Habits",
+    "author": "James Clear",
+    "genre": "Self-Help",
+    "image": "habits.png"
+  },
+  {
+    "title": "The Midnight Library",
+    "author": "Matt Haig",
+    "genre": "Philosophical Fiction",
+    "image": "library.png"
+  },
+  {
+    "title": "The Seven Husbands of Evelyn Hugo",
+    "author": "Taylor Jenkins Reid",
+    "genre": "Historical Romance",
+    "image": "https://via.placeholder.com/300x400?text=Evelyn+Hugo"
+  },
+  {
+    "title": "Project Hail Mary",
+    "author": "Andy Weir",
+    "genre": "Sci-Fi Adventure",
+    "image": "https://via.placeholder.com/300x400?text=Project+Hail+Mary"
+  },
+  {
+    "title": "The Subtle Art of Not Giving a F*ck",
+    "author": "Mark Manson",
+    "genre": "Self-Development",
+    "image": "https://via.placeholder.com/300x400?text=Subtle+Art"
+  },
+  {
+    "title": "The Henna Artist",
+    "author": "Alka Joshi",
+    "genre": "Cultural Fiction",
+    "image": "https://via.placeholder.com/300x400?text=Henna+Artist"
+  },
+  {
+    "title": "Where the Crawdads Sing",
+    "author": "Delia Owens",
+    "genre": "Mystery",
+    "image": "https://via.placeholder.com/300x400?text=Crawdads+Sing"
+  },
+  {
+    "title": "A Man Called Ove",
+    "author": "Fredrik Backman",
+    "genre": "Contemporary",
+    "image": "https://via.placeholder.com/300x400?text=Man+Called+Ove"
+  },
+  {
+    "title": "The Book Thief",
+    "author": "Markus Zusak",
+    "genre": "War Fiction",
+    "image": "https://via.placeholder.com/300x400?text=Book+Thief"
+  },
+  {
+    "title": "The House in the Cerulean Sea",
+    "author": "TJ Klune",
+    "genre": "Fantasy",
+    "image": "https://via.placeholder.com/300x400?text=Cerulean+Sea"
+  }
+]

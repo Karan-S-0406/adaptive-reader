@@ -178,6 +178,13 @@ const Header = () => {
           <Button
             color="inherit"
             sx={{ color: "#20303C", textTransform: "none" }}
+            onClick={() => navigate("/gallery")}
+          >
+            Gallery
+          </Button>
+          <Button
+            color="inherit"
+            sx={{ color: "#20303C", textTransform: "none" }}
             onClick={() => navigate("/pricing")}
           >
             Pricing

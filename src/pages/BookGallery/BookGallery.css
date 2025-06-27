@@ -1,7 +1,7 @@
 /* Layout */
 .page-container {
   padding: 2rem 3rem;
-  background: #f7f4f2;
+  background: #F5F2F0;
   min-height: 100vh;
 }
 
@@ -30,7 +30,7 @@
 .card-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center; /* Center items when not full row */
+  justify-content: flex-start; /* Center items when not full row */
   gap: 1.5rem;
 }
 
@@ -79,7 +79,7 @@
 }
 
 .genre-chip {
-  background-color: #db5c32;
+  background-color: #1b6ca8;
   color: #fff;
   font-weight: 500;
   width: fit-content;
@@ -88,9 +88,20 @@
   border-radius: 12px;
 }
 
-/* Optional Responsive Touch */
-@media (min-width: 768px) {
-  .card-container {
-    justify-content: flex-start;
-  }
+.pagination-controls {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.page-info {
+  font-weight: 500;
+  color: #333;
+}
+
+.pagination-button{
+  border-radius: 20px !important;
+  text-transform: none !important;
 }

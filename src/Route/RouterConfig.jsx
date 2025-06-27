@@ -15,6 +15,7 @@ import Mission from "../pages/About/Mission/Mission";
 import Login from "../pages/Login";
 import SignUp from "../pages/SignUp";
 import BookGallery from "../pages/BookGallery/BookGallery";
+import BookDetails from "../pages/BookGallery/BookDetails";
 
 export default function RouterConfig() {
   return (
@@ -49,6 +50,7 @@ export default function RouterConfig() {
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/book/:title" element={<BookDetails />} />
         </Routes>
       </div>
       <Footer />
