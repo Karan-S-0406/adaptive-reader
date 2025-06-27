@@ -1,16 +1,29 @@
-import { Box, Paper, Typography, Button, Divider, TextField, Link } from "@mui/material";
+import {
+  Box,
+  Paper,
+  Typography,
+  Button,
+  Divider,
+  TextField,
+  Link,
+} from "@mui/material";
 import googleSvg from "../assets/google.svg";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "@firebase/auth";
+import "../firebase";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const navigate = useNavigate();
   const handleGoogleSignIn = async () => {
     try {
       const provider = new GoogleAuthProvider();
       const auth = getAuth();
-      await signInWithPopup(auth, provider);
-      // Redirect or handle successful login here
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      console.log("Signed in as:", user.displayName);
+      navigate("/gallery");
     } catch (error) {
-      // Handle errors here
+      console.error("Sign-in error", error);
       alert("Google sign-in failed. Please try again.");
     }
   };
@@ -100,9 +113,18 @@ export default function Login() {
           CONTINUE
         </Button>
 
-        <Typography variant="body2" color="text.secondary" align="center" mt={1}>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          align="center"
+          mt={1}
+        >
           No account?{" "}
-          <Link href="/signup" underline="hover" sx={{ color: "#1B6CA8", fontWeight: 500 }}>
+          <Link
+            href="/signup"
+            underline="hover"
+            sx={{ color: "#1B6CA8", fontWeight: 500 }}
+          >
             Sign up
           </Link>
         </Typography>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -8,7 +8,10 @@ import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import logo from "../assets/blogger.png"; // Add this import
+import logo from "../assets/blogger.png";
+import { auth } from "../firebase"; // path may vary
+import { onAuthStateChanged, signOut } from "@firebase/auth";
+import { Avatar } from "@mui/material";
 
 const menuItems = {
   Features: [
@@ -36,6 +39,28 @@ const Header = () => {
 
   // Track if mouse is over menu or button
   const [menuHover, setMenuHover] = useState(false);
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const getInitials = (name) => {
+    if (!name) return "";
+    const names = name.trim().split(" ");
+    if (names.length === 1) return names[0][0].toUpperCase();
+    return (names[0][0] + names[names.length - 1][0]).toUpperCase();
+  };
+
+  const handleLogout = () => {
+    signOut(auth);
+    setUser(null);
+    navigate("/");
+  };
 
   const handleMenuOpen = (event, type) => {
     setAnchorEl(event.currentTarget);
@@ -149,6 +174,7 @@ const Header = () => {
           >
             Live Demo
           </Button>
+          <Typography sx={{ color: "#bbb", mx: 1 }}>|</Typography>
           <Button
             color="inherit"
             sx={{ color: "#20303C", textTransform: "none" }}
@@ -156,31 +182,64 @@ const Header = () => {
           >
             Pricing
           </Button>
-          <Typography sx={{ color: "#bbb", mx: 1 }}>|</Typography>
-          <Button
-            color="inherit"
-            sx={{ color: "#20303C", textTransform: "none" }}
-            onClick={() => navigate("/login")}
-          >
-            Login
-          </Button>
         </Box>
 
-        {/* Right: Sign Up */}
         <Box sx={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
-          <Button
-            variant="outlined"
-            sx={{
-              borderColor: "#20303C",
-              color: "#20303C",
-              textTransform: "none",
-              fontWeight: 500,
-              ml: 1,
-            }}
-            onClick={() => navigate("/signup")}
-          >
-            Sign Up Free
-          </Button>
+          {user ? (
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl) && menuType === "avatar"}
+              onClose={handleMenuClose}
+              MenuListProps={{
+                sx: { minWidth: 140 },
+              }}
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              transformOrigin={{ vertical: "top", horizontal: "right" }}
+            >
+              <MenuItem
+                onClick={() => {
+                  handleLogout();
+                  handleMenuClose();
+                }}
+              >
+                Logout
+              </MenuItem>
+            </Menu>
+          ) : (
+            <Button
+              variant="outlined"
+              sx={{
+                borderColor: "#20303C",
+                color: "#20303C",
+                textTransform: "none",
+                fontWeight: 500,
+                ml: 1,
+              }}
+              onClick={() => navigate("/login")}
+            >
+              Login
+            </Button>
+          )}
+
+          {user && (
+            <Avatar
+              sx={{
+                bgcolor: "#20303C",
+                color: "#fff",
+                width: 36,
+                height: 36,
+                fontSize: 14,
+                ml: 2,
+                cursor: "pointer",
+              }}
+              onClick={(e) => {
+                setAnchorEl(e.currentTarget);
+                setMenuType("avatar");
+              }}
+            >
+              {getInitials(user.displayName)}
+            </Avatar>
+          )}
         </Box>
       </Toolbar>
     </AppBar>

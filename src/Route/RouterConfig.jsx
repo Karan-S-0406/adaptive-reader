@@ -14,6 +14,7 @@ import Story from "../pages/About/Story/Story";
 import Mission from "../pages/About/Mission/Mission";
 import Login from "../pages/Login";
 import SignUp from "../pages/SignUp";
+import BookGallery from "../pages/BookGallery/BookGallery";
 
 export default function RouterConfig() {
   return (
@@ -29,7 +30,7 @@ export default function RouterConfig() {
             element={<SimplifiedTexts />}
           />
           <Route path="/features/audio-books" element={<AudioBooks />} />
-          {/* <Route path="/features/print-on-demand" element={<PrintOnDemand />} /> */}
+
           {/* Resources */}
           <Route path="/resources/library" element={<Library />} />
           <Route
@@ -37,11 +38,13 @@ export default function RouterConfig() {
             element={<RequestContent />}
           />
           <Route path="/resources/free-downloads" element={<FreeDownloads />} />
+
           {/* About */}
           <Route path="/about/story" element={<Story />} />
           <Route path="/about/mission" element={<Mission />} />
-          {/* <Route path="/about/careers" element={<Careers />} /> */}
+
           {/* Other */}
+          <Route path="/gallery" element={<BookGallery />} />
           <Route path="/live-demo" element={<SideBySideReader />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/login" element={<Login />} />

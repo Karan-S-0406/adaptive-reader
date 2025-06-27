@@ -5,7 +5,7 @@ import HeadphonesIcon from "@mui/icons-material/Headphones";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import "./Home.css";
-import homePageImg from "../assets/home-page.jpeg";
+import homePageImg from "../assets/home.png";
 
 const features = [
   {
@@ -112,7 +112,6 @@ export default function Home() {
             alt="Readers illustration"
             style={{
               width: "100%",
-              maxWidth: 420,
               borderRadius: 24,
               boxShadow: "0 6px 32px 0 rgba(27,108,168,0.08)",
             }}
