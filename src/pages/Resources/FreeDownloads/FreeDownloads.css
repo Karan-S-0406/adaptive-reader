@@ -152,7 +152,9 @@
     padding: 32px 2vw 0 2vw;
     text-align: center;
   }
-  .free-downloads-hero-center, .free-downloads-hero-right, .free-downloads-hero-left {
+  .free-downloads-hero-center,
+  .free-downloads-hero-right,
+  .free-downloads-hero-left {
     padding: 0;
     text-align: center;
     justify-content: center;
@@ -160,8 +162,31 @@
   }
   .free-downloads-hero-img-wrap {
     margin: 0 auto 24px auto;
+    width: 180px;
+    height: 220px;
   }
   .free-downloads-featured-books-section {
     padding: 32px 0 24px 0;
+  }
+  .free-downloads-featured-book-img {
+    width: 220px;
+    height: 220px;
+  }
+}
+
+@media (max-width: 600px) {
+  .free-downloads-hero-section {
+    padding: 16px 0 0 0;
+  }
+  .free-downloads-hero-img-wrap {
+    width: 120px;
+    height: 140px;
+  }
+  .free-downloads-featured-book-img {
+    width: 120px;
+    height: 120px;
+  }
+  .free-downloads-featured-books-section {
+    padding: 16px 0 12px 0;
   }
 }

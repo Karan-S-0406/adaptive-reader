@@ -42,3 +42,36 @@
   padding: 24px;
   background-color: #fafbfc;
 }
+
+@media (max-width: 900px) {
+  .book-details-header {
+    flex-direction: column;
+    gap: 32px;
+    align-items: flex-start;
+  }
+  .book-details-img-row {
+    flex-direction: column;
+    gap: 18px;
+    align-items: center;
+  }
+  .book-details-cover {
+    width: 180px;
+    height: 250px;
+  }
+  .book-details-container {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .book-details-header {
+    gap: 16px;
+  }
+  .book-details-cover {
+    width: 120px;
+    height: 160px;
+  }
+  .book-details-extras {
+    padding: 12px;
+  }
+}

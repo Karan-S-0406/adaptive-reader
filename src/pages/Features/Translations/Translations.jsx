@@ -151,7 +151,7 @@ export default function Translations() {
         >
           Ready to experience stories in your language?
         </Typography>
-        <a href="/novels" style={{ textDecoration: "none" }}>
+        <a href="/resources/library" style={{ textDecoration: "none" }}>
           <Box
             component="span"
             sx={{

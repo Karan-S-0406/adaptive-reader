@@ -16,8 +16,6 @@ import {
   Button,
   Grid,
   Divider,
-  Collapse,
-  IconButton,
 } from "@mui/material";
 import "./Library.css";
 import libraryImg from "../../../assets/library.png";
@@ -29,34 +27,10 @@ const adaptationLevels = [
 ];
 
 const languages = [
-  "Arabic",
-  "Bulgarian",
-  "Chinese",
-  "Czech",
-  "Danish",
-  "Dutch",
-  "English",
-  "Estonian",
-  "Finnish",
-  "French",
-  "German",
-  "Greek",
-  "Hindi",
-  "Hungarian",
-  "Italian",
-  "Japanese",
-  "Korean",
-  "Latvian",
-  "Lithuanian",
-  "Norwegian",
-  "Polish",
-  "Portuguese",
-  "Romanian",
-  "Russian",
-  "Slovak",
-  "Spanish",
-  "Swedish",
-  "Turkish",
+  "Arabic", "Bulgarian", "Chinese", "Czech", "Danish", "Dutch", "English",
+  "Estonian", "Finnish", "French", "German", "Greek", "Hindi", "Hungarian",
+  "Italian", "Japanese", "Korean", "Latvian", "Lithuanian", "Norwegian",
+  "Polish", "Portuguese", "Romanian", "Russian", "Slovak", "Spanish", "Swedish", "Turkish",
 ];
 
 const books = [
@@ -108,7 +82,7 @@ const books = [
     store: "Classic Reads",
     adaptation: "silver",
     language: "English",
-    img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=400&q=80", // Updated image URL
+    img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=400&q=80",
   },
   {
     id: 6,
@@ -138,7 +112,7 @@ const books = [
     store: "Classic Reads",
     adaptation: "silver",
     language: "English",
-    img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=400&q=80", // Updated image URL
+    img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=400&q=80",
   },
   {
     id: 9,
@@ -160,7 +134,6 @@ export default function Library() {
   const [sort, setSort] = useState("best");
   const [showCount, setShowCount] = useState(12);
 
-  // Filtering logic
   const filteredBooks = books.filter((book) => {
     const matchesSearch =
       book.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -188,19 +161,8 @@ export default function Library() {
 
   return (
     <Box className="library-bg">
-      {/* Top Section with image and text */}
-      <Box
-        sx={{
-          mb: 4,
-          p: 3,
-          background: "#f5f5f5",
-          borderRadius: 2,
-          display: "flex",
-          alignItems: "center",
-          gap: 4,
-          flexWrap: { xs: "wrap", md: "nowrap" },
-        }}
-      >
+      {/* Top Hero Section */}
+      <Box className="library-hero-section">
         <Box sx={{ flex: 1 }}>
           <Typography variant="h4" gutterBottom>
             Welcome to the Personalized Reader Library
@@ -213,23 +175,22 @@ export default function Library() {
             your favorites.
           </Typography>
         </Box>
-        <Box sx={{ flex: 2, minWidth: 120, display: "flex", justifyContent: "center" }}>
-          <img
-            src={libraryImg}
-            alt="Library"
-            style={{
-              width: 920,
-            //   maxWidth: "100%",
-              borderRadius: 16,
-              boxShadow: "0 4px 24px rgba(32,64,60,0.10)",
-              background: "#fff",
-            }}
-          />
+        <Box
+          sx={{
+            flex: 2,
+            minWidth: 120,
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <img src={libraryImg} alt="Library" className="library-image" />
         </Box>
       </Box>
+
+      {/* Main Grid Layout */}
       <Grid container spacing={4}>
         {/* Sidebar */}
-        <Grid item size={2}>
+        <Grid item xs={12} md={3}>
           <Box className="library-sidebar">
             <Typography variant="subtitle1" className="library-filter-title">
               Adaptation Level
@@ -258,7 +219,7 @@ export default function Library() {
               variant="outlined"
               sx={{ mb: 1 }}
               onChange={(e) => {
-                // Optionally filter language list
+                // Optional: add search filtering
               }}
             />
             <FormGroup>
@@ -286,8 +247,9 @@ export default function Library() {
             </Button>
           </Box>
         </Grid>
-        {/* Main Content */}
-        <Grid item spacing={3} size={10}>
+
+        {/* Book Display Section */}
+        <Grid item xs={12} md={9}>
           <Box className="library-main">
             <Box className="library-toolbar">
               <Typography variant="subtitle2" sx={{ mr: 2 }}>
@@ -332,6 +294,7 @@ export default function Library() {
                 <MenuItem value="priceHigh">Price: High to Low</MenuItem>
               </Select>
             </Box>
+
             <Grid container spacing={3}>
               {filteredBooks.slice(0, showCount).map((book) => (
                 <Grid item xs={12} sm={6} md={4} key={book.id}>
@@ -347,7 +310,10 @@ export default function Library() {
                       <Typography variant="body2" color="textSecondary">
                         {book.store}
                       </Typography>
-                      <Typography variant="h6" className="library-book-title">
+                      <Typography
+                        variant="h6"
+                        className="library-book-title"
+                      >
                         {book.title}
                       </Typography>
                       <Typography variant="body2" color="textSecondary">

@@ -31,3 +31,28 @@
   color: #333;
   margin-bottom: 1.2rem;
 }
+
+/* Add at the end of the file */
+@media (max-width: 900px) {
+  .story-container {
+    padding: 1rem 0.5rem;
+  }
+  .story-container h1 {
+    font-size: 2rem;
+  }
+  .story-container h5 {
+    font-size: 1.1rem;
+  }
+  .story-container p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .story-container {
+    padding: 0.5rem 0.2rem;
+  }
+  .story-container h1 {
+    font-size: 1.3rem;
+  }
+}

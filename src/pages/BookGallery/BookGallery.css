@@ -105,3 +105,46 @@
   border-radius: 20px !important;
   text-transform: none !important;
 }
+
+/* Responsive Styles */
+@media (max-width: 900px) {
+  .page-container {
+    padding: 1rem 0.5rem;
+  }
+  .card-container {
+    gap: 1rem;
+    justify-content: center;
+  }
+  .book-card {
+    width: 95vw;
+    min-width: 0;
+    max-width: 98vw;
+    height: auto;
+  }
+  .card-image {
+    height: 160px;
+  }
+  .search-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .search-input,
+  .genre-select {
+    min-width: 120px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .page-container {
+    padding: 0.5rem 0.2rem;
+  }
+  .book-card {
+    width: 99vw;
+    max-width: 99vw;
+    padding: 8px;
+  }
+  .card-image {
+    height: 120px;
+  }
+}

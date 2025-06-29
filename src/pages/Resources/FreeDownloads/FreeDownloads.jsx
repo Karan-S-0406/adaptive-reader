@@ -94,7 +94,6 @@ export default function FreeDownloads() {
 
       <Box
         sx={{
-          width: "100%",
           background: "#f5f7fa",
           py: 3,
           px: { xs: 2, md: 6 },

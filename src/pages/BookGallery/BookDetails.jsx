@@ -57,7 +57,7 @@ const BookDetails = () => {
               sx={{
                 textTransform: "none",
                 borderRadius: 2,
-                mb: { xs: 2, sm: 0 },
+                // mb: { xs: 2, sm: 0 },
               }}
               variant="outlined"
               size="small"

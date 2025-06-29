@@ -6,6 +6,7 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import "./Home.css";
 import homePageImg from "../assets/home.png";
+import { useNavigate } from "react-router-dom";
 
 const features = [
   {
@@ -35,6 +36,7 @@ const features = [
 ];
 
 export default function Home() {
+  const navigate = useNavigate();
   return (
     <div className="main-content home-bg">
       {/* Hero Section */}
@@ -67,8 +69,8 @@ export default function Home() {
               fontWeight: 500,
             }}
           >
-            Personalized Reader brings stories to life for every learner—any language,
-            any level, any device.
+            Personalized Reader brings stories to life for every learner—any
+            language, any level, any device.
           </Typography>
           <div className="hero-buttons-new">
             <Button
@@ -85,6 +87,7 @@ export default function Home() {
                 "&:hover": { bgcolor: "#17497A" },
               }}
               endIcon={<ArrowForwardIcon />}
+              onClick={() => navigate("/gallery")}
             >
               Start Reading Free
             </Button>
@@ -100,6 +103,7 @@ export default function Home() {
                 ml: 2,
                 "&:hover": { textDecoration: "underline", bgcolor: "#f5faff" },
               }}
+              onClick={() => navigate("/resources/library")}
             >
               Explore Library
             </Button>

@@ -219,3 +219,22 @@
     width: 110px;
   }
 }
+
+@media (max-width: 600px) {
+  .simplified-features-section,
+  .simplified-compare-section,
+  .leveled-text-section,
+  .leveled-benefits-section {
+    padding: 12px 0 16px 0;
+  }
+  .leveled-text-img,
+  .leveled-benefit-img {
+    width: 70px;
+  }
+  .leveled-text-title,
+  .leveled-benefits-heading,
+  .simplified-features-title {
+    font-size: 1.1rem !important;
+    text-align: center !important;
+  }
+}

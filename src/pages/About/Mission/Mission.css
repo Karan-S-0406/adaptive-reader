@@ -47,3 +47,27 @@
   margin-bottom: 0.7rem;
   list-style: disc;
 }
+
+/* Add at the end of the file */
+@media (max-width: 900px) {
+  .mission-container {
+    padding: 1rem 0.5rem;
+  }
+  .mission-container h1,
+  .mission-container h2 {
+    font-size: 2rem;
+  }
+  .mission-list li {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .mission-container {
+    padding: 0.5rem 0.2rem;
+  }
+  .mission-container h1,
+  .mission-container h2 {
+    font-size: 1.2rem;
+  }
+}
