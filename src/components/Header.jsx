@@ -18,6 +18,8 @@ import logo from "../assets/blogger.png";
 import { auth } from "../firebase"; // path may vary
 import { onAuthStateChanged, signOut } from "@firebase/auth";
 import { Avatar } from "@mui/material";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
 
 const menuItems = {
   Features: [
@@ -37,12 +39,17 @@ const menuItems = {
 };
 
 const Header = () => {
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const [menuType, setMenuType] = useState("");
   const [menuHover, setMenuHover] = useState(false);
   const [user, setUser] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const navigate = useNavigate();
+  const [openSections, setOpenSections] = useState({
+    Features: false,
+    Resources: false,
+    About: false,
+  });
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -50,6 +57,13 @@ const Header = () => {
     });
     return () => unsubscribe();
   }, []);
+
+  const toggleSection = (section) => {
+    setOpenSections((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
+  };
 
   const getInitials = (name) => {
     if (!name) return "";
@@ -275,44 +289,77 @@ const Header = () => {
         onClose={handleDrawerToggle}
         sx={{ display: { xs: "block", md: "none" } }}
       >
-        <Box
-          sx={{ width: 250 }}
-          role="presentation"
-          onClick={handleDrawerToggle}
-          onKeyDown={handleDrawerToggle}
-        >
+        <Box sx={{ width: 250 }} role="presentation">
           <List>
             {["Features", "Resources", "About"].map((category) => (
               <Box key={category}>
-                <ListItem>
+                <ListItem button onClick={() => toggleSection(category)}>
                   <ListItemText primary={category} />
+                  {openSections[category] ? <ExpandLess /> : <ExpandMore />}
                 </ListItem>
-                {menuItems[category].map((item) => (
-                  <ListItem
-                    button
-                    key={item.label}
-                    onClick={() => navigate(item.path)}
-                  >
-                    <ListItemText primary={item.label} sx={{ pl: 2 }} />
-                  </ListItem>
-                ))}
+                {openSections[category] &&
+                  menuItems[category].map((item) => (
+                    <ListItem
+                      button
+                      key={item.label}
+                      onClick={() => {
+                        navigate(item.path);
+                        handleDrawerToggle(); // ✅ Close only on submenu click
+                      }}
+                      sx={{ pl: 4 }}
+                    >
+                      <ListItemText primary={item.label} />
+                    </ListItem>
+                  ))}
               </Box>
             ))}
-            <ListItem button onClick={() => navigate("/live-demo")}>
+
+            <ListItem
+              button
+              onClick={() => {
+                navigate("/live-demo");
+                handleDrawerToggle();
+              }}
+            >
               <ListItemText primary="Live Demo" />
             </ListItem>
-            <ListItem button onClick={() => navigate("/gallery")}>
+            <ListItem
+              button
+              onClick={() => {
+                navigate("/gallery");
+                handleDrawerToggle();
+              }}
+            >
               <ListItemText primary="Gallery" />
             </ListItem>
-            <ListItem button onClick={() => navigate("/pricing")}>
+            <ListItem
+              button
+              onClick={() => {
+                navigate("/pricing");
+                handleDrawerToggle();
+              }}
+            >
               <ListItemText primary="Pricing" />
             </ListItem>
+
             {user ? (
-              <ListItem button onClick={handleLogout}>
+              <ListItem
+                button
+                onClick={() => {
+                  handleLogout();
+                  handleDrawerToggle();
+                }}
+              >
                 <ListItemText primary="Logout" />
               </ListItem>
             ) : (
-              <ListItem button onClick={() => navigate("/login")}>
+              <ListItem
+                button
+                onClick={() => {
+                  navigate("/login");
+                  handleDrawerToggle();
+                }}
+              >
                 <ListItemText primary="Login" />
               </ListItem>
             )}
