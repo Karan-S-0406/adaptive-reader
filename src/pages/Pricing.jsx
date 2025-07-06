@@ -9,7 +9,7 @@ import "./Pricing.css";
 const testimonials = [
   {
     quote:
-      "Personalized Reader is the end all be all of inclusivity [...] The different levels of text meet students where they are at, but still tell the same story.",
+      "Smartzy is the end all be all of inclusivity [...] The different levels of text meet students where they are at, but still tell the same story.",
     author: "MORGAN B, IEP SPECIALIST",
   },
   {
@@ -19,7 +19,7 @@ const testimonials = [
   },
   {
     quote:
-      "Personalized Reader is a game-changer. Instead of losing students in challenging texts from the start, it acts as a bridge.",
+      "Smartzy is a game-changer. Instead of losing students in challenging texts from the start, it acts as a bridge.",
     author: "J. SMITH, EDUCATOR",
   },
 ];

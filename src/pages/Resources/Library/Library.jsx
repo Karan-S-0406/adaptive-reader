@@ -165,7 +165,7 @@ export default function Library() {
       <Box className="library-hero-section">
         <Box sx={{ flex: 1 }}>
           <Typography variant="h4" gutterBottom>
-            Welcome to the Personalized Reader Library
+            Welcome to the Smartzy Library
           </Typography>
           <Typography variant="body1" sx={{ maxWidth: 700 }}>
             Browse our curated collection of classic and modern books, available

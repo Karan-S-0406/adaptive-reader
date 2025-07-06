@@ -37,7 +37,7 @@ export default function AudioBooks() {
             </Typography>
             <Typography className="audio-feature-desc">
               Audio companions are synced with the reader on digital and/or
-              paper Personalized Reader products.
+              paper Smartzy products.
             </Typography>
           </Grid>
           <Grid item xs={12} md={4} className="audio-feature-item">
@@ -110,7 +110,7 @@ export default function AudioBooks() {
       {/* How It Works Section */}
       <section className="audio-how-section">
         <Typography variant="h5" className="audio-how-title">
-          How Personalized Reader’s Audio Companions Work ?
+          How Smartzy’s Audio Companions Work ?
         </Typography>
         <div className="audio-how-cards">
           <Box className="audio-how-card">

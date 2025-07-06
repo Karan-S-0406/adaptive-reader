@@ -29,7 +29,7 @@ export default function SimplifiedTexts() {
       {/* Features Section */}
       <section className="simplified-features-section">
         <Typography variant="h4" className="simplified-features-title">
-          Why Choose Personalized Reader?
+          Why Choose Smartzy?
         </Typography>
         <Grid
           container
@@ -155,7 +155,7 @@ export default function SimplifiedTexts() {
               Leveled texts adapt vocabulary, sentence structure, and
               complexity—so every student can access the same core ideas and
               themes, but at a reading level that matches their skills.
-              Personalized Reader ensures all learners engage deeply with
+              Smartzy ensures all learners engage deeply with
               authentic literature.
             </Typography>
             <ul className="leveled-text-list">
@@ -220,7 +220,7 @@ export default function SimplifiedTexts() {
         <div className="leveled-benefits-container">
           <div className="leveled-benefits-title">
             <Typography variant="h4" className="leveled-benefits-heading">
-              Who Benefits from Personalized Reader?
+              Who Benefits from Smartzy?
             </Typography>
           </div>
           <div className="leveled-benefits-content">

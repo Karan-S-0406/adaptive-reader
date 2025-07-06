@@ -28,7 +28,7 @@ export default function Translations() {
             variant="h6"
             sx={{ color: "#3D405B", opacity: 0.85, mb: 4 }}
           >
-            Personalized Reader’s translation engine brings every book to life in
+            Smartzy’s translation engine brings every book to life in
             your language—instantly, naturally, and with a human touch.
           </Typography>
           <img

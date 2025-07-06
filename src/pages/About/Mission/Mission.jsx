@@ -12,7 +12,7 @@ const Mission = () => (
       Empowering Every Learner, Everywhere
     </Typography>
     <Typography paragraph>
-      At Personalized Reader, our mission is to make reading accessible, engaging, and meaningful for every student. We believe that every learner deserves the opportunity to understand and enjoy content, regardless of their reading level, language, or background. Our commitment is to create adaptive tools that open doors to knowledge and empower students to reach their full potential.
+      At Smartzy, our mission is to make reading accessible, engaging, and meaningful for every student. We believe that every learner deserves the opportunity to understand and enjoy content, regardless of their reading level, language, or background. Our commitment is to create adaptive tools that open doors to knowledge and empower students to reach their full potential.
     </Typography>
 
     <Typography variant="h6" gutterBottom>
@@ -55,7 +55,7 @@ const Mission = () => (
       Join Us in Transforming Reading
     </Typography>
     <Typography paragraph>
-      Personalized Reader is dedicated to building a future where every learner can access, enjoy, and succeed with reading. Together, we can create a world where literacy is truly for everyone.
+      Smartzy is dedicated to building a future where every learner can access, enjoy, and succeed with reading. Together, we can create a world where literacy is truly for everyone.
     </Typography>
   </Paper>
 );

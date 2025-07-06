@@ -17,7 +17,7 @@
   flex: 1;
   font-size: 1.5rem;
   font-weight: bold;
-  color: #20303C;
+  color: #20303c;
   cursor: pointer;
   text-align: left;
   min-width: 180px;
@@ -29,6 +29,14 @@
   align-items: center;
   justify-content: center;
   gap: 16px;
+}
+
+.logo-title {
+  font-weight: bold !important;
+  color: #000;
+  cursor: pointer;
+  font-size: 25px !important;
+  font-family: cursive !important;
 }
 
 .header-right {
@@ -45,7 +53,7 @@
 .header-btn {
   background: none;
   border: none;
-  color: #20303C;
+  color: #20303c;
   font-size: 1rem;
   padding: 8px 12px;
   cursor: pointer;
@@ -59,7 +67,7 @@
 }
 
 .header-btn-outlined {
-  border: 1px solid #20303C;
+  border: 1px solid #20303c;
   border-radius: 4px;
   padding: 8px 16px;
   margin-left: 8px;
@@ -78,7 +86,7 @@
   left: 0;
   background: #fff;
   border: 1px solid #e5e5e5;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
   min-width: 160px;
   z-index: 200;
 }
@@ -86,7 +94,7 @@
 .header-dropdown-item {
   padding: 10px 16px;
   cursor: pointer;
-  color: #20303C;
+  color: #20303c;
   white-space: nowrap;
 }
 

@@ -14,12 +14,13 @@ import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import logo from "../assets/blogger.png";
+import smartzy from "../assets/smartzy.png";
 import { auth } from "../firebase"; // path may vary
 import { onAuthStateChanged, signOut } from "@firebase/auth";
 import { Avatar } from "@mui/material";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import "./Header.css";
 
 const menuItems = {
   Features: [
@@ -121,24 +122,21 @@ const Header = () => {
           {/* Logo & Title */}
           <Box sx={{ flex: 1, display: "flex", alignItems: "center" }}>
             <img
-              src={logo}
-              alt="Personalized Reader Logo"
+              src={smartzy}
+              alt="Smartzy Logo"
               style={{
-                width: 38,
-                height: 38,
+                width: 60,
+                height: 60,
                 marginRight: 12,
-                borderRadius: 8,
-                background: "#000",
                 padding: 4,
-                objectFit: "contain",
               }}
             />
             <Typography
               variant="h6"
-              sx={{ fontWeight: "bold", color: "#000", cursor: "pointer" }}
+              className="logo-title"
               onClick={() => navigate("/")}
             >
-              Personalized Reader
+              Smartzy
             </Typography>
           </Box>
 

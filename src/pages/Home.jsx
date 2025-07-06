@@ -69,7 +69,7 @@ export default function Home() {
               fontWeight: 500,
             }}
           >
-            Personalized Reader brings stories to life for every learner—any
+            Smartzy brings stories to life for every learner—any
             language, any level, any device.
           </Typography>
           <div className="hero-buttons-new">
@@ -137,7 +137,7 @@ export default function Home() {
             letterSpacing: "-1px",
           }}
         >
-          Why Personalized Reader?
+          Why Smartzy?
         </Typography>
         <Grid container spacing={4} justifyContent="center">
           {features.map((feature) => (

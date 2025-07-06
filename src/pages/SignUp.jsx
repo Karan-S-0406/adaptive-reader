@@ -41,7 +41,7 @@ export default function SignUp() {
           Create your account
         </Typography>
         <Typography variant="body2" color="text.secondary" mb={2}>
-          to continue to <b>Personalized Reader</b>
+          to continue to <b>Smartzy</b>
         </Typography>
 
         <Button

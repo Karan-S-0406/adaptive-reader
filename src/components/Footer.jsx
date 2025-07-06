@@ -5,7 +5,7 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import SendIcon from "@mui/icons-material/Send";
-import logo from "../assets/blogger.png";
+import smartzy from "../assets/smartzy.png";
 import "./Footer.css";
 
 export default function Footer() {
@@ -13,16 +13,12 @@ export default function Footer() {
     <footer className="footer-modern-root">
       <div className="footer-modern-main">
         <div className="footer-modern-brand">
-          <img
-            src={logo}
-            alt="Personalized Reader Logo"
-            className="footer-modern-logo"
-          />
+          <img src={smartzy} alt="Smartzy Logo" className="footer-modern-logo" />
           <Typography variant="h6" className="footer-modern-title">
-            Personalized Reader
+            Smartzy
           </Typography>
           <Typography className="footer-modern-desc">
-            Stories for every learner. Every language. Every level.
+            Adaptive learning Platform
           </Typography>
           <div className="footer-modern-social">
             <IconButton href="#" aria-label="Facebook" size="small">
@@ -40,62 +36,55 @@ export default function Footer() {
           </div>
         </div>
         <div className="footer-modern-links">
-          <div>
-            <Typography className="footer-modern-heading">Discover</Typography>
-            <ul>
-              <li>
-                <Link href="#">Features</Link>
-              </li>
-              <li>
-                <Link href="#">Library</Link>
-              </li>
-              <li>
-                <Link href="#">Pricing</Link>
-              </li>
-              <li>
-                <Link href="#">For Schools</Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <Typography className="footer-modern-heading">About</Typography>
-            <ul>
-              <li>
-                <Link href="#">Our Story</Link>
-              </li>
-              <li>
-                <Link href="#">Careers</Link>
-              </li>
-              <li>
-                <Link href="#">Blog</Link>
-              </li>
-              <li>
-                <Link href="#">Contact</Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <Typography className="footer-modern-heading">Help</Typography>
-            <ul>
-              <li>
-                <Link href="#">Support</Link>
-              </li>
-              <li>
-                <Link href="#">Accessibility</Link>
-              </li>
-              <li>
-                <Link href="#">Terms</Link>
-              </li>
-              <li>
-                <Link href="#">Privacy</Link>
-              </li>
-            </ul>
-          </div>
+          <ul>
+            <li>
+              <Link href="#">Features</Link>
+            </li>
+            <li>
+              <Link href="#">Library</Link>
+            </li>
+            <li>
+              <Link href="#">Pricing</Link>
+            </li>
+            <li>
+              <Link href="#">For Schools</Link>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <Link href="#">Our Story</Link>
+            </li>
+            <li>
+              <Link href="#">Careers</Link>
+            </li>
+            <li>
+              <Link href="#">Blog</Link>
+            </li>
+            <li>
+              <Link href="#">Contact</Link>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <Link href="#">Support</Link>
+            </li>
+            <li>
+              <Link href="#">Accessibility</Link>
+            </li>
+            <li>
+              <Link href="#">Terms</Link>
+            </li>
+            <li>
+              <Link href="#">Privacy</Link>
+            </li>
+          </ul>
         </div>
         <div className="footer-modern-newsletter">
-          <Typography className="footer-modern-heading">Stay Connected</Typography>
+          <Typography className="footer-modern-heading">
+            Stay Connected
+          </Typography>
           <Typography className="footer-modern-news-desc">
-            Get reading tips, updates, and new stories in your inbox.
+            Get reading tips, updates in your inbox.
           </Typography>
           <form className="footer-modern-form" autoComplete="off">
             <TextField
@@ -116,7 +105,7 @@ export default function Footer() {
       </div>
       <div className="footer-modern-bottom">
         <Typography className="footer-modern-copy">
-          © {new Date().getFullYear()} Personalized Reader. All rights reserved.
+          © {new Date().getFullYear()} Smartzy. All rights reserved.
         </Typography>
         <div className="footer-modern-bottom-links">
           <Link href="#">Privacy Policy</Link>
