@@ -1,7 +1,7 @@
 import axios from "axios";
 import Constants from "../constants/constants";
 
-class UsersServiceService {
+class UsersService {
   constructor() {
     this.reqUrl = Constants.API_BASEURL;
   }
@@ -19,9 +19,8 @@ class UsersServiceService {
 
   async addStudent(data) {
     try {
-      console.log("Fetching user ID and role for email:", this.reqUrl);
       const response = await axios.post(
-        "${this.reqUrl}students/addStudent",
+        `${this.reqUrl}students/addStudent`,
         data
       );
       return response.data;
@@ -31,4 +30,4 @@ class UsersServiceService {
   }
 }
 
-export default new UsersServiceService();
+export default new UsersService();

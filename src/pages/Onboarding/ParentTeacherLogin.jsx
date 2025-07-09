@@ -55,6 +55,7 @@ export default function ParentTeacherLogin() {
         });
         return;
       }
+      localStorage.setItem("userData", JSON.stringify(user));
       dispatch(setNameAndRole(user));
       dispatch(setIsAuthenticated(true));
       navigate(`/dashboard/${user.role}`);

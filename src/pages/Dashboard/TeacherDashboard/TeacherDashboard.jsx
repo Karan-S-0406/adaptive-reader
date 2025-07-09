@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Typography,
@@ -11,7 +11,6 @@ import {
   TableBody,
   Button,
   IconButton,
-  Divider,
 } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 import EditIcon from "@mui/icons-material/Edit";
@@ -19,75 +18,18 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import "./TeacherDashboard.css";
 import { useNavigate } from "react-router-dom";
+import { fetchStudentsByGrades } from "../../store/action/teachers,action";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function TeacherDashboard() {
   const navigate = useNavigate();
-  const students = [
-    {
-      name: "Ava M.",
-      readingLevel: "G",
-      readingXP: 620,
-      mathAccuracy: "88%",
-      quizAvg: "92%",
-      streak: 6,
-    },
-    {
-      name: "Liam P.",
-      readingLevel: "H",
-      readingXP: 480,
-      mathAccuracy: "76%",
-      quizAvg: "85%",
-      streak: 4,
-    },
-    {
-      name: "Ethan J.",
-      readingLevel: "F",
-      readingXP: 520,
-      mathAccuracy: "91%",
-      quizAvg: "88%",
-      streak: 7,
-    },
-    {
-      name: "Sophia W.",
-      readingLevel: "I",
-      readingXP: 700,
-      mathAccuracy: "94%",
-      quizAvg: "96%",
-      streak: 10,
-    },
-    {
-      name: "Ava M.",
-      readingLevel: "G",
-      readingXP: 620,
-      mathAccuracy: "88%",
-      quizAvg: "92%",
-      streak: 6,
-    },
-    {
-      name: "Liam P.",
-      readingLevel: "H",
-      readingXP: 480,
-      mathAccuracy: "76%",
-      quizAvg: "85%",
-      streak: 4,
-    },
-    {
-      name: "Ethan J.",
-      readingLevel: "F",
-      readingXP: 520,
-      mathAccuracy: "91%",
-      quizAvg: "88%",
-      streak: 7,
-    },
-    {
-      name: "Sophia W.",
-      readingLevel: "I",
-      readingXP: 700,
-      mathAccuracy: "94%",
-      quizAvg: "96%",
-      streak: 10,
-    },
-  ];
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.storeData.userData);
+  const teachersData = useSelector((state) => state.storeData.teachersData);
+  useEffect(() => {
+    // Fetch students data here if needed
+    dispatch(fetchStudentsByGrades(user?.gradesManaged));
+  }, [dispatch, user?.gradesManaged]);
 
   const handleAddStudent = () => {
     navigate("/student-profile");
@@ -135,23 +77,27 @@ export default function TeacherDashboard() {
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-            {students.map((s, index) => (
-              <TableRow key={index}>
-                <TableCell>{s.name}</TableCell>
-                <TableCell>{s.readingLevel}</TableCell>
-                <TableCell>{s.readingXP} XP</TableCell>
-                <TableCell>{s.mathAccuracy}</TableCell>
-                <TableCell>{s.quizAvg}</TableCell>
-                <TableCell>{s.streak} days</TableCell>
-                <TableCell>
-                  <IconButton size="small" color="primary">
-                    <EditIcon fontSize="small" />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
+          {teachersData?.loading ? (
+            <Typography>Loading students...</Typography>
+          ) : (
+            <TableBody>
+              {teachersData?.students.map((s, index) => (
+                <TableRow key={index}>
+                  <TableCell>{s.name}</TableCell>
+                  <TableCell>{s.band}</TableCell>
+                  <TableCell>{s.readingXP} XP</TableCell>
+                  <TableCell>{s.mathAccuracy}</TableCell>
+                  <TableCell>{s.quizAvg}</TableCell>
+                  <TableCell>{s.streak} days</TableCell>
+                  <TableCell>
+                    <IconButton size="small" color="primary">
+                      <EditIcon fontSize="small" />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          )}
         </Table>
       </Paper>
 

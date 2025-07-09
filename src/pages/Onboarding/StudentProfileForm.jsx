@@ -11,10 +11,11 @@ import "./Onboarding.css";
 import { useDispatch } from "react-redux";
 import { addStudent } from "../store/action/users.action";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 export default function StudentProfileForm() {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const [studentData, setStudentData] = useState({
     name: "",
     grade: "",
@@ -45,7 +46,7 @@ export default function StudentProfileForm() {
 
     dispatch(addStudent(studentData));
     console.log("📤 Dispatched:", studentData);
-    // Optionally navigate to dashboard or next step
+    navigate("/dashboard/teacher");
   };
 
   return (

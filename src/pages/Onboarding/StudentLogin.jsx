@@ -52,6 +52,7 @@ export default function StudentLogin() {
         return;
       }
       dispatch(setNameAndRole(user));
+      localStorage.setItem("userData", JSON.stringify(user));
       // ✅ Save auth state
       dispatch(setIsAuthenticated(true));
       navigate(`/dashboard/${user.role}`);

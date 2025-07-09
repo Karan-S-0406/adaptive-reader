@@ -17,12 +17,11 @@ import ListItemText from "@mui/material/ListItemText";
 import smartzy from "../assets/smartzy.png";
 import { auth } from "../firebase"; // path may vary
 import { onAuthStateChanged, signOut } from "@firebase/auth";
-import { Avatar } from "@mui/material";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import "./Header.css";
 import { setIsAuthenticated } from "../pages/store/slice/users.slice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const menuItems = {
   Features: [
@@ -54,11 +53,32 @@ const Header = () => {
     Resources: false,
     About: false,
   });
+  const isAuthenticated = useSelector(
+    (state) => state.storeData.userData?.isAuthenticated
+  );
 
   useEffect(() => {
+    // Priority: Firebase Auth user
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+      if (currentUser) {
+        setUser({
+          name: currentUser.displayName,
+          email: currentUser.email,
+          source: "firebase",
+        });
+      } else {
+        // Fallback: Check Redux or localStorage
+        const storedUser = JSON.parse(localStorage.getItem("userData"));
+        console.log("Stored user from localStorage:", storedUser);
+
+        if (storedUser) {
+          setUser({ ...storedUser, source: "custom" });
+        } else {
+          setUser(null);
+        }
+      }
     });
+
     return () => unsubscribe();
   }, []);
 
@@ -69,17 +89,23 @@ const Header = () => {
     }));
   };
 
-  const getInitials = (name) => {
-    if (!name) return "";
-    const names = name.trim().split(" ");
-    if (names.length === 1) return names[0][0].toUpperCase();
-    return (names[0][0] + names[names.length - 1][0]).toUpperCase();
-  };
+  // const getInitials = (nameOrEmail) => {
+  //   if (!nameOrEmail) return "";
+  //   const input = nameOrEmail.trim().split(" ");
+  //   if (input.length === 1) return input[0][0].toUpperCase();
+  //   return (input[0][0] + input[input.length - 1][0]).toUpperCase();
+  // };
 
   const handleLogout = () => {
-    signOut(auth);
+    const authType = user?.source;
+
+    if (authType === "firebase") {
+      signOut(auth);
+    }
+
     setUser(null);
     dispatch(setIsAuthenticated(false));
+    localStorage.removeItem("userData");
     navigate("/");
   };
 
@@ -228,57 +254,16 @@ const Header = () => {
 
           {/* Right: Auth / Avatar */}
           <Box sx={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
-            {user ? (
-              <Menu
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl) && menuType === "avatar"}
-                onClose={handleMenuClose}
-                MenuListProps={{ sx: { minWidth: 140 } }}
-                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                transformOrigin={{ vertical: "top", horizontal: "right" }}
-              >
-                <MenuItem
-                  onClick={() => {
-                    handleLogout();
-                    handleMenuClose();
-                  }}
-                >
-                  Logout
-                </MenuItem>
-              </Menu>
-            ) : (
+            {isAuthenticated && (
               <Button
-                variant="outlined"
-                sx={{
-                  borderColor: "#20303C",
-                  color: "#20303C",
-                  textTransform: "none",
-                  fontWeight: 500,
-                  ml: 1,
+              variant="outlined"
+                onClick={() => {
+                  handleLogout();
+                  handleMenuClose();
                 }}
-                onClick={() => navigate("/login")}
               >
-                Login
+                Logout
               </Button>
-            )}
-            {user && (
-              <Avatar
-                sx={{
-                  bgcolor: "#20303C",
-                  color: "#fff",
-                  width: 36,
-                  height: 36,
-                  fontSize: 14,
-                  ml: 2,
-                  cursor: "pointer",
-                }}
-                onClick={(e) => {
-                  setAnchorEl(e.currentTarget);
-                  setMenuType("avatar");
-                }}
-              >
-                {getInitials(user.displayName)}
-              </Avatar>
             )}
           </Box>
         </Toolbar>
