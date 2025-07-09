@@ -1,0 +1,47 @@
+.rewards-container {
+  padding: 2rem;
+  background: #f5faff;
+  min-height: 100vh;
+}
+
+.header {
+  margin-bottom: 2rem;
+  color: #1B6CA8;
+  font-weight: 700;
+}
+
+.reward-card {
+  padding: 2rem;
+  border-radius: 16px;
+  text-align: center;
+  background: white;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.reward-icon {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+.reward-text {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.reward-subtext {
+  font-size: 13px;
+  color: #777;
+  margin-top: 4px;
+}
+
+.gold {
+  color: #fbc02d;
+}
+
+.green {
+  color: #4caf50;
+}
+
+.red {
+  color: #f44336;
+}

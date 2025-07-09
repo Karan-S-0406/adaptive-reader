@@ -21,6 +21,8 @@ import { Avatar } from "@mui/material";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import "./Header.css";
+import { setIsAuthenticated } from "../pages/store/slice/users.slice";
+import { useDispatch } from "react-redux";
 
 const menuItems = {
   Features: [
@@ -41,6 +43,7 @@ const menuItems = {
 
 const Header = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const [menuType, setMenuType] = useState("");
   const [menuHover, setMenuHover] = useState(false);
@@ -76,6 +79,7 @@ const Header = () => {
   const handleLogout = () => {
     signOut(auth);
     setUser(null);
+    dispatch(setIsAuthenticated(false));
     navigate("/");
   };
 
@@ -134,7 +138,7 @@ const Header = () => {
             <Typography
               variant="h6"
               className="logo-title"
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/home")}
             >
               Smartzy
             </Typography>

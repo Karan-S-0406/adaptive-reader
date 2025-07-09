@@ -1,0 +1,50 @@
+.reading-container {
+  padding: 2rem;
+  background: #f5faff;
+  min-height: 100vh;
+}
+
+.reading-card {
+  padding: 2rem;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+  margin-bottom: 1rem;
+  color: #1B6CA8;
+}
+
+.info-text {
+  margin: 1rem 0 0.5rem;
+  font-size: 16px;
+}
+
+.reading-options {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.paragraph {
+  font-size: 15px;
+  line-height: 1.6;
+  background-color: #f0f4f8;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.divider {
+  margin: 1.5rem 0;
+}
+
+.quiz-btn {
+  background-color: #1B6CA8 !important;
+  color: white;
+}
+
+.summary-list {
+  margin-left: 1.2rem;
+  margin-top: 0.5rem;
+}

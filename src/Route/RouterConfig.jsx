@@ -16,6 +16,15 @@ import Login from "../pages/Login";
 import SignUp from "../pages/SignUp";
 import BookGallery from "../pages/BookGallery/BookGallery";
 import BookDetails from "../pages/BookGallery/BookDetails";
+import RoleSelection from "../pages/Onboarding/RoleSelection";
+import StudentLogin from "../pages/Onboarding/StudentLogin";
+import ParentTeacherLogin from "../pages/Onboarding/ParentTeacherLogin";
+import StudentProfileForm from "../pages/Onboarding/StudentProfileForm";
+import StudentDashboard from "../pages/Dashboard/StudentDashboard/StudentDashboard";
+import RewardsPage from "../pages/Dashboard/StudentDashboard/Features/Rewards/RewardsPage";
+import MathAssignment from "../pages/Dashboard/StudentDashboard/Features/Math/MathAssignment";
+import ReadingAssignment from "../pages/Dashboard/StudentDashboard/Features/Reading/ReadingAssignment";
+import TeacherDashboard from "../pages/Dashboard/TeacherDashboard/TeacherDashboard";
 
 export default function RouterConfig() {
   return (
@@ -23,7 +32,25 @@ export default function RouterConfig() {
       <Header />
       <div style={{ marginTop: "64px" }}>
         <Routes>
-          <Route path="/" element={<Home />} />
+          {/* Onboarding */}
+          <Route path="/" element={<RoleSelection />} />
+          <Route path="/student-login" element={<StudentLogin />} />
+          <Route
+            path="/parent-teacher-login"
+            element={<ParentTeacherLogin />}
+          />
+          <Route path="/student-profile" element={<StudentProfileForm />} />
+          <Route path="/home" element={<Home />} />
+
+          {/* Dashboard */}
+          <Route path="/dashboard/student" element={<StudentDashboard />} />
+          <Route path="/dashboard/student/reading" element={<ReadingAssignment />} />
+          <Route path="/dashboard/student/math" element={<MathAssignment />} />
+          <Route path="/dashboard/student/rewards" element={<RewardsPage />} />
+
+          <Route path="/dashboard/teacher" element={<TeacherDashboard />} />
+          <Route path="/dashboard/parent" element={<StudentProfileForm />} />
+
           {/* Features */}
           <Route path="/features/translations" element={<Translations />} />
           <Route
