@@ -11,10 +11,21 @@ class TeachersService {
       const reqBody = {
         grades: data,
       };
-      console.log("Fetching user ID and role for email:", this.reqUrl);
       const response = await axios.post(
         `${this.reqUrl}students/by-grades`,
         reqBody
+      );
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async uploadAssignment(data) {
+    try {
+      const response = await axios.post(
+        `${this.reqUrl}teachers/uploadAssignment`,
+        data
       );
       return response.data;
     } catch (error) {

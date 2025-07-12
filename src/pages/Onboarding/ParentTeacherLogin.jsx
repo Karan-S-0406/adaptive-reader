@@ -20,7 +20,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getUserIdAndRole } from "../store/action/users.action";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
-import { setIsAuthenticated, setNameAndRole } from "../store/slice/users.slice";
+import { setIsAuthenticated } from "../store/slice/users.slice";
 
 export default function ParentTeacherLogin() {
   const navigate = useNavigate();
@@ -56,7 +56,6 @@ export default function ParentTeacherLogin() {
         return;
       }
       localStorage.setItem("userData", JSON.stringify(user));
-      dispatch(setNameAndRole(user));
       dispatch(setIsAuthenticated(true));
       navigate(`/dashboard/${user.role}`);
     } catch (error) {

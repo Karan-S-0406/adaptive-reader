@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -16,12 +16,15 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import smartzy from "../assets/smartzy.png";
 import { auth } from "../firebase"; // path may vary
-import { onAuthStateChanged, signOut } from "@firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "@firebase/auth";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import "./Header.css";
 import { setIsAuthenticated } from "../pages/store/slice/users.slice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { Avatar } from "@mui/material";
+import Swal from "sweetalert2";
+import { getUserIdAndRole } from "../pages/store/action/users.action";
 
 const menuItems = {
   Features: [
@@ -53,34 +56,6 @@ const Header = () => {
     Resources: false,
     About: false,
   });
-  const isAuthenticated = useSelector(
-    (state) => state.storeData.userData?.isAuthenticated
-  );
-
-  useEffect(() => {
-    // Priority: Firebase Auth user
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser({
-          name: currentUser.displayName,
-          email: currentUser.email,
-          source: "firebase",
-        });
-      } else {
-        // Fallback: Check Redux or localStorage
-        const storedUser = JSON.parse(localStorage.getItem("userData"));
-        console.log("Stored user from localStorage:", storedUser);
-
-        if (storedUser) {
-          setUser({ ...storedUser, source: "custom" });
-        } else {
-          setUser(null);
-        }
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
 
   const toggleSection = (section) => {
     setOpenSections((prev) => ({
@@ -89,12 +64,44 @@ const Header = () => {
     }));
   };
 
-  // const getInitials = (nameOrEmail) => {
-  //   if (!nameOrEmail) return "";
-  //   const input = nameOrEmail.trim().split(" ");
-  //   if (input.length === 1) return input[0][0].toUpperCase();
-  //   return (input[0][0] + input[input.length - 1][0]).toUpperCase();
-  // };
+  const handleLogin = async () => {
+    try {
+      const auth = getAuth();
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const email = result.user.email;
+
+      const response = await dispatch(getUserIdAndRole(email));
+      const user = response.payload;
+
+      if (!user.success) {
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: user.message || "Invalid email",
+        });
+        return;
+      }
+      localStorage.setItem("userData", JSON.stringify(user));
+      dispatch(setIsAuthenticated(true));
+      setUser(user);
+      navigate(`/dashboard/${user.role}`);
+    } catch (error) {
+      console.error("Google sign-in error:", error);
+      Swal.fire(
+        "Login Failed",
+        "Google sign-in failed. Please try again.",
+        "error"
+      );
+    }
+  };
+
+  const getInitials = (nameOrEmail) => {
+    if (!nameOrEmail) return "";
+    const input = nameOrEmail.trim().split(" ");
+    if (input.length === 1) return input[0][0].toUpperCase();
+    return (input[0][0] + input[input.length - 1][0]).toUpperCase();
+  };
 
   const handleLogout = () => {
     const authType = user?.source;
@@ -164,7 +171,7 @@ const Header = () => {
             <Typography
               variant="h6"
               className="logo-title"
-              onClick={() => navigate("/home")}
+              onClick={() => navigate("/")}
             >
               Smartzy
             </Typography>
@@ -254,16 +261,57 @@ const Header = () => {
 
           {/* Right: Auth / Avatar */}
           <Box sx={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
-            {isAuthenticated && (
+            {user ? (
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl) && menuType === "avatar"}
+                onClose={handleMenuClose}
+                MenuListProps={{ sx: { minWidth: 140 } }}
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                transformOrigin={{ vertical: "top", horizontal: "right" }}
+              >
+                <MenuItem
+                  onClick={() => {
+                    handleLogout();
+                    handleMenuClose();
+                  }}
+                >
+                  Logout
+                </MenuItem>
+              </Menu>
+            ) : (
               <Button
-              variant="outlined"
-                onClick={() => {
-                  handleLogout();
-                  handleMenuClose();
+                variant="outlined"
+                sx={{
+                  borderColor: "#20303C",
+                  color: "#20303C",
+                  textTransform: "none",
+                  fontWeight: 500,
+                  ml: 1,
+                }}
+                onClick={() => handleLogin()}
+              >
+                Login
+              </Button>
+            )}
+            {user && (
+              <Avatar
+                sx={{
+                  bgcolor: "#20303C",
+                  color: "#fff",
+                  width: 36,
+                  height: 36,
+                  fontSize: 14,
+                  ml: 2,
+                  cursor: "pointer",
+                }}
+                onClick={(e) => {
+                  setAnchorEl(e.currentTarget);
+                  setMenuType("avatar");
                 }}
               >
-                Logout
-              </Button>
+                {getInitials(user.name || user.email)}
+              </Avatar>
             )}
           </Box>
         </Toolbar>

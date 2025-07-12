@@ -23,8 +23,8 @@ import StudentProfileForm from "../pages/Onboarding/StudentProfileForm";
 import StudentDashboard from "../pages/Dashboard/StudentDashboard/StudentDashboard";
 import RewardsPage from "../pages/Dashboard/StudentDashboard/Features/Rewards/RewardsPage";
 import MathAssignment from "../pages/Dashboard/StudentDashboard/Features/Math/MathAssignment";
-import ReadingAssignment from "../pages/Dashboard/StudentDashboard/Features/Reading/ReadingAssignment";
 import TeacherDashboard from "../pages/Dashboard/TeacherDashboard/TeacherDashboard";
+import Assignments from "../pages/Dashboard/StudentDashboard/Features/Assignments/Assignments";
 
 export default function RouterConfig() {
   return (
@@ -33,18 +33,18 @@ export default function RouterConfig() {
       <div style={{ marginTop: "64px" }}>
         <Routes>
           {/* Onboarding */}
-          <Route path="/" element={<RoleSelection />} />
+          {/* <Route path="/" element={<RoleSelection />} />
           <Route path="/student-login" element={<StudentLogin />} />
           <Route
             path="/parent-teacher-login"
             element={<ParentTeacherLogin />}
           />
-          <Route path="/student-profile" element={<StudentProfileForm />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/student-profile" element={<StudentProfileForm />} /> */}
+          <Route path="/" element={<Home />} />
 
           {/* Dashboard */}
           <Route path="/dashboard/student" element={<StudentDashboard />} />
-          <Route path="/dashboard/student/reading" element={<ReadingAssignment />} />
+          <Route path="/dashboard/student/assignments" element={<Assignments />} />
           <Route path="/dashboard/student/math" element={<MathAssignment />} />
           <Route path="/dashboard/student/rewards" element={<RewardsPage />} />
 

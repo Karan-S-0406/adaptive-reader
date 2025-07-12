@@ -9,3 +9,12 @@ export const fetchStudentsByGrades = createAsyncThunk(
     return response;
   }
 );
+
+export const uploadAssignment = createAsyncThunk(
+  "usersStore/uploadAssignment",
+  async (data) => {
+    const response = await teachersService.uploadAssignment(data);
+    console.log("Response from fetchStudentsByGrades:", response);
+    return response;
+  }
+);

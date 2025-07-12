@@ -49,9 +49,9 @@ export default function StudentDashboard() {
           <Button
             className="nav-btn"
             startIcon={<MenuBookIcon />}
-            onClick={() => handleNavigation("reading")}
+            onClick={() => handleNavigation("assignments")}
           >
-            Reading
+            Assignments
           </Button>
           <Button
             className="nav-btn"

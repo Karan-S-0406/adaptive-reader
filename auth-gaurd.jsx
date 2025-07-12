@@ -7,21 +7,13 @@ function AuthGuard({ children }) {
     (state) => state.storeData.userData?.isAuthenticated
   );
 
-  const publicRoutes = ["/", "/student-login", "/parent-teacher-login"];
-
-  if (isAuthenticated === null) return null;
-
   const currentPath = location.pathname;
 
-  const isPublicRoute =
-    publicRoutes.includes(currentPath) ||
-    publicRoutes.some((path) => path !== "/" && currentPath.startsWith(path));
+  // Only guard dashboard routes
+  const isProtectedRoute = currentPath.startsWith("/dashboard");
 
-  if (!isAuthenticated && isPublicRoute) {
-    return children;
-  }
-
-  if (!isAuthenticated) {
+  // Allow everything except protected routes
+  if (!isAuthenticated && isProtectedRoute) {
     return <Navigate to="/" replace />;
   }
 

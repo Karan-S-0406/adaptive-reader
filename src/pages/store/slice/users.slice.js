@@ -8,6 +8,8 @@ const userData = createSlice({
     email: "",
     role: "",
     name: "",
+    grade: "",
+    band: "",
     isAuthenticated: false,
     gradesManaged: [],
     loading: false,
@@ -16,21 +18,19 @@ const userData = createSlice({
     setIsAuthenticated: (state, action) => {
       state.isAuthenticated = action.payload;
     },
-    setNameAndRole: (state, action) => {
-      state.name = action.payload.name;
-      state.role = action.payload.role;
-      // state.userId = action.payload.user_id;
-      state.gradesManaged = action.payload.grades_managed || [];
-      state.email = action.payload.email || "";
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(getUserIdAndRole.pending, (state) => {
       state.loading = true;
     });
     builder.addCase(getUserIdAndRole.fulfilled, (state, action) => {
-      state.userId = action.payload.user_id;
+      state.userId = action.payload.id;
       state.role = action.payload.role;
+      state.name = action.payload.name;
+      state.email = action.payload.email;
+      state.grade = action.payload.grade || ""; 
+      state.band = action.payload.band || "";
+      state.gradesManaged = action.payload.grades_managed || [];
       state.loading = false;
     });
     builder.addCase(getUserIdAndRole.rejected, (state) => {
@@ -38,6 +38,6 @@ const userData = createSlice({
     });
   },
 });
-export const { setNameAndRole, setIsAuthenticated } = userData.actions;
+export const { setIsAuthenticated } = userData.actions;
 
 export default userData.reducer;

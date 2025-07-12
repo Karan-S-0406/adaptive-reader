@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -20,10 +20,14 @@ import "./TeacherDashboard.css";
 import { useNavigate } from "react-router-dom";
 import { fetchStudentsByGrades } from "../../store/action/teachers,action";
 import { useDispatch, useSelector } from "react-redux";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
+import UploadAssignmentDialog from "./AssignmentUpload/UploadAssignmentDialog";
 
 export default function TeacherDashboard() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [openUploadDialog, setOpenUploadDialog] = useState(false);
+
   const user = useSelector((state) => state.storeData.userData);
   const teachersData = useSelector((state) => state.storeData.teachersData);
   useEffect(() => {
@@ -49,6 +53,9 @@ export default function TeacherDashboard() {
         <Box display="flex" gap={2}>
           <Button variant="outlined" startIcon={<DownloadIcon />}>
             Download Reports
+          </Button>
+          <Button variant="outlined" startIcon={<UploadFileIcon />} onClick={() => setOpenUploadDialog(true)}>
+            Upload Assignment
           </Button>
           <Button
             variant="text"
@@ -153,6 +160,12 @@ export default function TeacherDashboard() {
           </Paper>
         </Grid>
       </Grid>
+
+      <UploadAssignmentDialog
+        open={openUploadDialog}
+        onClose={() => setOpenUploadDialog(false)}
+        grades={user?.gradesManaged}
+      />
     </Box>
   );
 }
