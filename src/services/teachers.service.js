@@ -1,9 +1,8 @@
 import axios from "axios";
-import Constants from "../constants/constants";
 
 class TeachersService {
   constructor() {
-    this.reqUrl = Constants.API_BASEURL;
+    this.reqUrl = import.meta.env.VITE_API_BASE_URL;
   }
 
   async fetchStudentsByGrades(data) {

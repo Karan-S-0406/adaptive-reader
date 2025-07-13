@@ -1,3 +1,3 @@
 {
-  "API_CONFIGS_URL": "https://smartzy-backend.azurewebsites.net/"
+  "API_CONFIGS_URL": "http://localhost:5000/"
 }
