@@ -1,5 +1,15 @@
 import React, { useState } from "react";
-import { Box, Paper, Typography, Button, Divider, TextField, Link, IconButton, InputAdornment } from "@mui/material";
+import {
+  Box,
+  Paper,
+  Typography,
+  Button,
+  Divider,
+  TextField,
+  Link,
+  IconButton,
+  InputAdornment,
+} from "@mui/material";
 import googleSvg from "../assets/google.svg";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -76,7 +86,9 @@ export default function SignUp() {
           <Box sx={{ flex: 1 }}>
             <Typography variant="body2" fontWeight={500}>
               First name
-              <span style={{ color: "#aaa", fontWeight: 400, marginLeft: 4 }}>Optional</span>
+              <span style={{ color: "#aaa", fontWeight: 400, marginLeft: 4 }}>
+                Optional
+              </span>
             </Typography>
             <TextField
               size="small"
@@ -89,7 +101,9 @@ export default function SignUp() {
           <Box sx={{ flex: 1 }}>
             <Typography variant="body2" fontWeight={500}>
               Last name
-              <span style={{ color: "#aaa", fontWeight: 400, marginLeft: 4 }}>Optional</span>
+              <span style={{ color: "#aaa", fontWeight: 400, marginLeft: 4 }}>
+                Optional
+              </span>
             </Typography>
             <TextField
               size="small"
@@ -122,14 +136,20 @@ export default function SignUp() {
           type={showPassword ? "text" : "password"}
           fullWidth
           sx={{ mb: 2, background: "#fafafa", borderRadius: 1 }}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={handleTogglePassword} edge="end" size="small">
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={handleTogglePassword}
+                    edge="end"
+                    size="small"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            },
           }}
         />
 
@@ -150,9 +170,18 @@ export default function SignUp() {
           CONTINUE
         </Button>
 
-        <Typography variant="body2" color="text.secondary" align="center" mt={1}>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          align="center"
+          mt={1}
+        >
           Have an account?{" "}
-          <Link href="/login" underline="hover" sx={{ color: "#1B6CA8", fontWeight: 500 }}>
+          <Link
+            href="/login"
+            underline="hover"
+            sx={{ color: "#1B6CA8", fontWeight: 500 }}
+          >
             Sign in
           </Link>
         </Typography>

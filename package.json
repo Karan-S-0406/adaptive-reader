@@ -18,10 +18,10 @@
     "@reduxjs/toolkit": "^2.8.2",
     "axios": "^1.10.0",
     "firebase": "^11.9.1",
-    "pdfjs-dist": "^4.8.69",
+    "pdf-lib": "^1.17.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-pdf": "^9.0.0",
+    "react-markdown": "^10.1.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.6.2",
     "sweetalert2": "^11.22.2"

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Typography,
   MenuItem,
@@ -8,37 +8,23 @@ import {
   Divider,
   Box,
   Paper,
+  CircularProgress,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import PauseIcon from "@mui/icons-material/Pause";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import StopIcon from "@mui/icons-material/Stop";
-import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import "./SideBySideReader.css";
-
-const content = {
-  original: `Mrs. Rachel Lynde lived just where the Avonlea main road dipped down into a little hollow, fringed with alders and ladies’ eardrops and traversed by a brook that had its source away back in the woods of the old Cuthbert place; it was reputed to be an intricate, headlong brook in its earlier course through those woods, with dark secrets of pool and cascade; but by the time it reached Lynde’s Hollow it was a quiet, well-conducted little stream, for not even a brook could run past Mrs. Rachel Lynde’s door without due regard for decency and decorum; it probably was conscious that Mrs. Rachel was sitting at her window, keeping a sharp eye on everything that passed, from brooks and children up, and that if she noticed anything odd or out of place she would never rest until she had ferreted out the whys and wherefores thereof.
-
-There are plenty of people in Avonlea and out of it, who can attend closely to their neighbor’s business by dint of neglecting their own; but Mrs. Rachel Lynde was one of those capable creatures who can manage their own concerns and those of other folks into the bargain. She was a notable housewife; her work was always done and well done; she “ran” the Sewing Circle, helped run the Sunday-school, and was the strongest prop of the Church Aid Society and Foreign Missions Auxiliary.`,
-  gold: `Mrs. Rachel Lynde lived right where the Avonlea main road dipped down into a small hollow. The hollow was edged with alder trees and ladies’ eardrops, and a brook ran through it that started way back in the woods of the old Cuthbert place. The brook was known to be wild and fast in the woods, with hidden pools and waterfalls. But by the time it got to Lynde’s Hollow, it was a calm, well-behaved little stream. This was important because nothing, not even a stream, could pass by Mrs. Rachel Lynde’s house without behaving properly. Mrs. Rachel watched everything from her window, including brooks and children, and if she saw anything strange, she wouldn’t stop until she figured out what was going on.
-
-Many people in Avonlea, and outside of it, spent more time watching their neighbors than doing their own work. But Mrs. Rachel was different. She could handle her own tasks and still keep an eye on everyone else. She was a great housewife; her chores were always done well. She led the Sewing Circle, helped run the Sunday-school, and was a big support to the Church Aid Society and the Foreign Missions Auxiliary.`,
-  silver: `Mrs. Rachel Lynde lived by a small stream in Avonlea. The stream started in the woods and was wild there, but by the time it reached Mrs. Lynde’s house, it was calm and quiet. Mrs. Rachel liked to watch everything from her window. If she saw something strange, she would always find out what happened.
-
-Mrs. Rachel was very good at taking care of her home and helping others. She finished her work, helped with the Sewing Circle and Sunday-school, and supported the church.`,
-};
-
-const content_es = {
-  original: `La señora Rachel Lynde vivía justo donde la carretera principal de Avonlea bajaba a un pequeño valle, bordeado de alisos y pendientes de dama, y atravesado por un arroyo que nacía en los bosques de la antigua finca Cuthbert; se decía que era un arroyo complicado y precipitado en su curso anterior a través de esos bosques, con oscuros secretos de pozas y cascadas; pero cuando llegaba al Valle de Lynde era un arroyuelo tranquilo y bien portado, pues ni siquiera un arroyo podía pasar por la puerta de la señora Rachel Lynde sin el debido respeto a la decencia y el decoro; probablemente era consciente de que la señora Rachel estaba sentada en su ventana, vigilando todo lo que pasaba, desde arroyos hasta niños, y que si notaba algo raro o fuera de lugar no descansaría hasta descubrir el porqué de ello.
-
-Hay mucha gente en Avonlea y fuera de ella que puede atender de cerca los asuntos de sus vecinos descuidando los propios; pero la señora Rachel Lynde era de esas personas capaces que pueden manejar sus propios asuntos y los de los demás además. Era una excelente ama de casa; su trabajo siempre estaba hecho y bien hecho; dirigía el Círculo de Costura, ayudaba en la escuela dominical y era el mayor apoyo de la Sociedad de Ayuda de la Iglesia y la Auxiliar de Misiones Extranjeras.`,
-  gold: `La señora Rachel Lynde vivía justo donde la carretera principal de Avonlea bajaba a un pequeño valle. El valle estaba bordeado de alisos y pendientes de dama, y un arroyo lo atravesaba desde los bosques de la antigua finca Cuthbert. El arroyo era salvaje en el bosque, pero cuando llegaba al Valle de Lynde, era tranquilo y bien portado. Esto era importante porque nada, ni siquiera un arroyo, podía pasar por la casa de la señora Rachel Lynde sin comportarse bien. La señora Rachel miraba todo desde su ventana, incluidos los arroyos y los niños, y si veía algo extraño, no paraba hasta averiguar qué pasaba.
-
-Mucha gente en Avonlea, y fuera de ella, pasaba más tiempo mirando a sus vecinos que haciendo su propio trabajo. Pero la señora Rachel era diferente. Podía hacer sus tareas y aún así vigilar a todos los demás. Era una gran ama de casa; sus tareas siempre estaban bien hechas. Dirigía el Círculo de Costura, ayudaba en la escuela dominical y apoyaba mucho a la Sociedad de Ayuda de la Iglesia y la Auxiliar de Misiones Extranjeras.`,
-  silver: `La señora Rachel Lynde vivía junto a un arroyo pequeño en Avonlea. El arroyo empezaba en el bosque y era salvaje allí, pero cuando llegaba a la casa de la señora Lynde, era tranquilo y silencioso. A la señora Rachel le gustaba mirar todo desde su ventana. Si veía algo raro, siempre averiguaba qué había pasado.
-
-La señora Rachel era muy buena cuidando su casa y ayudando a los demás. Terminaba su trabajo, ayudaba en el Círculo de Costura y la escuela dominical, y apoyaba a la iglesia.`,
-};
+import {
+  fetchPdfContent,
+  transformContent,
+  updatePageReadStatus,
+} from "./store/action/students.action";
+import { useDispatch, useSelector } from "react-redux";
+import LoaderModal from "./Loader/LoaderModal";
+import ReactMarkdown from "react-markdown";
 
 const LANGUAGES = [
   { value: "en", label: "ENGLISH" },
@@ -46,9 +32,33 @@ const LANGUAGES = [
 ];
 
 const LEVELS = [
-  { value: "original", label: "ORIGINAL", color: "#4CADA8" },
-  { value: "gold", label: "GOLD", color: "#E6B15C" },
-  { value: "silver", label: "SILVER", color: "#B0B0B0" },
+  { value: "A", label: "A", color: "#4CAF50" }, // Green
+  { value: "B", label: "B", color: "#66BB6A" },
+  { value: "C", label: "C", color: "#81C784" },
+  { value: "D", label: "D", color: "#A5D6A7" },
+  { value: "E", label: "E", color: "#C8E6C9" },
+  { value: "F", label: "F", color: "#42A5F5" }, // Blue
+  { value: "G", label: "G", color: "#64B5F6" },
+  { value: "H", label: "H", color: "#90CAF9" },
+  { value: "I", label: "I", color: "#BBDEFB" },
+  { value: "J", label: "J", color: "#E3F2FD" },
+  { value: "K", label: "K", color: "#FFA726" }, // Orange
+  { value: "L", label: "L", color: "#FFB74D" },
+  { value: "M", label: "M", color: "#FFCC80" },
+  { value: "N", label: "N", color: "#FFE0B2" },
+  { value: "O", label: "O", color: "#FFF3E0" },
+  { value: "P", label: "P", color: "#FF7043" }, // Deep Orange
+  { value: "Q", label: "Q", color: "#F06292" }, // Pink
+  { value: "R", label: "R", color: "#EC407A" },
+  { value: "S", label: "S", color: "#AB47BC" }, // Purple
+  { value: "T", label: "T", color: "#8E24AA" },
+  { value: "U", label: "U", color: "#7B1FA2" },
+  { value: "V", label: "V", color: "#6A1B9A" },
+  { value: "W", label: "W", color: "#4A148C" },
+  { value: "X", label: "X", color: "#311B92" },
+  { value: "Y", label: "Y", color: "#1A237E" },
+  { value: "Z", label: "Z", color: "#0D47A1" },
+  { value: "Z+", label: "Z+", color: "#B71C1C" }, // Deep Red
 ];
 
 function speak(text, lang) {
@@ -60,157 +70,339 @@ function speak(text, lang) {
   }
 }
 
-function ReaderPanel({
-  language,
-  setLanguage,
-  level,
-  setLevel,
-  content,
-  audioLang,
-  side,
-}) {
+function ReaderPanel({ title, content, side }) {
   return (
     <Box className={`dual-panel dual-panel-${side}`}>
-      <Box className="dual-panel-controls">
-        <Select
-          value={language}
-          onChange={(e) => setLanguage(e.target.value)}
-          variant="standard"
-          className="dual-select"
-        >
-          {LANGUAGES.map((l) => (
-            <MenuItem key={l.value} value={l.value}>
-              {l.label}
-            </MenuItem>
-          ))}
-        </Select>
-        <Select
-          value={level}
-          onChange={(e) => setLevel(e.target.value)}
-          variant="standard"
-          className="dual-select"
-          sx={{
-            ml: 2,
-            fontWeight: 600,
-            color: LEVELS.find((l) => l.value === level)?.color,
-          }}
-        >
-          {LEVELS.map((l) => (
-            <MenuItem key={l.value} value={l.value}>
-              <span
-                style={{
-                  display: "inline-block",
-                  width: 8,
-                  height: 8,
-                  borderRadius: "50%",
-                  background: l.color,
-                  marginRight: 8,
-                  verticalAlign: "middle",
-                }}
-              />
-              {l.label}
-            </MenuItem>
-          ))}
-        </Select>
-        <Tooltip title="Listen">
-          <IconButton
-            sx={{ ml: 2 }}
-            onClick={() => speak(content, audioLang)}
-            aria-label="Listen"
-          >
-            <VolumeUpIcon />
-          </IconButton>
-        </Tooltip>
-        <IconButton
-          onClick={() => window.speechSynthesis.pause()}
-          aria-label="Pause"
-        >
-          <PauseIcon />
-        </IconButton>
-        <IconButton
-          onClick={() => window.speechSynthesis.resume()}
-          aria-label="Resume"
-        >
-          <PlayArrowIcon />
-        </IconButton>
-        <IconButton
-          onClick={() => window.speechSynthesis.cancel()}
-          aria-label="Stop"
-        >
-          <StopIcon />
-        </IconButton>
-      </Box>
       <Box className="dual-panel-content">
         <Typography
           sx={{ fontSize: 16, color: "#222", whiteSpace: "pre-line" }}
         >
-          {content}
+          {content || "No content available."}
         </Typography>
       </Box>
     </Box>
   );
 }
 
-export default function SideBySideReader() {
-  const [leftLang, setLeftLang] = useState("en");
-  const [rightLang, setRightLang] = useState("es");
-  const [leftLevel, setLeftLevel] = useState("original");
-  const [rightLevel, setRightLevel] = useState("gold");
+export default function SideBySideReader({
+  selectedAssignment,
+  storagePath,
+  title,
+  onBack,
+}) {
+  const dispatch = useDispatch();
+  const [pdfPages, setPdfPages] = useState([]);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [contentLoading, setContentLoading] = useState(false);
+  const [loaderMessages, setLoaderMessages] = useState([]);
+  const [error, setError] = useState("");
+  const [totalPages, setTotalPages] = useState(0);
+  const [showLeftPanel, setShowLeftPanel] = useState(true); // ✅ Toggle state
+  const user = useSelector((state) => state.storeData.userData);
 
-  // Swap languages and levels
-  const handleSwap = () => {
-    setLeftLang(rightLang);
-    setRightLang(leftLang);
-    setLeftLevel(rightLevel);
-    setRightLevel(leftLevel);
+  // Right Panel Controls
+  const [rightLang, setRightLang] = useState("en");
+  const [rightLevel, setRightLevel] = useState("A");
+  const [rightContent, setRightContent] = useState("");
+
+  // To track reading progress
+  const [readPages, setReadPages] = useState(new Set());
+  const [pagesCompleted, setPagesCompleted] = useState(0);
+  const [timeSpent, setTimeSpent] = useState(0); // seconds on current page
+  const [scrolledToEnd, setScrolledToEnd] = useState(false);
+
+  // Detect scroll to end
+  useEffect(() => {
+    setScrolledToEnd(false);
+    const container = document.querySelector(".dual-panel-content");
+    const handleScroll = () => {
+      if (container) {
+        const scrollPosition = container.scrollTop + container.clientHeight;
+        const scrollHeight = container.scrollHeight;
+        if (scrollPosition >= scrollHeight * 0.9) {
+          setScrolledToEnd(true);
+        }
+      }
+    };
+    container?.addEventListener("scroll", handleScroll);
+    return () => container?.removeEventListener("scroll", handleScroll);
+  }, [pageNumber]);
+
+  // Track time spent
+  useEffect(() => {
+    setTimeSpent(0);
+    const interval = setInterval(() => setTimeSpent((prev) => prev + 1), 1000);
+    return () => clearInterval(interval);
+  }, [pageNumber]);
+
+  useEffect(() => {
+    const fetchExtractedPdf = async () => {
+      try {
+        setLoading(true);
+        setLoaderMessages(["Fetching Assignment...", "Finalizing reader..."]);
+        // Remove the base URL part
+        const normalizedPath = storagePath.replace(
+          "https://storage.googleapis.com/personalized-reader.firebasestorage.app/",
+          ""
+        );
+        const response = await dispatch(fetchPdfContent(normalizedPath));
+        const data = response.payload;
+
+        if (!data.success) {
+          setError(data.message || "Failed to load PDF content.");
+          return;
+        }
+
+        setPdfPages(data.pages || []);
+        setRightContent(data.pages[0] || "");
+        setTotalPages(data.totalPages || 0);
+      } catch (err) {
+        setError("Error fetching PDF data.");
+        console.error(err);
+      } finally {
+        setLoading(false);
+        setLoaderMessages([]);
+      }
+    };
+
+    fetchExtractedPdf();
+  }, [storagePath]);
+
+  const goToPage = (direction) => {
+    const newPage = pageNumber + direction;
+    if (newPage < 1 || newPage > pdfPages.length) return;
+
+    // ✅ Before changing the page, check if current page qualifies as "read"
+    if (
+      timeSpent >= 30 &&
+      scrolledToEnd &&
+      !readPages.has(pageNumber) &&
+      pagesCompleted === pageNumber - 1 // ✅ Ensure sequential reading
+    ) {
+      setReadPages((prev) => new Set(prev.add(pageNumber)));
+
+      setPagesCompleted((prev) => {
+        const newCount = prev + 1 > totalPages ? totalPages : prev + 1;
+
+        // ✅ API call to update progress only if sequential
+        const reqBody = {
+          assignmentId: selectedAssignment?.assignmentId,
+          studentId: user?.userId,
+          pagesCompleted: newCount,
+          totalPages,
+          isCompleted: newCount === totalPages,
+        };
+        dispatch(updatePageReadStatus(reqBody));
+
+        return newCount;
+      });
+    }
+
+    // ✅ Now change the page
+    setPageNumber(newPage);
+    setRightContent(pdfPages[newPage - 1]);
+    setScrolledToEnd(false); // Reset scroll status for new page
+    setTimeSpent(0); // Reset timer
+  };
+
+  const handleTranslate = async (lang, level) => {
+    // ✅ If language is English and level is A → show original content
+    if (lang === "en" && level === "A") {
+      setRightContent(pdfPages[pageNumber - 1]); // Original text
+      return;
+    }
+
+    // setLoaderMessages([
+    //   `Transforming content to ${
+    //     lang === "en" ? "English" : "Spanish"
+    //   } and level ${level}...`,
+    // ]);
+    setContentLoading(true);
+    const reqBody = {
+      originalText: pdfPages[pageNumber - 1],
+      language: lang === "en" ? "English" : "Spanish",
+      level: level, // Pass proper level name
+    };
+
+    const response = await dispatch(transformContent(reqBody));
+    const data = response.payload;
+    setContentLoading(false);
+    if (data.success) {
+      setRightContent(data?.content);
+    } else {
+      alert("Failed to transform content");
+    }
+  };
+
+  const handleLanguageChange = (lang) => {
+    setRightLang(lang);
+    handleTranslate(lang, rightLevel);
+  };
+
+  const handleLevelChange = (level) => {
+    setRightLevel(level);
+    handleTranslate(rightLang, level);
   };
 
   return (
     <div className="dual-reader-root">
       <Paper elevation={3} className="dual-reader-card">
+        {/* Header */}
         <Box className="dual-reader-header">
           <Typography className="dual-chapter" variant="subtitle1">
             <span role="img" aria-label="book">
               📖
             </span>{" "}
-            CHAPTER I. Mrs. Rachel Lynde
+            {title}
           </Typography>
-          <Typography className="dual-page" variant="body2">
-            1 / 428
-          </Typography>
-        </Box>
-        <Box className="dual-reader-body">
-          <ReaderPanel
-            language={leftLang}
-            setLanguage={setLeftLang}
-            level={leftLevel}
-            setLevel={setLeftLevel}
-            content={
-              leftLang === "en" ? content[leftLevel] : content_es[leftLevel]
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={!showLeftPanel}
+                onChange={() => setShowLeftPanel(!showLeftPanel)}
+              />
             }
-            audioLang={leftLang}
-            side="left"
-          />
-          <Divider orientation="vertical" flexItem className="dual-divider" />
-          <Box className="dual-swap-btn-box">
-            <Tooltip title="Swap Sides">
-              <IconButton className="dual-swap-btn" onClick={handleSwap}>
-                <SwapHorizIcon fontSize="large" />
-              </IconButton>
-            </Tooltip>
-          </Box>
-          <ReaderPanel
-            language={rightLang}
-            setLanguage={setRightLang}
-            level={rightLevel}
-            setLevel={setRightLevel}
-            content={
-              rightLang === "en" ? content[rightLevel] : content_es[rightLevel]
-            }
-            audioLang={rightLang}
-            side="right"
+            label="Hide Left Panel"
           />
         </Box>
+
+        {loading ? (
+          <LoaderModal open={loading} messages={loaderMessages} />
+        ) : error ? (
+          <p style={{ padding: "1rem", color: "red" }}>{error}</p>
+        ) : (
+          <>
+            <Box className="dual-reader-body">
+              {/* Left Panel - Original */}
+              {showLeftPanel && (
+                <ReaderPanel content={pdfPages[pageNumber - 1]} side="left" />
+              )}
+
+              <Divider
+                orientation="vertical"
+                flexItem
+                className="dual-divider"
+              />
+
+              {/* Right Panel */}
+              <Box
+                className="dual-panel dual-panel-right"
+                // sx={{
+                //   flex: showLeftPanel ? "0 0 50%" : "0 0 100%", // ✅ Full width when left panel hidden
+                //   width: showLeftPanel ? "40vw" : "100%", // ✅ Override width
+                //   maxWidth: showLeftPanel ? "520px" : "100%", // ✅ Remove restriction
+                //   transition: "all 0.3s ease",
+                // }}
+              >
+                <Box className="dual-panel-controls">
+                  {/* Language */}
+                  <Select
+                    value={rightLang}
+                    onChange={(e) => handleLanguageChange(e.target.value)}
+                    variant="standard"
+                    disabled={contentLoading} // ✅ Disable when loading
+                    className="dual-select"
+                  >
+                    {LANGUAGES.map((l) => (
+                      <MenuItem key={l.value} value={l.value}>
+                        {l.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+
+                  {/* Level */}
+                  <Select
+                    value={rightLevel}
+                    onChange={(e) => handleLevelChange(e.target.value)}
+                    variant="standard"
+                    className="dual-select"
+                    disabled={contentLoading} // ✅ Disable when loading
+                    sx={{
+                      ml: 2,
+                      fontWeight: 600,
+                      color: LEVELS.find((l) => l.value === rightLevel)?.color,
+                    }}
+                  >
+                    {LEVELS.map((l) => (
+                      <MenuItem key={l.value} value={l.value}>
+                        <span
+                          style={{
+                            display: "inline-block",
+                            width: 8,
+                            height: 8,
+                            borderRadius: "50%",
+                            background: l.color,
+                            marginRight: 8,
+                            verticalAlign: "middle",
+                          }}
+                        />
+                        {l.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+
+                  {/* Audio Controls */}
+                  <Tooltip title="Listen">
+                    <IconButton
+                      sx={{ ml: 2 }}
+                      onClick={() => speak(rightContent, rightLang)}
+                    >
+                      <VolumeUpIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <IconButton onClick={() => window.speechSynthesis.pause()}>
+                    <PauseIcon />
+                  </IconButton>
+                  <IconButton onClick={() => window.speechSynthesis.resume()}>
+                    <PlayArrowIcon />
+                  </IconButton>
+                  <IconButton onClick={() => window.speechSynthesis.cancel()}>
+                    <StopIcon />
+                  </IconButton>
+                </Box>
+
+                <Box className="dual-panel-content">
+                  {contentLoading ? (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        height: "100%", // Full height of the content area
+                      }}
+                    >
+                      <CircularProgress />
+                    </Box>
+                  ) : (
+                    <ReactMarkdown>{rightContent}</ReactMarkdown>
+                  )}
+                </Box>
+              </Box>
+            </Box>
+
+            {/* Navigation */}
+            <Box className="pagination-container">
+              <button
+                className="pagination-btn"
+                onClick={() => goToPage(-1)}
+                disabled={pageNumber <= 1}
+              >
+                Previous
+              </button>
+              <span className="pagination-info">
+                Page {pageNumber} of {totalPages}
+              </span>
+              <button
+                className="pagination-btn"
+                onClick={() => goToPage(1)}
+                disabled={pageNumber >= pdfPages.length}
+              >
+                Next
+              </button>
+            </Box>
+          </>
+        )}
       </Paper>
     </div>
   );

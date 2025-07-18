@@ -10,7 +10,7 @@
 .dual-reader-card {
   margin: 48px auto;
   border-radius: 24px;
-  max-width: 1200px;
+  max-width: none;
   width: 98vw;
   padding: 0;
   overflow: visible;
@@ -23,7 +23,7 @@
   justify-content: space-between;
   padding: 32px 48px 0 48px;
   background: transparent;
-  font-family: 'Segoe UI', serif;
+  font-family: "Segoe UI", serif;
   font-size: 1.1rem;
   color: #222;
   gap: 24px;
@@ -56,14 +56,39 @@
   border-radius: 18px;
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
   padding: 32px 28px 32px 28px;
-  width: 40vw;
-  min-width: 320px;
-  max-width: 520px;
+  width: 45%;
   display: flex;
   flex-direction: column;
   position: relative;
   z-index: 1;
   transition: box-shadow 0.2s;
+
+  /* ✅ Set a fixed height for both panels */
+  height: 600px; /* You can adjust this */
+}
+
+.dual-panel-content {
+  font-size: 1.1rem;
+  color: #222;
+  font-family: "Segoe UI", serif;
+  margin-top: 12px;
+
+  /* ✅ Allow scrolling inside content area */
+  overflow-y: auto;
+  flex-grow: 1;
+
+  /* Optional: Smooth scroll experience */
+  scrollbar-width: thin;
+  scrollbar-color: #ccc transparent;
+}
+
+.dual-panel-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dual-panel-content::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
 }
 
 .dual-panel-left {
@@ -91,13 +116,6 @@
   font-weight: 600 !important;
   font-size: 1rem !important;
   min-width: 110px;
-}
-
-.dual-panel-content {
-  font-size: 1.1rem;
-  color: #222;
-  font-family: 'Segoe UI', serif;
-  margin-top: 12px;
 }
 
 .dual-divider {
@@ -196,7 +214,7 @@
     border-radius: 16px !important;
   }
 
-   .dual-panel-controls {
+  .dual-panel-controls {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -225,6 +243,43 @@
   }
 }
 
-@media (max-width: 600px) {
+.pagination-container {
+  text-align: center;
+  margin-top: 1.5rem;
+  display: flex;
+  margin-bottom: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  font-family: "Segoe UI", sans-serif;
+}
 
+.pagination-btn {
+  background: #4cada8;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.pagination-btn:hover {
+  background: #3a8f8b;
+  transform: translateY(-2px);
+}
+
+.pagination-btn:disabled {
+  background: #cfcfcf;
+  color: #666;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.pagination-info {
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
 }

@@ -25,6 +25,8 @@ import RewardsPage from "../pages/Dashboard/StudentDashboard/Features/Rewards/Re
 import MathAssignment from "../pages/Dashboard/StudentDashboard/Features/Math/MathAssignment";
 import TeacherDashboard from "../pages/Dashboard/TeacherDashboard/TeacherDashboard";
 import Assignments from "../pages/Dashboard/StudentDashboard/Features/Assignments/Assignments";
+import LoginOptions from "../pages/Onboarding/LoginOptions";
+import ParentDashboard from "../pages/Dashboard/ParentDashboard/ParentDashboard";
 
 export default function RouterConfig() {
   return (
@@ -40,6 +42,7 @@ export default function RouterConfig() {
             element={<ParentTeacherLogin />}
           />
           <Route path="/student-profile" element={<StudentProfileForm />} /> */}
+          <Route path="/login-options" element={<LoginOptions />} />
           <Route path="/" element={<Home />} />
 
           {/* Dashboard */}
@@ -49,7 +52,7 @@ export default function RouterConfig() {
           <Route path="/dashboard/student/rewards" element={<RewardsPage />} />
 
           <Route path="/dashboard/teacher" element={<TeacherDashboard />} />
-          <Route path="/dashboard/parent" element={<StudentProfileForm />} />
+          <Route path="/dashboard/parent" element={<ParentDashboard />} />
 
           {/* Features */}
           <Route path="/features/translations" element={<Translations />} />

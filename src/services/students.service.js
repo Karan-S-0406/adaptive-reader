@@ -19,6 +19,41 @@ class StudentsService {
       return error;
     }
   }
+
+  async fetchPdfContent(path) {
+    try {
+      const response = await axios.get(
+        `${this.reqUrl}pdf/extract?storagePath=${path}`
+      );
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async transformContent(data) {
+    try {
+      const response = await axios.post(
+        `${this.reqUrl}content/transform`,
+        data
+      );
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async updatePageReadStatus(data) {
+    try {
+      const response = await axios.post(
+        `${this.reqUrl}students/updatePageReadStatus`,
+        data
+      );
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
 }
 
 export default new StudentsService();

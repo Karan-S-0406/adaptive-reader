@@ -35,9 +35,9 @@ export default function TeacherDashboard() {
     dispatch(fetchStudentsByGrades(user?.gradesManaged));
   }, [dispatch, user?.gradesManaged]);
 
-  const handleAddStudent = () => {
-    navigate("/student-profile");
-  };
+  // const handleAddStudent = () => {
+  //   navigate("/student-profile");
+  // };
   return (
     <Box className="teacher-dashboard-container">
       {/* Header */}
@@ -59,7 +59,7 @@ export default function TeacherDashboard() {
           </Button>
           <Button
             variant="text"
-            onClick={handleAddStudent}
+            // onClick={handleAddStudent}
             sx={{ textTransform: "none", fontWeight: 500, color: "#1B6CA8" }}
           >
             ➕ Add Student
@@ -91,7 +91,7 @@ export default function TeacherDashboard() {
               {teachersData?.students.map((s, index) => (
                 <TableRow key={index}>
                   <TableCell>{s.name}</TableCell>
-                  <TableCell>{s.band}</TableCell>
+                  <TableCell>{s.level}</TableCell>
                   <TableCell>{s.readingXP} XP</TableCell>
                   <TableCell>{s.mathAccuracy}</TableCell>
                   <TableCell>{s.quizAvg}</TableCell>

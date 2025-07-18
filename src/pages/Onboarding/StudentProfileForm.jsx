@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import "./Onboarding.css";
 import { useDispatch } from "react-redux";
-import { addStudent } from "../store/action/users.action";
+// import { addStudent } from "../store/action/users.action";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
@@ -19,7 +19,7 @@ export default function StudentProfileForm() {
   const [studentData, setStudentData] = useState({
     name: "",
     grade: "",
-    band: "",
+    level: "",
     email: "",
     mathLevel: "",
   });
@@ -33,7 +33,7 @@ export default function StudentProfileForm() {
     if (
       !studentData.name ||
       !studentData.grade ||
-      !studentData.band ||
+      !studentData.level ||
       !studentData.email
     ) {
       Swal.fire({
@@ -44,7 +44,7 @@ export default function StudentProfileForm() {
       return;
     }
 
-    dispatch(addStudent(studentData));
+    // dispatch(addStudent(studentData));
     console.log("📤 Dispatched:", studentData);
     navigate("/dashboard/teacher");
   };
@@ -81,17 +81,17 @@ export default function StudentProfileForm() {
           onChange={handleChange("email")}
         />
         <TextField
-          label="Reading Level Band"
+          label="Reading Level level"
           select
           fullWidth
           size="small"
           className="text-field"
-          value={studentData.band}
-          onChange={handleChange("band")}
+          value={studentData.level}
+          onChange={handleChange("level")}
         >
-          <MenuItem value="A">Band A</MenuItem>
-          <MenuItem value="B">Band B</MenuItem>
-          <MenuItem value="C">Band C</MenuItem>
+          <MenuItem value="A">level A</MenuItem>
+          <MenuItem value="B">level B</MenuItem>
+          <MenuItem value="C">level C</MenuItem>
         </TextField>
         <TextField
           label="Math Level (Optional)"

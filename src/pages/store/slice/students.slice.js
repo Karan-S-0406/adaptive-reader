@@ -17,7 +17,7 @@ const studentData = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchAssignmentsByGrade.fulfilled, (state, action) => {
-      state.students = action.payload.students;
+      state.assignments = action.payload.assignments;
       state.loading = false;
     });
     builder.addCase(fetchAssignmentsByGrade.rejected, (state) => {

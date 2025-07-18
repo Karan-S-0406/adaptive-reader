@@ -6,11 +6,14 @@ import {
   Button,
   CircularProgress,
   Grid,
+  Chip,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import PdfReader from "./PdfReader/PdfReader";
+import SideBySideReader from "../../../../SideBySideReader";
 import { fetchAssignmentsByGrade } from "../../../../store/action/students.action";
 
 export default function Assignments() {
@@ -28,11 +31,8 @@ export default function Assignments() {
       try {
         const res = await dispatch(fetchAssignmentsByGrade(user.grade));
         const data = res.payload;
-        console.log("Assignments fetched:", data);
         if (data.success) {
           setAssignments(data.assignments || []);
-        } else {
-          console.error("Error fetching:", data.message);
         }
       } catch (err) {
         console.error("Failed to fetch assignments:", err);
@@ -58,64 +58,126 @@ export default function Assignments() {
   };
 
   return (
-    <Box className="reading-container">
-      <Paper className="reading-card">
+    <Box sx={{ p: 3, backgroundColor: "#f9fafc", minHeight: "100vh" }}>
+      <Paper
+        sx={{
+          p: 3,
+          borderRadius: "16px",
+          boxShadow: "0 6px 20px rgba(0,0,0,0.05)",
+        }}
+      >
         {/* Header */}
         <Box
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-          mb={2}
-          flexWrap="wrap"
-          gap={1}
+          mb={3}
         >
-          <Typography variant="h5" className="section-title">
-            📚 Reading Assignment
+          <Typography
+            variant="h5"
+            sx={{ fontWeight: "bold", color: "#1B6CA8" }}
+          >
+            📚 Reading Assignments
           </Typography>
           <Button
-            variant="text"
+            variant="outlined"
             startIcon={<ArrowBackIcon />}
             onClick={() =>
               selectedAssignment ? handleBack() : navigate("/dashboard/student")
             }
-            sx={{ textTransform: "none", fontWeight: 500, color: "#1B6CA8" }}
+            sx={{
+              textTransform: "none",
+              borderRadius: "8px",
+              fontWeight: 500,
+            }}
           >
             Back to {selectedAssignment ? "Assignments" : "Dashboard"}
           </Button>
         </Box>
 
-        {/* Assignment Viewer */}
+        {/* Assignment View */}
         {selectedAssignment ? (
-          <PdfReader
+          <SideBySideReader
+            selectedAssignment={selectedAssignment}
             title={selectedAssignment.title}
             storagePath={extractStoragePath(selectedAssignment.pdfUrl)}
             onBack={handleBack}
           />
         ) : loading ? (
-          <Box textAlign="center" my={4}>
-            <CircularProgress />
-            <Typography mt={2}>Loading assignments...</Typography>
+          <Box
+            sx={{
+              textAlign: "center",
+              py: 6,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress color="primary" />
+            <Typography sx={{ mt: 2, color: "#666" }}>
+              Loading assignments...
+            </Typography>
           </Box>
         ) : assignments.length === 0 ? (
-          <Typography>No assignments available.</Typography>
+          <Box textAlign="center" py={6}>
+            <Typography variant="h6" color="text.secondary">
+              No assignments available.
+            </Typography>
+          </Box>
         ) : (
-          <Grid container spacing={2}>
+          <Grid container spacing={3}>
             {assignments.map((a, i) => (
-              <Grid item xs={12} md={6} key={i}>
+              <Grid item xs={12} sm={6} md={4} key={i}>
                 <Paper
-                  elevation={2}
-                  sx={{ p: 2, cursor: "pointer" }}
+                  elevation={3}
+                  sx={{
+                    p: 3,
+                    borderRadius: "12px",
+                    background:
+                      "linear-gradient(135deg, #ffffff 60%, #f0f8ff 100%)",
+                    cursor: "pointer",
+                    transition: "0.3s",
+                    "&:hover": {
+                      transform: "translateY(-4px)",
+                      boxShadow: "0 8px 24px rgba(0,0,0,0.1)",
+                    },
+                  }}
                   onClick={() => handleAssignmentClick(a)}
                 >
-                  <Typography variant="h6">{a.title}</Typography>
+                  <Box display="flex" alignItems="center" mb={2}>
+                    <AssignmentIcon sx={{ color: "#1B6CA8", mr: 1 }} />
+                    <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                      {a.title}
+                    </Typography>
+                  </Box>
                   <Typography
                     variant="body2"
                     color="text.secondary"
-                    gutterBottom
+                    sx={{ mb: 1 }}
                   >
-                    Grade: {a.grade} | Due in {a.dueDate} days
+                    <CalendarTodayIcon
+                      sx={{ fontSize: "16px", color: "#888", mr: 0.5 }}
+                    />
+                    Due in {a.dueDate} days
                   </Typography>
-                  <Typography variant="body2">{a.description}</Typography>
+                  <Chip
+                    label={`Grade ${a.grade}`}
+                    color="primary"
+                    size="small"
+                    sx={{ mb: 1 }}
+                  />
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: "#444",
+                      display: "-webkit-box",
+                      WebkitBoxOrient: "vertical",
+                      overflow: "hidden",
+                      WebkitLineClamp: 3,
+                    }}
+                  >
+                    {a.description}
+                  </Typography>
                 </Paper>
               </Grid>
             ))}

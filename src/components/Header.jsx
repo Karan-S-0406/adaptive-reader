@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -16,12 +16,17 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import smartzy from "../assets/smartzy.png";
 import { auth } from "../firebase"; // path may vary
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "@firebase/auth";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+} from "@firebase/auth";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import "./Header.css";
 import { setIsAuthenticated } from "../pages/store/slice/users.slice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Avatar } from "@mui/material";
 import Swal from "sweetalert2";
 import { getUserIdAndRole } from "../pages/store/action/users.action";
@@ -56,6 +61,16 @@ const Header = () => {
     Resources: false,
     About: false,
   });
+  const isAuthenticated = useSelector((state) => state.storeData.userData.isAuthenticated);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      const storedUser = localStorage.getItem("userData");
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+    }
+  }, [isAuthenticated]);
 
   const toggleSection = (section) => {
     setOpenSections((prev) => ({
@@ -235,13 +250,13 @@ const Header = () => {
                 </Menu>
               </Box>
             ))}
-            <Button
+            {/* <Button
               color="inherit"
               sx={{ color: "#20303C", textTransform: "none" }}
               onClick={() => navigate("/live-demo")}
             >
               Live Demo
-            </Button>
+            </Button> */}
             <Typography sx={{ color: "#bbb", mx: 1 }}>|</Typography>
             <Button
               color="inherit"
@@ -289,7 +304,7 @@ const Header = () => {
                   fontWeight: 500,
                   ml: 1,
                 }}
-                onClick={() => handleLogin()}
+                onClick={() => navigate("/login-options")}
               >
                 Login
               </Button>
