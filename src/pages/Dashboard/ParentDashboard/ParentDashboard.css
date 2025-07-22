@@ -1,0 +1,30 @@
+/* ParentDashboard.css */
+
+/* Tabs container should allow horizontal scrolling */
+.tabs-container {
+  overflow-x: auto;
+  display: flex;
+  justify-content: flex-start;
+  max-width: 100%;
+}
+
+/* Hide scrollbar on mobile for a cleaner look */
+.tabs-container::-webkit-scrollbar {
+  display: none;
+}
+
+.tabs-container {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .tabs-container {
+    font-size: 14px;
+  }
+  .MuiTab-root {
+    min-width: 120px !important; /* Reduce width for mobile */
+    padding: 8px !important;
+  }
+}

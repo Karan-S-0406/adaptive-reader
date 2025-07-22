@@ -20,6 +20,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Swal from "sweetalert2";
 import LibraryAndAssignments from "./LibraryAndAssignments/LibraryAndAssignments";
 import UploadAssignmentForm from "../TeacherDashboard/AssignmentUpload/UploadAssignmentForm";
+import "./ParentDashboard.css";
 
 const grades = Array.from({ length: 12 }, (_, i) => `${i + 1}`);
 const levels = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""), "Z+"];
@@ -97,7 +98,14 @@ const ParentDashboard = () => {
       <Typography variant="h4" gutterBottom>
         👩 Parent Dashboard
       </Typography>
-      <Tabs value={tab} onChange={(e, val) => setTab(val)} sx={{ mb: 3 }}>
+
+      <Tabs
+        value={tab}
+        onChange={(e, val) => setTab(val)}
+        variant="scrollable"
+        scrollButtons="auto"
+        className="tabs-container"
+      >
         <Tab label="Add Kids" />
         <Tab label="Library & Assignments" />
         <Tab label="Upload Assignments" />

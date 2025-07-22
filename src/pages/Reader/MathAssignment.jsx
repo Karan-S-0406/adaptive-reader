@@ -9,14 +9,13 @@ import {
   ToggleButtonGroup,
   ToggleButton,
 } from "@mui/material";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import ReactMarkdown from "react-markdown";
 import { useDispatch } from "react-redux";
 import {
   getMathExplanation,
   getSignedImageUrl,
 } from "../store/action/students.action";
-import "./SideBySideReader.css"; // ✅ Import CSS
+import "./MathAssignment.css"; // ✅ Import CSS
 
 const LANGUAGES = [
   { value: "en", label: "ENGLISH" },
@@ -202,9 +201,9 @@ export default function MathAssignment(storagePath) {
       <Divider sx={{ mb: 2 }} />
 
       {/* Main Content */}
-      <Box display="flex">
+      <Box className="math-content">
         {/* Left: Image */}
-        <Box flex={1} p={2} sx={{ borderRight: "1px solid #ccc" }}>
+        <Box className="math-image">
           <img
             src={imageUrl}
             alt="Math Problem"
@@ -213,7 +212,7 @@ export default function MathAssignment(storagePath) {
         </Box>
 
         {/* Right: Explanation */}
-        <Box flex={1} p={2}>
+        <Box className="math-explanation">
           {loading ? (
             <Box
               display="flex"

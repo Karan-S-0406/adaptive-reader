@@ -126,9 +126,47 @@ export default function ReadingAssignment({ selectedAssignment, storagePath }) {
 
   useEffect(() => {
     setTimeSpent(0);
-    const interval = setInterval(() => setTimeSpent((prev) => prev + 1), 1000);
+
+    const interval = setInterval(() => {
+      setTimeSpent((prev) => {
+        const newTime = prev + 1;
+
+        if (
+          newTime >= 30 && // ✅ 30 seconds threshold
+          !readPages.has(pageNumber) && // not marked yet
+          pagesCompleted === pageNumber - 1 // sequential reading
+        ) {
+          markPageAsRead();
+        }
+
+        return newTime;
+      });
+    }, 1000);
+
     return () => clearInterval(interval);
   }, [pageNumber]);
+
+  const markPageAsRead = () => {
+    if (readPages.has(pageNumber)) return;
+
+    setReadPages((prev) => new Set(prev.add(pageNumber)));
+
+    setPagesCompleted((prev) => {
+      const newCount = prev + 1 > totalPages ? totalPages : prev + 1;
+
+      const reqBody = {
+        assignmentId: selectedAssignment?.assignmentId,
+        studentId: user?.userId,
+        pagesCompleted: newCount,
+        totalPages,
+        isCompleted: newCount === totalPages,
+      };
+
+      dispatch(updatePageReadStatus(reqBody)); // ✅ Update DB
+
+      return newCount;
+    });
+  };
 
   useEffect(() => {
     const fetchExtractedPdf = async () => {
@@ -199,34 +237,6 @@ export default function ReadingAssignment({ selectedAssignment, storagePath }) {
   const goToPage = (direction) => {
     const newPage = pageNumber + direction;
     if (newPage < 1 || newPage > pdfPages.length) return;
-
-    if (
-      timeSpent >= 15 &&
-      scrolledToEnd &&
-      !readPages.has(pageNumber) &&
-      pagesCompleted === pageNumber - 1
-    ) {
-      if (
-        pageNumber > (selectedAssignment?.readingProgress?.pagesCompleted || 0)
-      ) {
-        setReadPages((prev) => new Set(prev.add(pageNumber)));
-
-        setPagesCompleted((prev) => {
-          const newCount = prev + 1 > totalPages ? totalPages : prev + 1;
-
-          const reqBody = {
-            assignmentId: selectedAssignment?.assignmentId,
-            studentId: user?.userId,
-            pagesCompleted: newCount,
-            totalPages,
-            isCompleted: newCount === totalPages,
-          };
-          dispatch(updatePageReadStatus(reqBody));
-
-          return newCount;
-        });
-      }
-    }
 
     setPageNumber(newPage);
     setRightContent(pdfPages[newPage - 1]);

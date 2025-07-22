@@ -1,0 +1,73 @@
+/* General Layout */
+.math-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Header Controls (Language, Level, Toggle) */
+.math-header-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Main content layout (image and explanation) */
+.math-content {
+  display: flex;
+  gap: 16px;
+}
+
+/* Image */
+.math-image {
+  flex: 1;
+  border-right: 1px solid #ccc;
+  padding: 8px;
+}
+
+.math-image img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+/* Explanation */
+.math-explanation {
+  flex: 1;
+  padding: 8px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+/* ✅ Responsive for Mobile */
+@media (max-width: 768px) {
+  .math-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .math-header-controls {
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .math-content {
+    flex-direction: column; /* Stack vertically */
+  }
+
+  .math-image {
+    border-right: none;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 16px;
+  }
+}

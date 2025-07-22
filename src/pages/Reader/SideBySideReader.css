@@ -150,7 +150,7 @@
   }
 
   .dual-panel {
-    width: 90vw;
+    width: 75vw;
     min-width: 0;
     max-width: 98vw;
     border-radius: 18px !important;
@@ -277,50 +277,4 @@
   font-size: 1rem;
   color: #333;
   font-weight: 500;
-}
-
-.math-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #f9f9f9; /* Light neutral background */
-  border-radius: 8px;
-  padding: 12px 20px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.math-header .title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #333;
-}
-
-.math-header-controls {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.math-header-controls .MuiSelect-root {
-  min-width: 120px;
-  font-weight: 500;
-}
-
-.math-header-controls .MuiToggleButtonGroup-root {
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
-
-.math-header-controls .MuiToggleButton-root {
-  text-transform: uppercase;
-  font-weight: 600;
-  font-size: 0.85rem;
-  padding: 6px 12px;
-}
-
-.math-header-controls .MuiToggleButton-root.Mui-selected {
-  background: #0077cc;
-  color: #fff;
 }
