@@ -53,13 +53,13 @@ export default function StudentDashboard() {
           >
             Assignments
           </Button>
-          <Button
+          {/* <Button
             className="nav-btn"
             startIcon={<CalculateIcon />}
             onClick={() => handleNavigation("math")}
           >
             Math
-          </Button>
+          </Button> */}
           <Button
             className="nav-btn"
             startIcon={<EmojiEventsIcon />}
@@ -137,7 +137,7 @@ export default function StudentDashboard() {
           </Paper>
         </Grid>
 
-        <Grid item xs={12} md={6}>
+        {/* <Grid item xs={12} md={6}>
           <Paper className="student-dashboard-card">
             <Typography variant="subtitle1" fontWeight={600} mb={1}>
               ➕ Math Assignments
@@ -151,7 +151,7 @@ export default function StudentDashboard() {
               </ListItem>
             </List>
           </Paper>
-        </Grid>
+        </Grid> */}
 
         {/* Rewards */}
         <Grid item xs={12}>

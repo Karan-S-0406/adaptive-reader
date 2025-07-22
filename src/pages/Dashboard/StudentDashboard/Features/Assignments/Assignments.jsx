@@ -13,8 +13,8 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import SideBySideReader from "../../../../SideBySideReader";
 import { fetchAssignmentsByGrade } from "../../../../store/action/students.action";
+import SideBySideReader from "../../../../Reader/SideBySideReader";
 
 export default function Assignments() {
   const navigate = useNavigate();
@@ -23,13 +23,27 @@ export default function Assignments() {
   const [assignments, setAssignments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedAssignment, setSelectedAssignment] = useState(null);
+  const assignmentsFromStore = useSelector(
+    (state) => state.storeData.studentsData.assignments
+  );
 
   useEffect(() => {
+    // ✅ If assignments already exist in store, use them and skip API call
+    if (assignmentsFromStore && assignmentsFromStore.length > 0) {
+      setAssignments(assignmentsFromStore);
+      setLoading(false);
+      return;
+    }
     const fetchAssignments = async () => {
       if (!user?.grade) return;
+      console.log(assignmentsFromStore, "store");
 
       try {
-        const res = await dispatch(fetchAssignmentsByGrade(user.grade));
+        const reqBody = {
+          studentId: user?.userId,
+          grade: user?.grade,
+        };
+        const res = await dispatch(fetchAssignmentsByGrade(reqBody));
         const data = res.payload;
         if (data.success) {
           setAssignments(data.assignments || []);
@@ -42,7 +56,7 @@ export default function Assignments() {
     };
 
     fetchAssignments();
-  }, [user?.grade]);
+  }, [assignmentsFromStore, dispatch, user?.grade, user?.userId]);
 
   const handleBack = () => {
     setSelectedAssignment(null);
@@ -53,12 +67,13 @@ export default function Assignments() {
   };
 
   const extractStoragePath = (pdfUrl) => {
-    const prefix = "https://storage.googleapis.com/smartzy-assignments/";
+    const prefix = import.meta.env.VITE_STORAGE_BUCKET_URL; // ✅ Get from .env
+    console.log(`Extracting path from: ${pdfUrl} with prefix: ${prefix}`);
     return pdfUrl.startsWith(prefix) ? pdfUrl.slice(prefix.length) : pdfUrl;
   };
 
   return (
-    <Box sx={{ p: 3, backgroundColor: "#f9fafc", minHeight: "100vh" }}>
+    <Box sx={{ p: 3, backgroundColor: "#f9fafc", minHeight: "70vh" }}>
       <Paper
         sx={{
           p: 3,

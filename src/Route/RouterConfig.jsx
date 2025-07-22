@@ -6,7 +6,6 @@ import SimplifiedTexts from "../pages/Features/Reading-Level/SimplifiedTexts";
 import AudioBooks from "../pages/Features/Audio-Books/AudioBooks";
 import Pricing from "../pages/Pricing";
 import Footer from "../components/Footer";
-import SideBySideReader from "../pages/SideBySideReader";
 import FreeDownloads from "../pages/Resources/FreeDownloads/FreeDownloads";
 import RequestContent from "../pages/Resources/RequestContent/RequestContent";
 import Library from "../pages/Resources/Library/Library";
@@ -76,7 +75,7 @@ export default function RouterConfig() {
 
           {/* Other */}
           <Route path="/gallery" element={<BookGallery />} />
-          <Route path="/live-demo" element={<SideBySideReader />} />
+          {/* <Route path="/live-demo" element={<SideBySideReader />} /> */}
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />

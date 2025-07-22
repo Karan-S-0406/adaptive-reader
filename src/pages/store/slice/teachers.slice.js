@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchStudentsByGrades } from "../action/teachers,action";
+import { fetchStudentsByGrades } from "../action/teachers.action";
 
 const teacherData = createSlice({
   name: "teachersStore",

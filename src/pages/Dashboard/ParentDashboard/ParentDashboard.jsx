@@ -19,6 +19,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Swal from "sweetalert2";
 import LibraryAndAssignments from "./LibraryAndAssignments/LibraryAndAssignments";
+import UploadAssignmentForm from "../TeacherDashboard/AssignmentUpload/UploadAssignmentForm";
 
 const grades = Array.from({ length: 12 }, (_, i) => `${i + 1}`);
 const levels = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""), "Z+"];
@@ -99,7 +100,7 @@ const ParentDashboard = () => {
       <Tabs value={tab} onChange={(e, val) => setTab(val)} sx={{ mb: 3 }}>
         <Tab label="Add Kids" />
         <Tab label="Library & Assignments" />
-        {/* <Tab label="Progress Dashboard" /> */}
+        <Tab label="Upload Assignments" />
       </Tabs>
 
       {/* Tab 0: Add Kids */}
@@ -296,14 +297,7 @@ const ParentDashboard = () => {
       {tab === 1 && <LibraryAndAssignments />}
 
       {/* Tab 2: Dashboard */}
-      {/* {tab === 2 && (
-        <Box>
-          <Typography variant="h6">📊 Progress Dashboard</Typography>
-          <Typography>
-            View child's time spent, reading growth, math scores, and rewards.
-          </Typography>
-        </Box>
-      )} */}
+      {tab === 2 && <UploadAssignmentForm />}
       <LoaderModal open={user?.addStudentLoading} messages={loaderMessages} />
     </Box>
   );

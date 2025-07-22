@@ -1,20 +1,15 @@
 .dual-reader-root {
   background: linear-gradient(120deg, #f7f6f2 60%, #e9f7fa 100%);
-  min-height: 100vh;
   padding: 0;
-  display: flex;
-  justify-content: center;
   align-items: flex-start;
 }
 
 .dual-reader-card {
-  margin: 48px auto;
   border-radius: 24px;
-  max-width: none;
-  width: 98vw;
+  width: 100%;
   padding: 0;
   overflow: visible;
-  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 32px rgba(68, 57, 57, 0.08);
 }
 
 .dual-reader-header {
@@ -282,4 +277,50 @@
   font-size: 1rem;
   color: #333;
   font-weight: 500;
+}
+
+.math-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f9f9f9; /* Light neutral background */
+  border-radius: 8px;
+  padding: 12px 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.math-header .title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.math-header-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.math-header-controls .MuiSelect-root {
+  min-width: 120px;
+  font-weight: 500;
+}
+
+.math-header-controls .MuiToggleButtonGroup-root {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.math-header-controls .MuiToggleButton-root {
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 6px 12px;
+}
+
+.math-header-controls .MuiToggleButton-root.Mui-selected {
+  background: #0077cc;
+  color: #fff;
 }

@@ -159,7 +159,7 @@ const LibraryAndAssignments = () => {
                       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                         <Box sx={{ width: "100%" }}>
                           <Typography variant="subtitle1" fontWeight="500">
-                            {progress.assignment.book.title}
+                            {progress.assignment?.book?.title}
                           </Typography>
                           <Box
                             sx={{
@@ -170,7 +170,7 @@ const LibraryAndAssignments = () => {
                           >
                             <LinearProgress
                               variant="determinate"
-                              value={progress.progressPercent}
+                              value={progress?.progressPercent}
                               sx={{
                                 flex: 1,
                                 height: 8,
@@ -190,13 +190,13 @@ const LibraryAndAssignments = () => {
                           color="textSecondary"
                           gutterBottom
                         >
-                          {progress.assignment.book.description}
+                          {progress.assignment?.book?.description}
                         </Typography>
                         <Chip
                           icon={<SchoolIcon />}
-                          label={`Due in ${progress.assignment.dueDate} days`}
+                          label={`Due in ${progress?.assignment?.dueDate} days`}
                           size="small"
-                          color={progress.isCompleted ? "success" : "warning"}
+                          color={progress?.isCompleted ? "success" : "warning"}
                           sx={{ mt: 1 }}
                         />
                         <Typography
@@ -205,7 +205,7 @@ const LibraryAndAssignments = () => {
                           sx={{ mt: 1 }}
                         >
                           Last Accessed:{" "}
-                          {new Date(progress.lastAccessed).toLocaleString()}
+                          {new Date(progress?.lastAccessed).toLocaleString()}
                         </Typography>
                       </AccordionDetails>
                     </Accordion>

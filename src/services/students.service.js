@@ -5,11 +5,8 @@ class StudentsService {
     this.reqUrl = import.meta.env.VITE_API_BASE_URL;
   }
 
-  async fetchAssignmentsByGrade(data) {
+  async fetchAssignmentsByGrade(reqBody) {
     try {
-      const reqBody = {
-        grade: data,
-      };
       const response = await axios.post(
         `${this.reqUrl}students/fetchAssignmentsByGrade`,
         reqBody
@@ -48,6 +45,31 @@ class StudentsService {
       const response = await axios.post(
         `${this.reqUrl}students/updatePageReadStatus`,
         data
+      );
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async getMathExplanation(reqBody) {
+    try {
+      const response = await axios.post(
+        `${this.reqUrl}content/getMathExplanation`,
+        reqBody
+      );
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+  
+  async getSignedImageUrl(reqBody) {
+    console.log("Fetching signed image URL with data:", reqBody);
+    try {
+      const response = await axios.post(
+        `${this.reqUrl}content/getSignedImageUrl`,
+        reqBody
       );
       return response.data;
     } catch (error) {
