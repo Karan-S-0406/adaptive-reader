@@ -14,21 +14,12 @@ import {
 import Swal from "sweetalert2";
 import { uploadAssignment } from "../../../store/action/teachers.action";
 import { useDispatch, useSelector } from "react-redux";
+import SelectBookPopup from "./SelectBookPopup"; // ✅ Import the popup
 
-const GRADES = [
-  { value: "1", label: "1" },
-  { value: "2", label: "2" },
-  { value: "3", label: "3" },
-  { value: "4", label: "4" },
-  { value: "5", label: "5" },
-  { value: "6", label: "6" },
-  { value: "7", label: "7" },
-  { value: "8", label: "8" },
-  { value: "9", label: "9" },
-  { value: "10", label: "10" },
-  { value: "11", label: "11" },
-  { value: "12", label: "12" },
-];
+const GRADES = Array.from({ length: 12 }, (_, i) => ({
+  value: `${i + 1}`,
+  label: `${i + 1}`,
+}));
 
 const ASSIGNMENT_TYPES = [
   { value: "reading", label: "Reading" },
@@ -38,6 +29,7 @@ const ASSIGNMENT_TYPES = [
 export default function UploadAssignmentSection() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.storeData.userData);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -47,22 +39,21 @@ export default function UploadAssignmentSection() {
     file: null,
     gradeTargeted: "",
     dueInDays: "",
-    type: "", // ✅ Assignment type
+    type: "reading",
     uploadedBy: user?.email || "Unknown Teacher",
+    selectedBook: null,
   });
+
+  const [openModal, setOpenModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
     if (files) {
       const file = files[0];
-
-      // ✅ Validate file type based on assignment type
-      if (formData.type === "reading" && file.type !== "application/pdf") {
-        setError("For Reading assignments, please upload a PDF file.");
-        return;
-      }
-
       if (
         formData.type === "math" &&
         !["image/jpeg", "image/png", "image/jpg"].includes(file.type)
@@ -73,16 +64,10 @@ export default function UploadAssignmentSection() {
         return;
       }
 
-      setError(""); // Clear error
-      setFormData((prev) => ({
-        ...prev,
-        [name]: file,
-      }));
+      setError("");
+      setFormData((prev) => ({ ...prev, [name]: file }));
     } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
+      setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
 
@@ -90,7 +75,7 @@ export default function UploadAssignmentSection() {
     if (
       !formData.title ||
       !formData.description ||
-      !formData.file ||
+      (!formData.file && formData.type === "math") || // ✅ File is required only for math
       !formData.gradeTargeted ||
       !formData.dueInDays ||
       !formData.type
@@ -99,14 +84,31 @@ export default function UploadAssignmentSection() {
       return;
     }
 
-    if (formData.file.size > 1 * 1024 * 1024) {
+    if (formData.type === "math" && formData.file.size > 1 * 1024 * 1024) {
       setError("File must be less than 1 MB.");
       return;
     }
 
-    const payload = new FormData();
-    for (const key in formData) {
-      payload.append(key, formData[key]);
+    let payload;
+
+    if (formData.type === "math") {
+      // ✅ Math: Use FormData as before
+      payload = new FormData();
+      for (const key in formData) {
+        payload.append(key, formData[key]);
+      }
+    } else if (formData.type === "reading") {
+      // ✅ Reading: Send JSON payload with title, author, workKey, coverId
+      payload = {
+        title: formData.title,
+        description: formData.description,
+        gradeTargeted: formData.gradeTargeted,
+        dueInDays: formData.dueInDays,
+        type: formData.type,
+        uploadedBy: formData.uploadedBy,
+        author: formData.selectedBook?.authors,
+        pageId: formData.selectedBook?.pageId,
+      };
     }
 
     try {
@@ -124,6 +126,7 @@ export default function UploadAssignmentSection() {
           dueInDays: "",
           type: "",
           uploadedBy: user?.email || "Unknown Teacher",
+          selectedBook: null,
         });
         Swal.fire("Uploaded!", "Assignment uploaded successfully", "success");
       } else {
@@ -134,6 +137,54 @@ export default function UploadAssignmentSection() {
       Swal.fire("Error", err.message, "error");
     }
   };
+
+  const handleSearchBooks = async () => {
+    if (!searchQuery.trim()) {
+      Swal.fire("Enter a query!", "Search query cannot be empty", "warning");
+      return;
+    }
+    setSearchLoading(true);
+    try {
+      const response = await fetch(
+        `${
+          import.meta.env.VITE_API_BASE_URL
+        }students/searchBooks/:${encodeURIComponent(searchQuery)}`
+      );
+      const data = await response.json();
+      if (data.success) {
+        setSearchResults(data.results);
+      }
+    } catch (error) {
+      console.error("Error fetching books:", error);
+    } finally {
+      setSearchLoading(false);
+    }
+  };
+
+  const handleSelectBook = (book) => {
+    console.log("Selected book:", book);
+    const bookData = {
+      title: book.title,
+      // authors: book.author,
+      pageId: book.pageId || null,
+    };
+
+    setFormData((prev) => ({
+      ...prev,
+      selectedBook: bookData,
+      title: book.title,
+    }));
+    setSearchQuery("");
+    setSearchResults([]);
+    setOpenModal(false);
+  };
+
+  function handleCloseModal() {
+    setOpenModal(false);
+    setSearchQuery(""); // Clear search query when closing modal
+    setSearchResults([]); // Clear search results when closing modal
+    setSearchLoading(false); // Reset loading state when closing modal
+  }
 
   return (
     <Box sx={{ p: 3, backgroundColor: "#fff", borderRadius: 2, boxShadow: 3 }}>
@@ -158,15 +209,9 @@ export default function UploadAssignmentSection() {
         onChange={handleChange}
       />
 
-      {/* ✅ Assignment Type Dropdown */}
       <FormControl fullWidth margin="dense">
         <InputLabel>Assignment Type</InputLabel>
-        <Select
-          name="type"
-          value={formData.type}
-          onChange={handleChange}
-          label="Assignment Type"
-        >
+        <Select name="type" value={formData.type} onChange={handleChange}>
           {ASSIGNMENT_TYPES.map((t) => (
             <MenuItem key={t.value} value={t.value}>
               {t.label}
@@ -175,14 +220,12 @@ export default function UploadAssignmentSection() {
         </Select>
       </FormControl>
 
-      {/* ✅ Grade Dropdown */}
       <FormControl fullWidth margin="dense">
         <InputLabel>Grade</InputLabel>
         <Select
           name="gradeTargeted"
           value={formData.gradeTargeted}
           onChange={handleChange}
-          label="Grade"
         >
           {GRADES.map((g) => (
             <MenuItem key={g.value} value={g.value}>
@@ -202,30 +245,40 @@ export default function UploadAssignmentSection() {
         onChange={handleChange}
       />
 
-      {/* File Upload */}
-      <Button component="label" variant="outlined" sx={{ mt: 2 }}>
-        {formData.type === "math" ? "Upload Image" : "Upload PDF"}
-        <input
-          type="file"
-          hidden
-          accept={
-            formData.type === "math"
-              ? "image/jpeg,image/png"
-              : "application/pdf"
-          }
-          name="file"
-          onChange={handleChange}
-          disabled={!formData.type} // ✅ Disable until type is selected
-        />
-      </Button>
-      {/* ✅ Show filename if uploaded */}
-      {formData.file && (
-        <Typography
-          variant="body2"
-          sx={{ mt: 1, color: "#555", fontStyle: "italic" }}
-        >
-          Selected File: {formData.file.name}
-        </Typography>
+      {formData.type === "math" ? (
+        <>
+          <Button component="label" variant="outlined" sx={{ mt: 2 }}>
+            Upload Image
+            <input
+              type="file"
+              hidden
+              accept="image/jpeg,image/png"
+              name="file"
+              onChange={handleChange}
+            />
+          </Button>
+          {formData.file && (
+            <Typography sx={{ mt: 1, fontStyle: "italic", color: "green" }}>
+              Selected File: {formData.file.name}
+            </Typography>
+          )}
+        </>
+      ) : (
+        <>
+          <Button
+            variant="outlined"
+            sx={{ mt: 2 }}
+            onClick={() => setOpenModal(true)}
+          >
+            Search Book
+          </Button>
+          {formData.selectedBook && (
+            <Typography sx={{ mt: 1, color: "green" }}>
+              Selected Book: {formData.selectedBook.title} by{" "}
+              {formData.selectedBook.authors}
+            </Typography>
+          )}
+        </>
       )}
 
       {error && <FormHelperText error>{error}</FormHelperText>}
@@ -240,6 +293,18 @@ export default function UploadAssignmentSection() {
           {loading ? "Uploading..." : "Upload"}
         </Button>
       </Box>
+
+      {/* ✅ Popup Component */}
+      <SelectBookPopup
+        open={openModal}
+        onClose={handleCloseModal}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        searchResults={searchResults}
+        searchLoading={searchLoading}
+        handleSearchBooks={handleSearchBooks}
+        handleSelectBook={handleSelectBook}
+      />
     </Box>
   );
 }

@@ -31,6 +31,16 @@ export const transformContent = createAsyncThunk(
   }
 );
 
+export const adaptForUSStudents = createAsyncThunk(
+  "studentsStore/adaptForUSStudents",
+  async (data) => {
+    console.log(data);
+    const response = await studentsService.adaptForUSStudents(data);
+    console.log("Response from adaptForUSStudents:", response);
+    return response;
+  }
+);
+
 export const updatePageReadStatus = createAsyncThunk(
   "studentsStore/updatePageReadStatus",
   async (data) => {
@@ -41,23 +51,32 @@ export const updatePageReadStatus = createAsyncThunk(
   }
 );
 
+export const fetchBookContent = createAsyncThunk(
+  "studentsStore/fetchBookContent",
+  async (iaIdentifier) => {
+    console.log(iaIdentifier);
 
-export const getMathExplanation = createAsyncThunk(
-  "studentsStore/updatePageReadStatus",
-  async (data) => {
-    console.log(data);
-    const response = await studentsService.getMathExplanation(data);
-    console.log("Response from getMathExplanation:", response);
+    const response = await studentsService.fetchBookContent(iaIdentifier);
+    console.log("Response from fetchBookContent:", response);
     return response;
   }
 );
 
-export const getSignedImageUrl = createAsyncThunk(
-  "studentsStore/getSignedImageUrl",
-  async (data) => {
-    console.log(data);
-    const response = await studentsService.getSignedImageUrl(data);
-    console.log("Response from getSignedImageUrl:", response);
+export const generateMathMCQ = createAsyncThunk(
+  "studentsStore/generateMathMCQ",
+  async ({grade, storagePath}) => {
+    const response = await studentsService.generateMathMCQ({grade, storagePath});
+    console.log("Response from generateMathMCQ:", response);
+    return response;
+  }
+);
+
+export const getMCQExplanation = createAsyncThunk(
+  "studentsStore/getMCQExplanation",
+  async (reqBody) => {
+
+    const response = await studentsService.getMCQExplanation(reqBody);
+    console.log("Response from getMCQExplanation:", response);
     return response;
   }
 );

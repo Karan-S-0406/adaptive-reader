@@ -16,20 +16,16 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import smartzy from "../assets/smartzy.png";
 import { auth } from "../firebase"; // path may vary
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut,
-} from "@firebase/auth";
+import { signOut } from "@firebase/auth";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import "./Header.css";
 import { setIsAuthenticated } from "../pages/store/slice/users.slice";
 import { useDispatch, useSelector } from "react-redux";
 import { Avatar } from "@mui/material";
-import Swal from "sweetalert2";
-import { getUserIdAndRole } from "../pages/store/action/users.action";
+import PersonIcon from "@mui/icons-material/Person";
+import SchoolIcon from "@mui/icons-material/School";
+import { useAuthModal } from "../pages/LoginModal";
 
 const menuItems = {
   Features: [
@@ -56,12 +52,16 @@ const Header = () => {
   const [menuHover, setMenuHover] = useState(false);
   const [user, setUser] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { openModal } = useAuthModal();
+
   const [openSections, setOpenSections] = useState({
     Features: false,
     Resources: false,
     About: false,
   });
-  const isAuthenticated = useSelector((state) => state.storeData.userData.isAuthenticated);
+  const isAuthenticated = useSelector(
+    (state) => state.storeData.userData.isAuthenticated
+  );
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -77,38 +77,6 @@ const Header = () => {
       ...prev,
       [section]: !prev[section],
     }));
-  };
-
-  const handleLogin = async () => {
-    try {
-      const auth = getAuth();
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      const email = result.user.email;
-
-      const response = await dispatch(getUserIdAndRole(email));
-      const user = response.payload;
-
-      if (!user.success) {
-        Swal.fire({
-          icon: "error",
-          title: "Login Failed",
-          text: user.message || "Invalid email",
-        });
-        return;
-      }
-      localStorage.setItem("userData", JSON.stringify(user));
-      dispatch(setIsAuthenticated(true));
-      setUser(user);
-      navigate(`/dashboard/${user.role}`);
-    } catch (error) {
-      console.error("Google sign-in error:", error);
-      Swal.fire(
-        "Login Failed",
-        "Google sign-in failed. Please try again.",
-        "error"
-      );
-    }
   };
 
   const getInitials = (nameOrEmail) => {
@@ -131,23 +99,10 @@ const Header = () => {
     navigate("/");
   };
 
-  const handleMenuOpen = (event, type) => {
-    setAnchorEl(event.currentTarget);
-    setMenuType(type);
-  };
-
   const handleMenuClose = () => {
     setAnchorEl(null);
     setMenuType("");
     setMenuHover(false);
-  };
-
-  const handleMouseLeave = () => {
-    setTimeout(() => {
-      if (!menuHover) {
-        handleMenuClose();
-      }
-    }, 100);
   };
 
   const handleDrawerToggle = () => {
@@ -156,7 +111,16 @@ const Header = () => {
 
   return (
     <>
-      <AppBar position="fixed" color="inherit" elevation={1}>
+      <AppBar
+        position="fixed"
+        color="inherit"
+        elevation={1}
+        sx={{
+          height:"4.5rem",
+          background: "linear-gradient(90deg, #dce3f2, #d5e7e0)",
+          px: { xs: 1, md: 5 },
+        }}
+      >
         <Toolbar sx={{ px: { xs: 1, md: 5 } }}>
           {/* Mobile Menu Icon */}
           <Box
@@ -202,75 +166,18 @@ const Header = () => {
               gap: 1,
             }}
           >
-            {["Features", "Resources", "About"].map((label) => (
-              <Box
-                key={label}
-                onMouseEnter={(e) => handleMenuOpen(e, label)}
-                onMouseLeave={handleMouseLeave}
-                sx={{ display: "inline-block" }}
-              >
-                <Button
-                  color="inherit"
-                  endIcon={<ArrowDropDownIcon />}
-                  sx={{
-                    color: "#20303C",
-                    fontWeight: 500,
-                    textTransform: "none",
-                  }}
-                >
-                  {label}
-                </Button>
-                <Menu
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl) && menuType === label}
-                  onClose={handleMenuClose}
-                  MenuListProps={{
-                    onMouseEnter: () => setMenuHover(true),
-                    onMouseLeave: () => {
-                      setMenuHover(false);
-                      handleMenuClose();
-                    },
-                    sx: { minWidth: 180 },
-                  }}
-                  anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-                  transformOrigin={{ vertical: "top", horizontal: "left" }}
-                  disableAutoFocusItem
-                >
-                  {menuItems[label].map((item) => (
-                    <MenuItem
-                      key={item.label}
-                      onClick={() => {
-                        navigate(item.path);
-                        handleMenuClose();
-                      }}
-                    >
-                      {item.label}
-                    </MenuItem>
-                  ))}
-                </Menu>
-              </Box>
-            ))}
-            {/* <Button
-              color="inherit"
-              sx={{ color: "#20303C", textTransform: "none" }}
-              onClick={() => navigate("/live-demo")}
-            >
-              Live Demo
-            </Button> */}
-            <Typography sx={{ color: "#bbb", mx: 1 }}>|</Typography>
             <Button
-              color="inherit"
-              sx={{ color: "#20303C", textTransform: "none" }}
-              onClick={() => navigate("/gallery")}
+              className="nav-pill"
             >
-              Gallery
+              📖 Reading
+            </Button>
+            <Button className="nav-pill">
+              🧮 Math
             </Button>
             <Button
-              color="inherit"
-              sx={{ color: "#20303C", textTransform: "none" }}
-              onClick={() => navigate("/pricing")}
+              className="nav-pill"
             >
-              Pricing
+              🏆 Rewards
             </Button>
           </Box>
 
@@ -295,19 +202,28 @@ const Header = () => {
                 </MenuItem>
               </Menu>
             ) : (
-              <Button
-                variant="outlined"
-                sx={{
-                  borderColor: "#20303C",
-                  color: "#20303C",
-                  textTransform: "none",
-                  fontWeight: 500,
-                  ml: 1,
-                }}
-                onClick={() => navigate("/login-options")}
-              >
-                Login
-              </Button>
+              <Box sx={{ display: { xs: "none", md: "flex" } }}>
+                <Button
+                  className="login-btn"
+                  onClick={() => openModal("student")}
+                >
+                  <PersonIcon sx={{ fontSize: 18, mr: 1, color:"purple" }} />
+                  Student Login
+                </Button>
+                <Button
+                  className="login-btn"
+                  onClick={() => openModal("parent")}
+                >
+                  <PersonIcon sx={{ fontSize: 18, mr: 1, color:"orange" }} />
+                  Parent Login
+                </Button>
+                <Button
+                  className="profile-btn"
+                >
+                  <PersonIcon sx={{ fontSize: 18, mr: 1, color:"skyblue" }} />
+                  Profile
+                </Button>
+              </Box>
             )}
             {user && (
               <Avatar
@@ -341,55 +257,29 @@ const Header = () => {
       >
         <Box sx={{ width: 250 }} role="presentation">
           <List>
-            {["Features", "Resources", "About"].map((category) => (
-              <Box key={category}>
-                <ListItem button onClick={() => toggleSection(category)}>
-                  <ListItemText primary={category} />
-                  {openSections[category] ? <ExpandLess /> : <ExpandMore />}
-                </ListItem>
-                {openSections[category] &&
-                  menuItems[category].map((item) => (
-                    <ListItem
-                      button
-                      key={item.label}
-                      onClick={() => {
-                        navigate(item.path);
-                        handleDrawerToggle(); // ✅ Close only on submenu click
-                      }}
-                      sx={{ pl: 4 }}
-                    >
-                      <ListItemText primary={item.label} />
-                    </ListItem>
-                  ))}
-              </Box>
-            ))}
-
             <ListItem
               button
               onClick={() => {
-                navigate("/live-demo");
                 handleDrawerToggle();
               }}
             >
-              <ListItemText primary="Live Demo" />
+              <ListItemText primary="Reading" />
             </ListItem>
             <ListItem
               button
               onClick={() => {
-                navigate("/gallery");
                 handleDrawerToggle();
               }}
             >
-              <ListItemText primary="Gallery" />
+              <ListItemText primary="Math" />
             </ListItem>
             <ListItem
               button
               onClick={() => {
-                navigate("/pricing");
                 handleDrawerToggle();
               }}
             >
-              <ListItemText primary="Pricing" />
+              <ListItemText primary="Rewards" />
             </ListItem>
 
             {user ? (
@@ -403,15 +293,28 @@ const Header = () => {
                 <ListItemText primary="Logout" />
               </ListItem>
             ) : (
-              <ListItem
-                button
-                onClick={() => {
-                  navigate("/login");
-                  handleDrawerToggle();
-                }}
-              >
-                <ListItemText primary="Login" />
-              </ListItem>
+              <>
+                <ListItem
+                  button
+                  onClick={() => {
+                    openModal("parent");
+                    handleDrawerToggle();
+                  }}
+                >
+                  <PersonIcon sx={{ mr: 1 }} />
+                  <ListItemText primary="Parent Login" />
+                </ListItem>
+                <ListItem
+                  button
+                  onClick={() => {
+                    openModal("student");
+                    handleDrawerToggle();
+                  }}
+                >
+                  <SchoolIcon sx={{ mr: 1 }} />
+                  <ListItemText primary="Student Login" />
+                </ListItem>
+              </>
             )}
           </List>
         </Box>

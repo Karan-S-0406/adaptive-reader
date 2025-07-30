@@ -1,73 +1,162 @@
-/* General Layout */
-.math-header {
+.math-quiz-container {
+  padding: 3rem 1rem;
+  background: linear-gradient(135deg, #e0f7fa, #e8f5e9);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+}
+
+.math-quiz-box {
+  padding: 2rem 2rem;
+  border-radius: 16px;
+  background: #ffffff;
+  position: relative;
+  width: 100%;
+  max-width: 700px;
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.12);
+  animation: slideInUp 0.5s ease;
+}
+
+@keyframes slideInUp {
+  0% {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.quiz-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
 }
 
-.title {
-  font-size: 18px;
-  font-weight: 600;
+.question-text {
+  margin: 1.5rem 0 !important;
+  font-weight: 600 !important;
+  color: #1b263b !important;
+  font-size: 1.25rem !important;
+  line-height: 1.6 !important;
 }
 
-/* Header Controls (Language, Level, Toggle) */
-.math-header-controls {
-  display: flex;
+.options-grid {
+  display: flex !important;
+  flex-direction: column;
   gap: 12px;
-  align-items: center;
-  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
 }
 
-/* Main content layout (image and explanation) */
-.math-content {
+.option-btn {
+  padding: 14px 20px;
+  border: 2px solid #ccc !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  text-align: left !important;
+  justify-content: flex-start !important;
+  transition: all 0.3s ease !important;
+}
+
+.option-btn:hover {
+  background-color: #e3f2fd;
+  border-color: #90caf9;
+}
+
+.option-btn.selected {
+  background-color: #1976d2;
+  color: white;
+  border-color: #1976d2;
+}
+
+.button-group {
   display: flex;
-  gap: 16px;
+  justify-content: space-between;
+  margin-top: 1rem;
 }
 
-/* Image */
-.math-image {
-  flex: 1;
-  border-right: 1px solid #ccc;
-  padding: 8px;
+.result-text {
+  margin-top: 1.2rem;
+  font-size: 1.1rem;
+  font-weight: bold;
 }
 
-.math-image img {
-  width: 100%;
-  border-radius: 8px;
+.result-text.correct {
+  color: #2e7d32;
 }
 
-/* Explanation */
-.math-explanation {
-  flex: 1;
-  padding: 8px;
-  max-height: 70vh;
-  overflow-y: auto;
+.result-text.wrong {
+  color: #c62828;
 }
 
-/* ✅ Responsive for Mobile */
-@media (max-width: 768px) {
-  .math-header {
-    flex-direction: column;
-    align-items: flex-start;
+.explanation-box {
+  background: #f1f8e9;
+  padding: 1rem 1.2rem;
+  margin-top: 1.5rem;
+  border-left: 5px solid #81c784;
+  border-radius: 12px;
+}
+
+.math-quiz-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+.help-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 360px;
+  max-width: 90vw;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  padding: 28px 24px;
+  text-align: center;
+  animation: popIn 0.3s ease-out;
+}
+
+.help-modal h6 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.help-modal .MuiButton-root {
+  font-size: 0.95rem;
+  padding: 8px 18px;
+  border-radius: 12px;
+  text-transform: none;
+  min-width: 130px;
+}
+
+.help-modal .MuiButton-outlined {
+  color: #555;
+  border-color: #bbb;
+}
+
+.help-modal .MuiButton-contained {
+  background-color: #1B6CA8;
+  color: white;
+}
+
+.help-modal .MuiButton-contained:hover {
+  background-color: #155a94;
+}
+
+@keyframes popIn {
+  0% {
+    transform: translate(-50%, -50%) scale(0.85);
+    opacity: 0;
   }
-
-  .math-header-controls {
-    flex-direction: column;
-    width: 100%;
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .math-content {
-    flex-direction: column; /* Stack vertically */
-  }
-
-  .math-image {
-    border-right: none;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 16px;
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
   }
 }
+

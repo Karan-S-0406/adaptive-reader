@@ -19,7 +19,7 @@ const style = {
   boxShadow: 24,
   p: 4,
   outline: "none",
-  minWidth: 250,
+  minWidth: 350,
 };
 
 const LoaderModal = ({ open, messages = [] }) => {
@@ -46,7 +46,7 @@ const LoaderModal = ({ open, messages = [] }) => {
         <Box sx={style}>
           <CircularProgress />
           {messages.length > 0 && (
-            <Typography mt={2}>
+            <Typography mt={2} color="black">
               {messages[currentMsgIndex]}
             </Typography>
           )}

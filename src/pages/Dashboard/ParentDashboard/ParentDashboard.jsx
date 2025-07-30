@@ -94,8 +94,8 @@ const ParentDashboard = () => {
   };
 
   return (
-    <Box p={4}>
-      <Typography variant="h4" gutterBottom>
+    <Box p={4} bgcolor={"white"}>
+      <Typography variant="h4" gutterBottom color="black">
         👩 Parent Dashboard
       </Typography>
 

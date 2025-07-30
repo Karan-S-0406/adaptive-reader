@@ -1,220 +1,267 @@
 import { Button, Typography, Grid } from "@mui/material";
-import TranslateIcon from "@mui/icons-material/Translate";
-import SpeedIcon from "@mui/icons-material/Speed";
-import HeadphonesIcon from "@mui/icons-material/Headphones";
-import MenuBookIcon from "@mui/icons-material/MenuBook";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import "./Home.css";
-import homePageImg from "../assets/home.png";
-import { useNavigate } from "react-router-dom";
+import homePageImg from "../assets/homeBg.jpg";
+import gamified from "../assets/gamified.png";
+import smartMath from "../assets/smartMath.png";
+import adaptiveReader from "../assets/adaptiveReader.png";
 
-const features = [
+import ElectricBoltIcon from "@mui/icons-material/ElectricBolt";
+import { useAuthModal } from "../pages/LoginModal";
+import UploadIcon from "@mui/icons-material/Upload";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import EventNoteIcon from "@mui/icons-material/EventNote";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
+
+const familyFeatures = [
   {
-    icon: <TranslateIcon sx={{ fontSize: 48, color: "#1B6CA8" }} />,
-    title: "Instant Translations",
-    desc: "Switch between 30+ languages with a single click. Every reader, every language.",
-    link: "Try a Translation",
+    icon: <UploadIcon sx={{ color: "#1B6CA8", fontSize: 28 }} />,
+    title: "Easy Assignment Upload",
+    desc: "Parents can quickly upload and organize assignments with due dates and instructions.",
   },
   {
-    icon: <SpeedIcon sx={{ fontSize: 48, color: "#1B6CA8" }} />,
-    title: "Level Up Reading",
-    desc: "Personalized text levels for every learner. From emerging to advanced, everyone grows.",
-    link: "See How It Works",
+    icon: <CheckCircleIcon sx={{ color: "#28B463", fontSize: 28 }} />,
+    title: "Progress Tracking",
+    desc: "Monitor completion status and track learning progress with detailed analytics.",
   },
   {
-    icon: <HeadphonesIcon sx={{ fontSize: 48, color: "#1B6CA8" }} />,
-    title: "Immersive Audio",
-    desc: "Natural, expressive audio in multiple languages. Listen, learn, and enjoy.",
-    link: "Listen to a Story",
+    icon: <BarChartIcon sx={{ color: "#F5B041", fontSize: 28 }} />,
+    title: "Performance Analytics",
+    desc: "Visual dashboards showing improvement trends and achievement milestones.",
   },
   {
-    icon: <MenuBookIcon sx={{ fontSize: 48, color: "#1B6CA8" }} />,
-    title: "Custom Print Books",
-    desc: "Order personalized books in your language and level. Delivered to your door.",
-    link: "Order Your Book",
+    icon: <PeopleAltIcon sx={{ color: "#A569BD", fontSize: 28 }} />,
+    title: "Family Collaboration",
+    desc: "Strengthen parent-child relationships through shared educational goals.",
+  },
+  {
+    icon: <EventNoteIcon sx={{ color: "#2980B9", fontSize: 28 }} />,
+    title: "Smart Scheduling",
+    desc: "Automatic reminders and deadline management to keep everyone on track.",
+  },
+  {
+    icon: <StarBorderIcon sx={{ color: "#F1C40F", fontSize: 28 }} />,
+    title: "Achievement Rewards",
+    desc: "Celebrate milestones with badges and achievements to motivate learning.",
+  },
+];
+
+const featureData = [
+  {
+    iconImage: adaptiveReader,
+    title: "Adaptive Reading Engine",
+    description:
+      "AI-powered space assessment that observes students read aloud, evaluating fluency and adjusting content to their exact reading level (A-Z+).",
+    features: [
+      "Voice-powered AI",
+      "Real-time assessment",
+      "Dynamic difficulty",
+      "Lexile/ATOS scaling",
+    ],
+    cardColor: "linear-gradient(135deg, #4CAF50, #8BC34A)", // Example gradient
+  },
+  {
+    iconImage: smartMath,
+    title: "Smart Math Builder",
+    description:
+      "Math problems that adapt based on student responses. Struggling with fractions? Get extra practice! Flying through a pre-calc? Unlock advanced challenges!",
+    features: [
+      "Adaptive problems",
+      "Intelligent hints",
+      "Progress tracking",
+      "Skill mastery",
+    ],
+    cardColor: "linear-gradient(135deg, #2196F3, #64B5F6)", // Example gradient
+  },
+  {
+    iconImage: gamified,
+    title: "Gamified Rewards",
+    description:
+      "Earn stars, badges, and points for completing challenges. Build reading streaks and unlock real-life rewards to keep your motivation high and electric.",
+    features: [
+      "Stars & badges",
+      "Daily streaks",
+      "Real rewards",
+      "Achievement system",
+    ],
+    cardColor: "linear-gradient(135deg, #FFC107, #FFEB3B)", // Example gradient
   },
 ];
 
 export default function Home() {
-  const navigate = useNavigate();
+  const { openModal } = useAuthModal();
+
   return (
     <div className="main-content home-bg">
       {/* Hero Section */}
-      <section className="hero-section-new">
-        <div className="hero-content-new">
-          <Typography
-            variant="h1"
-            sx={{
-              fontFamily: "Montserrat, serif",
-              fontWeight: 800,
-              color: "#1B263B",
-              mb: 2,
-              fontSize: { xs: 32, md: 54 },
-              lineHeight: 1.1,
-              letterSpacing: "-2px",
-              textAlign: "left",
-            }}
-          >
-            Every Reader
-            <br />
-            Deserves Access
+      <section
+        style={{
+          position: "relative",
+          backgroundImage: `url(${homePageImg})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          minHeight: "600px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "80px 5vw",
+        }}
+      >
+        <div className="hero-overlay-container">
+          <div className="hero-badge">🚀 Built for the Future of Learning</div>
+
+          <Typography className="hero-title">
+            Learning That <br />
+            <span className="highlight-text">Adapts to You</span>
           </Typography>
-          <Typography
-            sx={{
-              color: "#415A77",
-              fontSize: 22,
-              mb: 4,
-              maxWidth: 500,
-              textAlign: "left",
-              fontWeight: 500,
-            }}
-          >
-            Smartzy brings stories to life for every learner—any
-            language, any level, any device.
+
+          <Typography variant="h6" className="hero-subtext">
+            Smartzy adapts every story and math problem to match your child’s
+            level — never too hard, never too boring.
           </Typography>
-          <div className="hero-buttons-new">
+
+          <Typography variant="body2" className="hero-quote">
+            <em>
+              Because learning should fit the child — not the other way around.
+            </em>
+          </Typography>
+
+          <Typography variant="h5" className="cta-text">
+            Read. Solve. Win.
+          </Typography>
+
+          <div className="hero-buttons-row">
             <Button
               variant="contained"
-              sx={{
-                bgcolor: "#1B6CA8",
-                color: "#fff",
-                px: 5,
-                py: 1.7,
-                fontWeight: 700,
-                borderRadius: 3,
-                fontSize: 18,
-                boxShadow: "0 4px 24px 0 rgba(27,108,168,0.10)",
-                "&:hover": { bgcolor: "#17497A" },
-              }}
-              endIcon={<ArrowForwardIcon />}
-              onClick={() => navigate("/gallery")}
+              className="cta-btn primary"
+              onClick={() => openModal("student")}
             >
-              Start Reading Free
-            </Button>
-            <Button
-              variant="text"
-              sx={{
-                color: "#1B6CA8",
-                px: 3,
-                py: 1.7,
-                fontWeight: 700,
-                borderRadius: 3,
-                fontSize: 18,
-                ml: 2,
-                "&:hover": { textDecoration: "underline", bgcolor: "#f5faff" },
-              }}
-              onClick={() => navigate("/resources/library")}
-            >
-              Explore Library
+              ⚡ Start Learning Now
             </Button>
           </div>
         </div>
-        <div className="hero-image-new">
-          {/* Replace with your own SVG/illustration or use a royalty-free image */}
-          <img
-            src={homePageImg}
-            alt="Readers illustration"
-            style={{
-              width: "100%",
-              borderRadius: 24,
-              boxShadow: "0 6px 32px 0 rgba(27,108,168,0.08)",
-            }}
-          />
-        </div>
       </section>
+      {/* Feature Cards Section */}
+      <div className="app-main-container">
+        <header className="app-header">
+          <div className="next-gen-ai-badge-v2">
+            <span className="left-icons">
+              🧠 <span className="flash-icon">🪄</span>
+            </span>
+            <span className="badge-label">Next-Gen AI Learning Engine</span>
+            <span className="sliding-icon">⚙️</span>
+          </div>
 
-      {/* Features Section */}
-      <section className="features-section-new">
+          <h1>
+            Neural Intelligence That <br /> Evolves With You
+          </h1>
+        </header>
+
+        <p className="app-description-text">
+          Powered by quantum-inspired algorithms and neural networks, our AI
+          doesn't just adapt — it predicts, learns, and evolves to create the
+          perfect learning experience for every student.
+        </p>
+
+        <div className="feature-cards-wrapper">
+          {featureData.map((card, index) => (
+            <div
+              key={index}
+              className="feature-card"
+              style={{ background: card.cardGradient }}
+            >
+              <div className="card-header-content">
+                <div
+                  className="card-icon-circle"
+                  style={{ backgroundColor: card.iconBgColor }}
+                >
+                  <img
+                    src={card.iconImage}
+                    alt={`${card.title} icon`}
+                    className="card-actual-icon"
+                  />
+                </div>
+                <h3>{card.title}</h3>
+              </div>
+              <p className="card-description-text">{card.description}</p>
+              <ul className="card-features-list">
+                {card.features.map((feature, i) => (
+                  <li key={i}>
+                    <span className="check-mark">✔</span>
+                    <span className="feature-text">{feature}</span>
+                    <ElectricBoltIcon className="bolt-inline-icon" />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* Family Features Section */}{" "}
+      <section className="family-section">
         <Typography
           variant="h4"
           sx={{
-            fontFamily: "Montserrat, serif",
             fontWeight: 700,
-            color: "#1B263B",
-            mb: 4,
-            textAlign: "center",
             fontSize: { xs: 26, md: 36 },
-            letterSpacing: "-1px",
+            textAlign: "center",
+            mb: 2,
+            color: "#1B263B",
+            fontFamily: "Montserrat, serif",
           }}
         >
-          Why Smartzy?
+          Everything You Need for{" "}
+          <span style={{ color: "#f9c350" }}>Family Learning</span>
         </Typography>
+        <Typography
+          sx={{
+            textAlign: "center",
+            color: "#5c6e80",
+            fontSize: 18,
+            maxWidth: 800,
+            margin: "0 auto 40px auto",
+          }}
+        >
+          Powerful tools designed to make education a collaborative and
+          enjoyable experience for the whole family.
+        </Typography>
+
         <Grid container spacing={4} justifyContent="center">
-          {features.map((feature) => (
-            <Grid item xs={12} sm={6} md={3} key={feature.title}>
-              <div className="feature-item-new">
-                {feature.icon}
-                <Typography
-                  variant="h6"
-                  sx={{
-                    mt: 2,
-                    mb: 1,
-                    fontFamily: "Montserrat, serif",
-                    fontWeight: 700,
-                    color: "#1B263B",
-                    fontSize: 20,
-                  }}
-                >
+          {familyFeatures.map((feature, index) => (
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <div className="family-card">
+                <div className="family-icon">{feature.icon}</div>
+                <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
                   {feature.title}
                 </Typography>
-                <Typography
-                  sx={{
-                    color: "#415A77",
-                    fontSize: 15,
-                    mb: 2,
-                    textAlign: "center",
-                  }}
-                >
+                <Typography sx={{ color: "#5c6e80", fontSize: 15 }}>
                   {feature.desc}
-                </Typography>
-                <Typography
-                  sx={{
-                    color: "#1B6CA8",
-                    fontWeight: 600,
-                    fontSize: 15,
-                    textDecoration: "underline",
-                    cursor: "pointer",
-                  }}
-                >
-                  {feature.link}
                 </Typography>
               </div>
             </Grid>
           ))}
         </Grid>
       </section>
-
-      {/* Call to Action Section */}
-      <section className="cta-section-new">
-        <Typography
-          variant="h5"
-          sx={{
-            fontFamily: "Montserrat, serif",
-            fontWeight: 700,
-            color: "#fff",
-            mb: 2,
-            textAlign: "center",
-            fontSize: { xs: 20, md: 28 },
-          }}
-        >
-          Ready to empower every reader?
-        </Typography>
-        <Button
-          variant="contained"
-          sx={{
-            bgcolor: "#1B6CA8",
-            color: "#fff",
-            px: 5,
-            py: 1.5,
-            fontWeight: 700,
-            borderRadius: 3,
-            fontSize: 18,
-            boxShadow: "0 4px 24px 0 rgba(27,108,168,0.10)",
-            "&:hover": { bgcolor: "#17497A" },
-          }}
-        >
-          Get Started Now
-        </Button>
+      {/* Future Section */}
+      <section className="future-banner">
+        <div className="future-banner-content">
+          <h2>
+            ⚡ <strong>Ready to Experience the Future?</strong> 🌱
+          </h2>
+          <p>
+            Join the neural revolution. Experience AI-powered learning that
+            adapts, evolves, and transforms education for the next generation.
+          </p>
+          <div className="future-banner-buttons">
+            <button
+              className="btn primary-btn"
+              onClick={() => openModal("student")}
+            >
+              🧠 Start Neural Learning
+            </button>
+          </div>
+        </div>
       </section>
     </div>
   );

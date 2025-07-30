@@ -15,10 +15,14 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAssignmentsByGrade } from "../../../../store/action/students.action";
 import SideBySideReader from "../../../../Reader/SideBySideReader";
+import { useLocation } from "react-router-dom";
 
 export default function Assignments() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
+  const selectedType = location.state?.type || "reading"; // fallback to reading
+
   const user = useSelector((state) => state.storeData.userData);
   const [assignments, setAssignments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -30,10 +34,14 @@ export default function Assignments() {
   useEffect(() => {
     // ✅ If assignments already exist in store, use them and skip API call
     if (assignmentsFromStore && assignmentsFromStore.length > 0) {
-      setAssignments(assignmentsFromStore);
+      const filtered = assignmentsFromStore.filter(
+        (a) => a.type === selectedType
+      );
+      setAssignments(filtered);
       setLoading(false);
       return;
     }
+
     const fetchAssignments = async () => {
       if (!user?.grade) return;
       console.log(assignmentsFromStore, "store");
@@ -46,7 +54,9 @@ export default function Assignments() {
         const res = await dispatch(fetchAssignmentsByGrade(reqBody));
         const data = res.payload;
         if (data.success) {
-          setAssignments(data.assignments || []);
+          setAssignments(
+            (data.assignments || []).filter((a) => a.type === selectedType)
+          );
         }
       } catch (err) {
         console.error("Failed to fetch assignments:", err);
@@ -92,8 +102,11 @@ export default function Assignments() {
             variant="h5"
             sx={{ fontWeight: "bold", color: "#1B6CA8" }}
           >
-            📚 Reading Assignments
+            {selectedType === "math"
+              ? "🧮 Math Assignments"
+              : "📚 Reading Assignments"}
           </Typography>
+
           <Button
             variant="outlined"
             startIcon={<ArrowBackIcon />}
@@ -115,7 +128,11 @@ export default function Assignments() {
           <SideBySideReader
             selectedAssignment={selectedAssignment}
             title={selectedAssignment.title}
-            storagePath={extractStoragePath(selectedAssignment.pdfUrl)}
+            storagePath={
+              selectedAssignment.type === "math"
+                ? extractStoragePath(selectedAssignment.pdfUrl)
+                : undefined
+            }
             onBack={handleBack}
           />
         ) : loading ? (
@@ -159,7 +176,12 @@ export default function Assignments() {
                   }}
                   onClick={() => handleAssignmentClick(a)}
                 >
-                  <Box display="flex" alignItems="center" mb={2}>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    mb={2}
+                    width={"250px"}
+                  >
                     <AssignmentIcon sx={{ color: "#1B6CA8", mr: 1 }} />
                     <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                       {a.title}

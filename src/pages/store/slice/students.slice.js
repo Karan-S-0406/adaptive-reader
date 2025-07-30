@@ -10,7 +10,27 @@ const studentData = createSlice({
   reducers: {
     setIsAuthenticated: (state, action) => {
       state.isAuthenticated = action.payload;
-    }
+    },
+    updateReadingProgress: (state, action) => {
+      const { assignmentId, pagesCompleted, totalPages, isCompleted } =
+        action.payload;
+        console.log("Updating reading progress for assignment:", assignmentId, pagesCompleted, totalPages, isCompleted);
+        
+      const assignment = state.assignments.find(
+        (assignment) => assignment.assignmentId  === assignmentId
+      );
+      if (assignment) {
+        assignment.readingProgress = {
+          ...assignment.readingProgress, // keep any existing properties
+          pagesCompleted,
+          totalPages,
+          isCompleted,
+          progressPercent: totalPages
+            ? (pagesCompleted / totalPages) * 100
+            : 0,
+        };
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAssignmentsByGrade.pending, (state) => {
@@ -25,6 +45,7 @@ const studentData = createSlice({
     });
   },
 });
-export const { setIsAuthenticated } = studentData.actions;
+export const { setIsAuthenticated, updateReadingProgress } =
+  studentData.actions;
 
 export default studentData.reducer;

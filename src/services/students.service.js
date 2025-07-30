@@ -40,6 +40,18 @@ class StudentsService {
     }
   }
 
+  async adaptForUSStudents(data) {
+    try {
+      const response = await axios.post(
+        `${this.reqUrl}content/adaptForUSStudents`,
+        data
+      );
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+
   async updatePageReadStatus(data) {
     try {
       const response = await axios.post(
@@ -52,10 +64,11 @@ class StudentsService {
     }
   }
 
-  async getMathExplanation(reqBody) {
+  async generateMathMCQ({ grade, storagePath }) {
+    const reqBody = { grade, storagePath };
     try {
       const response = await axios.post(
-        `${this.reqUrl}content/getMathExplanation`,
+        `${this.reqUrl}content/generateMathMCQ`,
         reqBody
       );
       return response.data;
@@ -63,13 +76,24 @@ class StudentsService {
       return error;
     }
   }
-  
-  async getSignedImageUrl(reqBody) {
-    console.log("Fetching signed image URL with data:", reqBody);
+
+  async getMCQExplanation(reqBody) {
+    console.log("Fetching getMCQExplanation with data:", reqBody);
     try {
       const response = await axios.post(
-        `${this.reqUrl}content/getSignedImageUrl`,
+        `${this.reqUrl}content/getMCQExplanation`,
         reqBody
+      );
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async fetchBookContent(iaIdentifier) {
+    try {
+      const response = await axios.get(
+        `${this.reqUrl}students/fetchBookContent/${iaIdentifier}`
       );
       return response.data;
     } catch (error) {

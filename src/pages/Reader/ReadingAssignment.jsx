@@ -20,12 +20,14 @@ import StopIcon from "@mui/icons-material/Stop";
 import ReactMarkdown from "react-markdown";
 import LoaderModal from "../Loader/LoaderModal";
 import {
-  fetchPdfContent,
+  adaptForUSStudents,
+  fetchBookContent,
   transformContent,
   updatePageReadStatus,
 } from "../store/action/students.action";
 import { useDispatch, useSelector } from "react-redux";
 import "./SideBySideReader.css"; // ✅ Import CSS
+import { updateReadingProgress } from "../store/slice/students.slice";
 
 const LANGUAGES = [
   { value: "en", label: "ENGLISH" },
@@ -76,15 +78,15 @@ function speak(text, lang) {
   }
 }
 
-export default function ReadingAssignment({ selectedAssignment, storagePath }) {
+export default function ReadingAssignment({ selectedAssignment }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.storeData.userData);
   const [pdfPages, setPdfPages] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [loading, setLoading] = useState(true);
   const [contentLoading, setContentLoading] = useState(false);
+  const [loaderMessages, setLoaderMessages] = useState([]);
   const [error, setError] = useState("");
-  const [totalPages, setTotalPages] = useState(0);
   const [showLeftPanel, setShowLeftPanel] = useState(true);
   const [mode, setMode] = useState("level");
   const [rightLang, setRightLang] = useState("en");
@@ -93,10 +95,37 @@ export default function ReadingAssignment({ selectedAssignment, storagePath }) {
   const [rightContent, setRightContent] = useState("");
 
   // ✅ Progress Tracking
-  const [pagesCompleted, setPagesCompleted] = useState(0);
   const [readPages, setReadPages] = useState(new Set());
   const [timeSpent, setTimeSpent] = useState(0);
   const [scrolledToEnd, setScrolledToEnd] = useState(false);
+
+  const assignments = useSelector(
+    (state) => state.storeData.studentsData.assignments
+  );
+  console.log("Assignments from Redux:", assignments);
+
+  const currentAssignment = assignments.find(
+    (a) => a.assignmentId === selectedAssignment?.assignmentId
+  );
+
+  const [pagesCompleted, setPagesCompleted] = useState(
+    currentAssignment?.readingProgress?.pagesCompleted || 0
+  );
+  const [totalPages, setTotalPages] = useState(
+    currentAssignment?.readingProgress?.totalPages || 0
+  );
+
+  useEffect(() => {
+    if (currentAssignment?.readingProgress) {
+      const { pagesCompleted, totalPages } = currentAssignment.readingProgress;
+      setPagesCompleted(pagesCompleted || 0);
+      setTotalPages(totalPages || 0);
+
+      const preReadPages = new Set();
+      for (let i = 1; i <= pagesCompleted; i++) preReadPages.add(i);
+      setReadPages(preReadPages);
+    }
+  }, [currentAssignment]);
 
   useEffect(() => {
     if (selectedAssignment?.readingProgress) {
@@ -125,16 +154,19 @@ export default function ReadingAssignment({ selectedAssignment, storagePath }) {
   }, [pageNumber]);
 
   useEffect(() => {
+    if (totalPages === 0) return; // ✅ Avoid running when data not loaded
+
+    let timer;
     setTimeSpent(0);
 
-    const interval = setInterval(() => {
+    timer = setInterval(() => {
       setTimeSpent((prev) => {
         const newTime = prev + 1;
 
         if (
-          newTime >= 30 && // ✅ 30 seconds threshold
-          !readPages.has(pageNumber) && // not marked yet
-          pagesCompleted === pageNumber - 1 // sequential reading
+          newTime >= 30 && // ✅ 30 sec threshold
+          !readPages.has(pageNumber) && // ✅ Not already read
+          pagesCompleted === pageNumber - 1 // ✅ Sequential
         ) {
           markPageAsRead();
         }
@@ -143,46 +175,51 @@ export default function ReadingAssignment({ selectedAssignment, storagePath }) {
       });
     }, 1000);
 
-    return () => clearInterval(interval);
-  }, [pageNumber]);
+    return () => clearInterval(timer);
+  }, [pageNumber, pagesCompleted, readPages, totalPages]); // ✅ reset when page changes
 
   const markPageAsRead = () => {
-    if (readPages.has(pageNumber)) return;
+    if (readPages.has(pageNumber) || totalPages === 0) return;
 
-    setReadPages((prev) => new Set(prev.add(pageNumber)));
+    const newCount = Math.min(pagesCompleted + 1, totalPages);
 
-    setPagesCompleted((prev) => {
-      const newCount = prev + 1 > totalPages ? totalPages : prev + 1;
+    const reqBody = {
+      assignmentId: selectedAssignment?.assignmentId,
+      studentId: user?.userId,
+      pagesCompleted: newCount,
+      totalPages: totalPages,
+      isCompleted: newCount === totalPages,
+    };
 
-      const reqBody = {
+    dispatch(updatePageReadStatus(reqBody));
+    dispatch(
+      updateReadingProgress({
         assignmentId: selectedAssignment?.assignmentId,
-        studentId: user?.userId,
         pagesCompleted: newCount,
-        totalPages,
+        totalPages: totalPages,
         isCompleted: newCount === totalPages,
-      };
-
-      dispatch(updatePageReadStatus(reqBody)); // ✅ Update DB
-
-      return newCount;
-    });
+      })
+    );
+    // ✅ Update local states
+    setPagesCompleted(newCount);
+    setReadPages((prev) => new Set(prev.add(pageNumber)));
+    setTimeSpent(0); // ✅ Reset timer after successful update
   };
 
   useEffect(() => {
-    const fetchExtractedPdf = async () => {
+    const extractBookContent = async () => {
       try {
         setLoading(true);
-        const normalizedPath = storagePath.replace(
-          import.meta.env.VITE_STORAGE_BUCKET_URL,
-          ""
+        const response = await dispatch(
+          fetchBookContent(selectedAssignment?.pageId)
         );
-        const response = await dispatch(fetchPdfContent(normalizedPath));
         const data = response.payload;
 
         if (!data.success) {
           setError(data.message || "Failed to load PDF content.");
           return;
         }
+        console.log("PDF Content Response:", data);
 
         setPdfPages(data.pages || []);
         setRightContent(data.pages[0] || "");
@@ -194,8 +231,8 @@ export default function ReadingAssignment({ selectedAssignment, storagePath }) {
       }
     };
 
-    fetchExtractedPdf();
-  }, [storagePath]);
+    extractBookContent();
+  }, [selectedAssignment]);
 
   const handleTranslate = async (lang, overrideValue) => {
     const reqBody = {
@@ -205,14 +242,30 @@ export default function ReadingAssignment({ selectedAssignment, storagePath }) {
         ? { level: overrideValue || rightLevel }
         : { grade: overrideValue || selectedGrade }),
     };
-
+    setLoaderMessages(["Analyzing content...", "Generating translation..."]);
     setContentLoading(true);
-    const response = await dispatch(transformContent(reqBody));
-    const data = response.payload;
-    setContentLoading(false);
-    if (data.success) {
-      setRightContent(data?.content);
+
+    // Step 1: First API call
+    const response1 = await dispatch(transformContent(reqBody));
+    const data1 = response1.payload;
+    console.log("Response from transformContent:", data1);
+    if (data1.success) {
+      // Step 2: Second API call for US adaptation
+      const reqBody2 = {
+        adaptedText: data1.content,
+        ...(mode === "level"
+          ? { level: overrideValue || rightLevel }
+          : { grade: overrideValue || selectedGrade }),
+      };
+      setLoaderMessages(["Adapting content for US students..."]);
+      const response2 = await dispatch(adaptForUSStudents(reqBody2));
+      const data2 = response2.payload;
+      console.log("Response from adaptForUSStudents:", data2);
+      setRightContent(data2.content);
+    } else {
+      setRightContent("Failed to generate content.");
     }
+    setContentLoading(false);
   };
 
   const handleLanguageChange = (lang) => {
@@ -281,7 +334,12 @@ export default function ReadingAssignment({ selectedAssignment, storagePath }) {
             {showLeftPanel && (
               <div className="dual-panel dual-panel-left">
                 <div className="dual-panel-content">
-                  {pdfPages[pageNumber - 1]}
+                  <div
+                    className="book-html-content"
+                    dangerouslySetInnerHTML={{
+                      __html: pdfPages[pageNumber - 1],
+                    }}
+                  />
                 </div>
               </div>
             )}
@@ -345,11 +403,10 @@ export default function ReadingAssignment({ selectedAssignment, storagePath }) {
               </div>
 
               <div className="dual-panel-content">
-                {contentLoading ? (
-                  <CircularProgress />
-                ) : (
-                  <ReactMarkdown>{rightContent}</ReactMarkdown>
-                )}
+                <div
+                  className="book-html-content"
+                  dangerouslySetInnerHTML={{ __html: rightContent }}
+                />
               </div>
             </div>
           </div>
@@ -376,6 +433,7 @@ export default function ReadingAssignment({ selectedAssignment, storagePath }) {
           </button>
         </div>
       </div>
+      <LoaderModal open={contentLoading} messages={loaderMessages} />
     </div>
   );
 }

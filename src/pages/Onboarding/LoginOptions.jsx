@@ -13,7 +13,7 @@ import SchoolIcon from "@mui/icons-material/School";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import Swal from "sweetalert2";
-import smartzyLogo from "../../assets/smartzy.png";
+import CloseIcon from "@mui/icons-material/Close";
 import googleSvg from "../../assets/google.svg";
 import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
@@ -30,25 +30,37 @@ import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-const LoginOptions = () => {
+const LoginOptions = ({ role, onClose }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [view, setView] = useState("role");
   const [timer, setTimer] = useState(30);
   const [password, setPassword] = useState("");
-  const [roleSelected, setRoleSelected] = useState("");
 
   const [otpSent, setOtpSent] = useState(false);
   const [otp, setOtp] = useState("");
   const [generatedOtp, setGeneratedOtp] = useState("");
-  const [resendDisabled, setResendDisabled] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [view, setView] = useState(role ? "login" : "role");
+  const [roleSelected, setRoleSelected] = useState(role || "");
+  const [resendDisabled, setResendDisabled] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  // When user clicks Back, if role was passed, close modal instead of showing role screen
+  const reset = () => {
+    if (role) {
+      onClose();
+    } else {
+      setEmail("");
+      setPassword("");
+      setName("");
+      setView("role");
+    }
   };
 
   const rules = {
@@ -79,6 +91,7 @@ const LoginOptions = () => {
       }
 
       if (user.role !== roleSelected) {
+        onClose();
         Swal.fire(
           "Wrong Role",
           `Please login as ${user.role} instead.`,
@@ -90,14 +103,17 @@ const LoginOptions = () => {
       localStorage.setItem("userData", JSON.stringify(userData));
       Swal.fire("Success", `Logged in as ${user?.name}`, "success");
       dispatch(setIsAuthenticated(true));
+      onClose();
       navigate(`/dashboard/${roleSelected}`);
     } catch (error) {
+      onClose();
       Swal.fire("Error", "Google Sign-In Failed", "error");
     }
   };
 
   const handleManualLogin = async () => {
     if (!email || !password) {
+      onClose();
       Swal.fire("Error", "Please enter email and password", "error");
       return;
     }
@@ -112,14 +128,17 @@ const LoginOptions = () => {
       // ✅ Check if request was successful
       if (!user.success) {
         if (user.message === "Invalid email") {
+          onClose();
           Swal.fire(
             "Login Failed",
             "Email not found. Please sign up.",
             "error"
           );
         } else if (user.message === "Incorrect password") {
+          onClose();
           Swal.fire("Login Failed", "Incorrect password. Try again.", "error");
         } else {
+          onClose();
           Swal.fire(
             "Login Failed",
             user.message || "Invalid credentials",
@@ -131,6 +150,7 @@ const LoginOptions = () => {
 
       // ✅ Check if selected role matches
       if (user.role !== roleSelected) {
+        onClose();
         Swal.fire(
           "Wrong Role",
           `You are registered as ${user.role}. Please select the correct role.`,
@@ -144,8 +164,10 @@ const LoginOptions = () => {
 
       dispatch(setIsAuthenticated(true));
       Swal.fire("Success", `Welcome back, ${user.name}!`, "success");
+      onClose();
       navigate(`/dashboard/${user.role}`);
     } catch (error) {
+      onClose();
       console.error("Error during login:", error);
       Swal.fire("Error", "Something went wrong. Please try again.", "error");
     }
@@ -175,21 +197,16 @@ const LoginOptions = () => {
 
         dispatch(setIsAuthenticated(true));
         Swal.fire("Success", "Signup successful!", "success");
+        onClose();
         navigate("/dashboard/parent");
       } else {
         Swal.fire("Error", data.message || "Signup failed", "error");
       }
     } catch (error) {
+      onClose();
       console.error("Signup Error:", error);
       Swal.fire("Error", "Something went wrong", "error");
     }
-  };
-
-  const reset = () => {
-    setEmail("");
-    setPassword("");
-    setName("");
-    setView("role");
   };
 
   const handleRoleSelect = (role) => {
@@ -219,6 +236,7 @@ const LoginOptions = () => {
       }
     } catch (err) {
       console.error(err);
+      onClose();
       Swal.fire("Error", "Failed to send OTP", "error");
     }
   };
@@ -260,6 +278,7 @@ const LoginOptions = () => {
       Swal.fire("Success", "OTP Verified!", "success");
       handleSignUp();
     } else {
+      onClose();
       Swal.fire("Error", "Invalid OTP", "error");
     }
   };
@@ -267,306 +286,284 @@ const LoginOptions = () => {
   return (
     <Box
       sx={{
-        minHeight: "100vh",
-        bgcolor: "#f5f7fa",
+        width: "100%",
         display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        px: 2,
+        flexDirection: "column",
+        gap: "5px",
       }}
     >
-      <Paper
-        elevation={4}
-        sx={{ p: 4, width: "100%", maxWidth: 500, borderRadius: 3 }}
-      >
-        <Box textAlign="center" mb={3}>
-          <img src={smartzyLogo} alt="Smartzy" width={60} />
-          <Typography variant="h5" fontWeight="bold" mt={1}>
-            Welcome to Smartzy
-          </Typography>
-          <Typography variant="subtitle1" color="text.secondary">
-            Please choose how you’d like to continue
-          </Typography>
-        </Box>
-
-        {/* Role Selection */}
-        {view === "role" && (
-          <Grid container spacing={2} justifyContent="center">
-            <Grid item xs={6}>
-              <Button
-                fullWidth
-                variant="outlined"
-                startIcon={<PersonIcon />}
-                onClick={() => handleRoleSelect("parent")}
-              >
-                Parent
-              </Button>
-            </Grid>
-            <Grid item xs={6}>
-              <Button
-                fullWidth
-                variant="outlined"
-                startIcon={<SchoolIcon />}
-                onClick={() => handleRoleSelect("student")}
-              >
-                Student
-              </Button>
-            </Grid>
-          </Grid>
-        )}
-
-        {/* Login View */}
-        {view === "login" && (
-          <Box mt={3}>
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              mb={2}
-            >
-              <Typography variant="subtitle1">
-                Login as{" "}
-                <strong>
-                  {roleSelected.charAt(0).toUpperCase() + roleSelected.slice(1)}
-                </strong>
-              </Typography>
-              <Button
-                onClick={reset}
-                startIcon={<ArrowBackIcon />}
-                size="small"
-                variant="outlined"
-              >
-                Back
-              </Button>
-            </Box>
-
-            <Button
-              fullWidth
-              variant="contained"
-              startIcon={<img src={googleSvg} alt="Google" width="20" />}
-              onClick={handleGoogleSignIn}
-              sx={{ mb: 2 }}
-            >
-              Sign in with Google
-            </Button>
-
-            <Divider sx={{ my: 2 }}>or</Divider>
-
-            <TextField
-              fullWidth
-              label="Email"
-              margin="normal"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <TextField
-              fullWidth
-              label="Password"
-              type={showPassword ? "text" : "password"}
-              margin="normal"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              slotProps={{
-                input: {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton onClick={togglePasswordVisibility} edge="end">
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                },
-              }}
-            />
-
-            <Button
-              fullWidth
-              variant="contained"
-              sx={{ mt: 2 }}
-              onClick={handleManualLogin}
-            >
-              Login
-            </Button>
-
-            <Typography variant="body2" align="center" mt={2}>
-              {roleSelected === "parent" ? (
-                <>
-                  Don’t have an account?{" "}
-                  <Button
-                    onClick={() => {
-                      setView("signup");
-                      setEmail("");
-                      setPassword("");
-                    }}
-                    size="small"
-                  >
-                    Sign Up
-                  </Button>
-                </>
-              ) : (
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  fontStyle="italic"
-                >
-                  Don’t have an account? Ask your parent or teacher to register
-                  you.
-                </Typography>
-              )}
+      {/* Dynamic Header Text */}
+      {view !== "role" && (
+        <>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="h6" fontWeight="bold">
+              {view === "login" &&
+                `${
+                  roleSelected.charAt(0).toUpperCase() + roleSelected.slice(1)
+                } Login`}
+              {view === "signup" &&
+                `${
+                  roleSelected.charAt(0).toUpperCase() + roleSelected.slice(1)
+                } Sign Up`}
+              {view === "verify-otp" && "Verify OTP"}
             </Typography>
-          </Box>
-        )}
-
-        {/* Sign Up - Only for Parent */}
-        {view === "signup" && roleSelected === "parent" && (
-          <Box mt={3}>
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              mb={2}
-            >
-              <Typography variant="subtitle1">
-                Sign up as <strong>Parent</strong>
-              </Typography>
-              <Button
-                onClick={() => setView("login")}
-                startIcon={<ArrowBackIcon />}
-                size="small"
-                variant="outlined"
-              >
-                Back
-              </Button>
-            </Box>
-
-            <TextField
-              fullWidth
-              label="Full Name"
-              margin="normal"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <TextField
-              fullWidth
-              label="Email"
-              margin="normal"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <TextField
-              fullWidth
-              label="Password"
-              type={showPassword ? "text" : "password"}
-              margin="normal"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              slotProps={{
-                input: {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton onClick={togglePasswordVisibility} edge="end">
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                },
+            <IconButton
+              onClick={onClose}
+              sx={{
+                color: "#333",
               }}
-            />
-
-            {/* ✅ Password Strength Rules */}
-            <Box mt={1}>
-              <Typography
-                variant="body2"
-                color={rules.minLength ? "green" : "error"}
-              >
-                • Minimum 8 characters
-              </Typography>
-              <Typography
-                variant="body2"
-                color={rules.upperCase ? "green" : "error"}
-              >
-                • At least one uppercase letter
-              </Typography>
-              <Typography
-                variant="body2"
-                color={rules.lowerCase ? "green" : "error"}
-              >
-                • At least one lowercase letter
-              </Typography>
-              <Typography
-                variant="body2"
-                color={rules.number ? "green" : "error"}
-              >
-                • At least one number
-              </Typography>
-              <Typography
-                variant="body2"
-                color={rules.specialChar ? "green" : "error"}
-              >
-                • At least one special character (!@#$%^&*)
-              </Typography>
-            </Box>
-
-            <Button
-              fullWidth
-              variant="contained"
-              sx={{ mt: 2 }}
-              onClick={handleGetOTP}
-              disabled={
-                !rules.minLength ||
-                !rules.upperCase ||
-                !rules.lowerCase ||
-                !rules.number ||
-                !rules.specialChar
-              }
             >
-              Get OTP
-            </Button>
-
-            <Typography variant="body2" align="center" mt={2}>
-              Already have an account?{" "}
-              <Button
-                onClick={() => {
-                  setView("login");
-                  setName(""); // Reset name if needed
-                }}
-                size="small"
-              >
-                Login
-              </Button>
-            </Typography>
+              <CloseIcon fontSize="medium" />
+            </IconButton>
           </Box>
-        )}
+          <Divider />
+        </>
+      )}
 
-        {view === "verify-otp" && otpSent && (
-          <Box mt={3}>
-            <TextField
-              fullWidth
-              label="Enter OTP"
-              margin="normal"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-            />
-            <Button
-              fullWidth
-              variant="contained"
-              sx={{ mt: 2 }}
-              onClick={handleVerifyOTP}
-            >
-              Verify OTP
-            </Button>
+      {/* Role Selection */}
+      {view === "role" && (
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
             <Button
               fullWidth
               variant="outlined"
-              sx={{ mt: 1 }}
-              onClick={handleResendOTP}
-              disabled={resendDisabled}
+              startIcon={<PersonIcon />}
+              sx={{ height: 50, fontWeight: 600 }}
+              onClick={() => handleRoleSelect("parent")}
             >
-              {resendDisabled ? `Resend OTP in ${timer}s` : "Resend OTP"}
+              Parent
             </Button>
+          </Grid>
+          <Grid item xs={6}>
+            <Button
+              fullWidth
+              variant="outlined"
+              startIcon={<SchoolIcon />}
+              sx={{ height: 50, fontWeight: 600 }}
+              onClick={() => handleRoleSelect("student")}
+            >
+              Student
+            </Button>
+          </Grid>
+        </Grid>
+      )}
+
+      {/* Login View */}
+      {view === "login" && (
+        <>
+          <TextField
+            fullWidth
+            label="Email"
+            margin="normal"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <TextField
+            fullWidth
+            label="Password"
+            type={showPassword ? "text" : "password"}
+            margin="normal"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={togglePasswordVisibility} edge="end">
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+
+          <Button
+            fullWidth
+            variant="contained"
+            sx={{
+              mt: 2,
+              height: 48,
+              fontWeight: 600,
+              textTransform: "uppercase",
+            }}
+            onClick={handleManualLogin}
+          >
+            LOGIN
+          </Button>
+
+          <Divider sx={{ my: 2 }}>or</Divider>
+
+          <Button
+            fullWidth
+            variant="outlined"
+            startIcon={<img src={googleSvg} alt="Google" width="20" />}
+            onClick={handleGoogleSignIn}
+            sx={{
+              height: 48,
+              fontWeight: 600,
+              textTransform: "uppercase",
+              borderColor: "#ccc",
+            }}
+          >
+            SIGN IN WITH GOOGLE
+          </Button>
+
+          <Typography variant="body2" align="center" mt={2}>
+            {roleSelected === "parent" ? (
+              <>
+                Don’t have an account?{" "}
+                <Button
+                  onClick={() => {
+                    setView("signup");
+                    setEmail("");
+                    setPassword("");
+                  }}
+                  size="small"
+                >
+                  Sign Up
+                </Button>
+              </>
+            ) : (
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                fontStyle="italic"
+              >
+                Ask your parent or teacher to register you.
+              </Typography>
+            )}
+          </Typography>
+        </>
+      )}
+
+      {/* Sign Up View */}
+      {view === "signup" && roleSelected === "parent" && (
+        <Box>
+          <TextField
+            fullWidth
+            label="Full Name"
+            margin="normal"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <TextField
+            fullWidth
+            label="Email"
+            margin="normal"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <TextField
+            fullWidth
+            label="Password"
+            type={showPassword ? "text" : "password"}
+            margin="normal"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={togglePasswordVisibility} edge="end">
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+
+          {/* Password Rules */}
+          <Box mt={1}>
+            <Typography
+              variant="body2"
+              color={rules.minLength ? "green" : "error"}
+            >
+              • Minimum 8 characters
+            </Typography>
+            <Typography
+              variant="body2"
+              color={rules.upperCase ? "green" : "error"}
+            >
+              • At least one uppercase letter
+            </Typography>
+            <Typography
+              variant="body2"
+              color={rules.lowerCase ? "green" : "error"}
+            >
+              • At least one lowercase letter
+            </Typography>
+            <Typography
+              variant="body2"
+              color={rules.number ? "green" : "error"}
+            >
+              • At least one number
+            </Typography>
+            <Typography
+              variant="body2"
+              color={rules.specialChar ? "green" : "error"}
+            >
+              • At least one special character (!@#$%^&*)
+            </Typography>
           </Box>
-        )}
-      </Paper>
+
+          <Button
+            fullWidth
+            variant="contained"
+            sx={{ mt: 2, height: 48 }}
+            onClick={handleGetOTP}
+            disabled={
+              !rules.minLength ||
+              !rules.upperCase ||
+              !rules.lowerCase ||
+              !rules.number ||
+              !rules.specialChar
+            }
+          >
+            Get OTP
+          </Button>
+
+          <Typography variant="body2" align="center" mt={2}>
+            Already have an account?{" "}
+            <Button onClick={() => setView("login")} size="small">
+              Login
+            </Button>
+          </Typography>
+        </Box>
+      )}
+
+      {/* OTP Verification */}
+      {view === "verify-otp" && otpSent && (
+        <Box>
+          <TextField
+            fullWidth
+            label="Enter OTP"
+            margin="normal"
+            value={otp}
+            onChange={(e) => setOtp(e.target.value)}
+          />
+          <Button
+            fullWidth
+            variant="contained"
+            sx={{ mt: 2, height: 48 }}
+            onClick={handleVerifyOTP}
+          >
+            Verify OTP
+          </Button>
+          <Button
+            fullWidth
+            variant="outlined"
+            sx={{ mt: 1, height: 48 }}
+            onClick={handleResendOTP}
+            disabled={resendDisabled}
+          >
+            {resendDisabled ? `Resend OTP in ${timer}s` : "Resend OTP"}
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 };

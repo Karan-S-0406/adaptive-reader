@@ -22,12 +22,21 @@ class TeachersService {
 
   async uploadAssignment(data) {
     try {
-      const response = await axios.post(
-        `${this.reqUrl}teachers/uploadAssignment`,
-        data
-      );
+      const assignmentType = data.type;
+
+      // Decide endpoint based on type
+      const endpoint =
+        assignmentType === "reading"
+          ? `${this.reqUrl}teachers/uploadAssignmentReading`
+          : `${this.reqUrl}teachers/uploadAssignment`;
+
+      console.log(`Uploading ${assignmentType} assignment to:`, endpoint, data);
+
+      const response = await axios.post(endpoint, data);
+
       return response.data;
     } catch (error) {
+      console.error("Upload error:", error);
       return error;
     }
   }
