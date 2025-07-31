@@ -56,8 +56,8 @@
   position: relative;
   z-index: 1;
   transition: box-shadow 0.2s;
-
-  /* ✅ Set a fixed height for both panels */
+  width: 50%;
+  transition: width 0.3s ease;
   height: 600px; /* You can adjust this */
 }
 
@@ -298,4 +298,8 @@
 .book-html-content .poem {
   margin-left: 40px;
   font-style: italic;
+}
+
+.dual-panel-full {
+  width: 100% !important;
 }

@@ -16,7 +16,9 @@ export default function Footer() {
             </Typography>
           </div>
           <Typography className="footer-description">
-            An adaptive learning platform that understands how children learn, adjusting every story and math problem to their level. Built for the future of learning.
+            An adaptive learning platform that understands how children learn,
+            adjusting every story and math problem to their level. Built for the
+            future of learning.
           </Typography>
           <button className="footer-cta">Read. Solve. Win.</button>
         </div>
@@ -63,9 +65,7 @@ export default function Footer() {
 
       {/* Footer Bottom */}
       <div className="footer-bottom">
-        <p>
-          © {new Date().getFullYear()} Smartzy. All rights reserved. Built with <span style={{ color: "red" }}>❤️</span> for every learner.
-        </p>
+        <p>© {new Date().getFullYear()} Smartzy. All rights reserved.</p>
         <div className="footer-bottom-icons">
           <span>🔒 COPPA Compliant</span>
           <span>🌎 Available Worldwide</span>

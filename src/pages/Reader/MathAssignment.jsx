@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   Box,
   Typography,
@@ -9,19 +9,19 @@ import {
   Paper,
   Tooltip,
   Divider,
+  Modal,
 } from "@mui/material";
 import confetti from "canvas-confetti";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import {
   generateMathMCQ,
-  getMCQExplanation,
+  getMCQExplanation, // Keep this import as it's now a fallback
 } from "../store/action/students.action";
 import ReactMarkdown from "react-markdown";
 import "./MathAssignment.css";
-import { Modal } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function MathAssignment(storagePath) {
+export default function MathAssignment({ storagePath }) {
   const dispatch = useDispatch();
   const [questionData, setQuestionData] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -29,7 +29,7 @@ export default function MathAssignment(storagePath) {
   const [loading, setLoading] = useState(true);
   const [explanationLoading, setExplanationLoading] = useState(false);
   const [showExplanation, setShowExplanation] = useState(false);
-  const [explanation, setExplanation] = useState("");
+  const [displayExplanation, setDisplayExplanation] = useState("");
   const [feedbackEmoji, setFeedbackEmoji] = useState("");
   const [wrongAttempts, setWrongAttempts] = useState(0);
   const [showHelpModal, setShowHelpModal] = useState(false);
@@ -48,35 +48,58 @@ export default function MathAssignment(storagePath) {
     });
   };
 
-  const fetchQuestion = async () => {
+  const fetchQuestion = useCallback(async () => {
     setLoading(true);
     setIsCorrect(null);
     setSelectedOption(null);
     setShowExplanation(false);
-    setExplanation("");
+    setDisplayExplanation("");
     setFeedbackEmoji("");
-    try {
-      let actualStoragePath = storagePath;
+    setQuestionData(null);
+    setWrongAttempts(0);
+    setShowHelpModal(false);
 
-      // Check if storagePath is an object and has a 'storagePath' property
-      if (
-        typeof storagePath === "object" &&
-        storagePath !== null &&
-        storagePath.storagePath
-      ) {
-        actualStoragePath = storagePath.storagePath;
-      }
+    let actualStoragePath = storagePath;
+    if (
+      typeof storagePath === "object" &&
+      storagePath !== null &&
+      storagePath.storagePath
+    ) {
+      actualStoragePath = storagePath.storagePath;
+    }
+
+    if (!actualStoragePath || typeof actualStoragePath !== "string") {
+      console.error(
+        "Invalid storagePath provided. Cannot fetch MCQ from image."
+      );
+      setLoading(false);
+      setFeedbackEmoji(
+        "Error: Image path is invalid. Please provide a valid assignment."
+      );
+      return;
+    }
+
+    try {
       const res = await dispatch(
         generateMathMCQ({ grade: grade, storagePath: actualStoragePath })
       );
       console.log("Fetched question data:", res);
-      setQuestionData(res?.payload?.mcq);
+      if (res?.payload?.success && res.payload.mcq) {
+        setQuestionData(res.payload.mcq);
+      } else {
+        setFeedbackEmoji(
+          res?.payload?.message ||
+            "Could not generate math question. Please try again."
+        );
+        console.error("Failed to load MCQ:", res);
+      }
     } catch (err) {
       console.error("Failed to fetch MCQ:", err);
+      setFeedbackEmoji("Error fetching question. Please try again.");
     } finally {
       setLoading(false);
     }
-  };
+  }, [dispatch, grade, storagePath]);
 
   const checkAnswer = () => {
     if (!selectedOption) return;
@@ -104,8 +127,25 @@ export default function MathAssignment(storagePath) {
     }
   };
 
+  const handleHelpModalClose = () => {
+    setShowHelpModal(false);
+  };
+
   const fetchExplanation = async () => {
-    if (!questionData) return;
+    if (!questionData) {
+      console.warn("No question data available to fetch/show explanation.");
+      return;
+    }
+
+    // 1. Check if explanation is already in questionData
+    if (questionData.explanation) {
+      setDisplayExplanation(questionData.explanation);
+      setShowExplanation(true);
+      setWrongAttempts(0); // Reset attempts since help was given
+      return; // Exit as explanation is now displayed
+    }
+
+    // 2. If not pre-loaded, fetch it via API
     try {
       setExplanationLoading(true);
       const res = await dispatch(
@@ -116,21 +156,36 @@ export default function MathAssignment(storagePath) {
         })
       );
       console.log("Explanation response:", res);
-      setExplanation(res?.payload?.explanation);
-      setWrongAttempts(0); // reset wrong attempts after fetching explanation
-      setShowExplanation(true);
+      if (res?.payload?.success) {
+        setDisplayExplanation(res.payload.explanation);
+        setShowExplanation(true);
+        setWrongAttempts(0); // Reset attempts after fetching and showing explanation
+      } else {
+        setDisplayExplanation("Failed to load explanation.");
+        setShowExplanation(true);
+        console.error("Failed to get explanation via API:", res);
+      }
     } catch (err) {
-      console.error("Error fetching explanation:", err);
+      console.error("Error fetching explanation via API:", err);
+      setDisplayExplanation("Error loading explanation.");
+      setShowExplanation(true);
     } finally {
       setExplanationLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchQuestion();
-  }, [grade]);
+  const handleHelpModalConfirm = () => {
+    setShowHelpModal(false); // Close modal
+    fetchExplanation(); // This will now intelligently show/fetch the explanation
+  };
 
-  if (loading) {
+  useEffect(() => {
+    if (storagePath && grade !== undefined) {
+      fetchQuestion();
+    }
+  }, [fetchQuestion, storagePath, grade]);
+
+  if (loading || grade === undefined) {
     return (
       <Box className="math-quiz-container">
         <Paper className="math-quiz-box" elevation={4}>
@@ -141,12 +196,17 @@ export default function MathAssignment(storagePath) {
             height="300px"
           >
             <CircularProgress />
+            <Typography variant="h6" sx={{ ml: 2 }}>
+              {grade === undefined
+                ? "Loading student data..."
+                : "Fetching your Math Assignment..."}
+            </Typography>
           </Box>
         </Paper>
       </Box>
     );
   }
-  // Handle case where questionData is null after loading (e.g., API error)
+
   if (!questionData) {
     return (
       <Box className="error-state">
@@ -159,30 +219,71 @@ export default function MathAssignment(storagePath) {
       </Box>
     );
   }
+
   return (
     <Fade in timeout={500}>
       <Box className="math-quiz-container">
         <Paper className="math-quiz-box" elevation={4}>
           <Box className="quiz-header">
-            <Typography variant="h6">Grade {grade} Math Challenge</Typography>
+            <Typography variant="h6">
+              Grade {grade} - Math Assignment
+            </Typography>
             <Tooltip title="Get explanation for this question">
-              <IconButton onClick={fetchExplanation}>
-                <HelpOutlineIcon />
+              <IconButton
+                onClick={fetchExplanation} // <--- This now calls the intelligent function
+                disabled={
+                  explanationLoading || showExplanation || !questionData
+                } // Disable if loading or already showing
+              >
+                {explanationLoading ? (
+                  <CircularProgress size={24} />
+                ) : showExplanation ? (
+                  <HelpOutlineIcon color="success" /> // Indicate explanation is visible
+                ) : (
+                  <HelpOutlineIcon />
+                )}
               </IconButton>
             </Tooltip>
           </Box>
           <Divider sx={{ marginBottom: "10px" }} />
+
+          {/* If questionData.question now includes the diagram description: */}
+          {/* <Box className="image-description-container" sx={{ mb: 2 }}>
+              <Typography variant="body2" sx={{ fontStyle: 'italic', color: '#666' }}>
+                **Diagram:** {questionData.imageDescription}
+              </Typography>
+            </Box> */}
+
           <Typography variant="h5" className="question-text">
             {questionData?.question}
           </Typography>
+
           <Box className="options-grid">
             {Object.entries(questionData.options).map(([key, value]) => (
               <Button
                 key={key}
                 className={`option-btn ${
                   selectedOption === key ? "selected" : ""
-                }`}
-                onClick={() => setSelectedOption(key)}
+                } ${
+                  isCorrect !== null && key === questionData.correctAnswer
+                    ? "correct-answer-highlight"
+                    : ""
+                }
+                ${
+                  isCorrect !== null &&
+                  selectedOption === key &&
+                  selectedOption !== questionData.correctAnswer
+                    ? "wrong-answer-highlight"
+                    : ""
+                }
+                `}
+                onClick={() => {
+                  setSelectedOption(key);
+                  setIsCorrect(null);
+                  setFeedbackEmoji("");
+                  setShowExplanation(false); // Hide explanation on new option selection
+                  setDisplayExplanation(""); // Clear explanation text
+                }}
               >
                 <strong>{key}.</strong> {value}
               </Button>
@@ -194,7 +295,6 @@ export default function MathAssignment(storagePath) {
               variant="contained"
               color="primary"
               onClick={checkAnswer}
-              disabled={!selectedOption}
             >
               Check Answer
             </Button>
@@ -214,48 +314,42 @@ export default function MathAssignment(storagePath) {
             </Box>
           )}
 
-          {showExplanation && !explanationLoading && (
+          {showExplanation && ( // No need for explanationLoading check here directly
             <Fade in={showExplanation}>
               <Paper className="explanation-box">
                 <Typography variant="subtitle1" fontWeight={600}>
                   Why this is the right answer:
                 </Typography>
-                <ReactMarkdown>{explanation}</ReactMarkdown>
+                <ReactMarkdown>{displayExplanation}</ReactMarkdown>
               </Paper>
             </Fade>
           )}
-          <Modal
-            open={showHelpModal}
-            onClose={() => setShowHelpModal(false)}
-            closeAfterTransition
-            BackdropProps={{ timeout: 400 }}
-          >
-            <Fade in={showHelpModal}>
-              <Box className="help-modal">
-                <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2, color: "black" }}>
-                  Need help? Want to go step-by-step?
-                </Typography>
-                <Box display="flex" gap={2} justifyContent="center">
-                  <Button
-                    variant="outlined"
-                    onClick={() => setShowHelpModal(false)}
-                  >
-                    No, I'll try again
-                  </Button>
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      fetchExplanation();
-                      setShowHelpModal(false);
-                    }}
-                  >
-                    Yes, show explanation
-                  </Button>
-                </Box>
-              </Box>
-            </Fade>
-          </Modal>
         </Paper>
+        <Modal
+          open={showHelpModal}
+          onClose={handleHelpModalClose}
+          closeAfterTransition
+          BackdropProps={{ timeout: 400 }}
+        >
+          <Fade in={showHelpModal}>
+            <Box className="help-modal">
+              <Typography
+                variant="h6"
+                sx={{ fontWeight: "bold", mb: 2, color: "black" }}
+              >
+                Need help? Want to go step-by-step?
+              </Typography>
+              <Box display="flex" gap={2} justifyContent="center">
+                <Button variant="outlined" onClick={handleHelpModalClose}>
+                  No, I'll try again
+                </Button>
+                <Button variant="contained" onClick={handleHelpModalConfirm}>
+                  Yes, show explanation
+                </Button>
+              </Box>
+            </Box>
+          </Fade>
+        </Modal>
       </Box>
     </Fade>
   );

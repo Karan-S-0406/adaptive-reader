@@ -344,7 +344,11 @@ export default function ReadingAssignment({ selectedAssignment }) {
               </div>
             )}
             <Divider orientation="vertical" flexItem className="dual-divider" />
-            <div className="dual-panel dual-panel-right">
+            <div
+              className={`dual-panel dual-panel-right ${
+                !showLeftPanel ? "dual-panel-full" : ""
+              }`}
+            >
               <div className="dual-panel-controls">
                 <Select
                   value={rightLang}

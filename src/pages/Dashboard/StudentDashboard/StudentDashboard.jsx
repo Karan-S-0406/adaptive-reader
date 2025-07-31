@@ -62,7 +62,7 @@ export default function StudentDashboard() {
           >
             Math
           </Button>
-          <Tooltip title="Settings">
+          {/* <Tooltip title="Settings">
             <IconButton onClick={handleSettingsClick} className="settings-icon">
               <SettingsIcon />
             </IconButton>
@@ -74,7 +74,7 @@ export default function StudentDashboard() {
             <MenuItem onClick={() => alert("Log out clicked!")}>
               Log Out
             </MenuItem>
-          </Menu>
+          </Menu> */}
         </Box>
       </Box>
 
