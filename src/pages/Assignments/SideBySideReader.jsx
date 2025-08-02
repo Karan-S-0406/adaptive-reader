@@ -1,5 +1,5 @@
-import MathAssignment from "./MathAssignment";
-import ReadingAssignment from "./ReadingAssignment";
+import MathAssignment from "./Math/MathAssignment";
+import ReadingAssignment from "./Reader/ReadingAssignment";
 
 export default function SideBySideReader({ selectedAssignment, storagePath }) {
   if (!selectedAssignment) return null;

@@ -64,8 +64,11 @@ export const fetchBookContent = createAsyncThunk(
 
 export const generateMathMCQ = createAsyncThunk(
   "studentsStore/generateMathMCQ",
-  async ({grade, storagePath}) => {
-    const response = await studentsService.generateMathMCQ({grade, storagePath});
+  async ({ grade, storagePath }) => {
+    const response = await studentsService.generateMathMCQ({
+      grade,
+      storagePath,
+    });
     console.log("Response from generateMathMCQ:", response);
     return response;
   }
@@ -74,9 +77,17 @@ export const generateMathMCQ = createAsyncThunk(
 export const getMCQExplanation = createAsyncThunk(
   "studentsStore/getMCQExplanation",
   async (reqBody) => {
-
     const response = await studentsService.getMCQExplanation(reqBody);
     console.log("Response from getMCQExplanation:", response);
+    return response;
+  }
+);
+
+export const fetchSignedImageUrl = createAsyncThunk(
+  "studentsStore/fetchSignedImageUrl",
+  async ({storagePath}) => {
+    const response = await studentsService.fetchSignedImageUrl({storagePath});
+    console.log("Response from fetchSignedImageUrl:", response);
     return response;
   }
 );

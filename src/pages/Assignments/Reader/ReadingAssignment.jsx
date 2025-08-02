@@ -18,16 +18,16 @@ import PauseIcon from "@mui/icons-material/Pause";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import StopIcon from "@mui/icons-material/Stop";
 import ReactMarkdown from "react-markdown";
-import LoaderModal from "../Loader/LoaderModal";
+import LoaderModal from "../../Loader/LoaderModal";
 import {
   adaptForUSStudents,
   fetchBookContent,
   transformContent,
   updatePageReadStatus,
-} from "../store/action/students.action";
+} from "../../store/action/students.action";
 import { useDispatch, useSelector } from "react-redux";
-import "./SideBySideReader.css"; // ✅ Import CSS
-import { updateReadingProgress } from "../store/slice/students.slice";
+import "../SideBySideReader.css"; // ✅ Import CSS
+import { updateReadingProgress } from "../../store/slice/students.slice";
 
 const LANGUAGES = [
   { value: "en", label: "ENGLISH" },

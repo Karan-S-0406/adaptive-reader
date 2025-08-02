@@ -14,7 +14,7 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAssignmentsByGrade } from "../../../../store/action/students.action";
-import SideBySideReader from "../../../../Reader/SideBySideReader";
+import SideBySideReader from "../../../../Assignments/SideBySideReader";
 import { useLocation } from "react-router-dom";
 
 export default function Assignments() {

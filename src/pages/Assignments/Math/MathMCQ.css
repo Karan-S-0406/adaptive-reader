@@ -1,21 +1,28 @@
 .math-quiz-container {
-  padding: 3rem 1rem;
+  padding: 1.5rem 1rem;
   background: linear-gradient(135deg, #e0f7fa, #e8f5e9);
-  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: start;
 }
 
+.mcq-with-tools {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  max-width: 1000px;
+  gap: 16px;
+}
+
 .math-quiz-box {
-  padding: 2rem 2rem;
+  flex: 1;
+  padding: 2rem;
   border-radius: 16px;
   background: #ffffff;
   position: relative;
-  width: 100%;
-  max-width: 700px;
   box-shadow: 0 6px 30px rgba(0, 0, 0, 0.12);
   animation: slideInUp 0.5s ease;
+  max-width: 700px;
 }
 
 @keyframes slideInUp {
@@ -141,7 +148,7 @@
 }
 
 .help-modal .MuiButton-contained {
-  background-color: #1B6CA8;
+  background-color: #1b6ca8;
   color: white;
 }
 
@@ -159,4 +166,3 @@
     opacity: 1;
   }
 }
-

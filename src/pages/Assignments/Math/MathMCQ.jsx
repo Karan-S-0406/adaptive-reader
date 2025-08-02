@@ -16,12 +16,12 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import {
   generateMathMCQ,
   getMCQExplanation, // Keep this import as it's now a fallback
-} from "../store/action/students.action";
+} from "../../store/action/students.action";
 import ReactMarkdown from "react-markdown";
-import "./MathAssignment.css";
+import "./MathMCQ.css";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function MathAssignment({ storagePath }) {
+export default function MathMCQ({ storagePath }) {
   const dispatch = useDispatch();
   const [questionData, setQuestionData] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -246,13 +246,6 @@ export default function MathAssignment({ storagePath }) {
             </Tooltip>
           </Box>
           <Divider sx={{ marginBottom: "10px" }} />
-
-          {/* If questionData.question now includes the diagram description: */}
-          {/* <Box className="image-description-container" sx={{ mb: 2 }}>
-              <Typography variant="body2" sx={{ fontStyle: 'italic', color: '#666' }}>
-                **Diagram:** {questionData.imageDescription}
-              </Typography>
-            </Box> */}
 
           <Typography variant="h5" className="question-text">
             {questionData?.question}

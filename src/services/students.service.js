@@ -100,6 +100,22 @@ class StudentsService {
       return error;
     }
   }
+
+  async fetchSignedImageUrl({ storagePath }) {
+    try {
+      console.log(
+        "Fetching signed image URL for storagePath:",
+        storagePath
+      );
+      const response = await axios.post(
+        `${this.reqUrl}students/getSignedImageUrl/`,
+        { storagePath }
+      );
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
 }
 
 export default new StudentsService();

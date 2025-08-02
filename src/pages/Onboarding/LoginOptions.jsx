@@ -232,6 +232,7 @@ const LoginOptions = ({ role, onClose }) => {
         setOtpSent(true);
         setView("verify-otp");
       } else {
+        onClose();
         Swal.fire("Error", data.message || "Failed to send OTP", "error");
       }
     } catch (err) {
