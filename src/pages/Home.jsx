@@ -4,6 +4,7 @@ import homePageImg from "../assets/homeBg.jpg";
 import gamified from "../assets/gamified.png";
 import smartMath from "../assets/smartMath.png";
 import adaptiveReader from "../assets/adaptiveReader.png";
+import { useNavigate } from "react-router-dom";
 
 import ElectricBoltIcon from "@mui/icons-material/ElectricBolt";
 import { useAuthModal } from "../pages/LoginModal";
@@ -90,6 +91,7 @@ const featureData = [
 ];
 
 export default function Home() {
+  const navigate = useNavigate();
   const { openModal } = useAuthModal();
 
   return (
@@ -135,7 +137,26 @@ export default function Home() {
             <Button
               variant="contained"
               className="cta-btn primary"
-              onClick={() => openModal("student")}
+              onClick={() => {
+                const storedUser = localStorage.getItem("userData");
+                if (storedUser) {
+                  try {
+                    const parsedUser = JSON.parse(storedUser);
+                    if (parsedUser.role === "student") {
+                      navigate("/dashboard/student");
+                    } else if (parsedUser.role === "parent") {
+                      navigate("/dashboard/parent");
+                    } else {
+                      openModal("student");
+                    }
+                  } catch (error) {
+                    console.error("Invalid userData in localStorage:", error);
+                    openModal("student");
+                  }
+                } else {
+                  openModal("student");
+                }
+              }}
             >
               ⚡ Start Learning Now
             </Button>

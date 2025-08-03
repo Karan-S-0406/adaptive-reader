@@ -19,6 +19,7 @@ const userData = createSlice({
     level: "",
     isAuthenticated: false,
     children: [],
+    hasFetchedChildren: false,
     loading: false,
     addStudentLoading: false,
   },
@@ -115,6 +116,7 @@ const userData = createSlice({
     });
     builder.addCase(fetchChildDetails.fulfilled, (state, action) => {
       console.log(action.payload, "fetchChildDetails slice");
+      state.hasFetchedChildren = true;
       state.children = action.payload.children || [];
       state.loading = false;
     });

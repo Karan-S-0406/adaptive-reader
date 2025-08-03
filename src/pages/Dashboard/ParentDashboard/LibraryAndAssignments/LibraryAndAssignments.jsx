@@ -24,18 +24,16 @@ import { fetchChildDetails } from "../../../store/action/users.action";
 
 const LibraryAndAssignments = () => {
   const dispatch = useDispatch();
-  const { children, loading } = useSelector(
+  const user = useSelector((state) => state.storeData.userData);
+  const { children, loading, hasFetchedChildren } = useSelector(
     (state) => state.storeData.userData
   );
-  const user = useSelector((state) => state.storeData.userData);
-
-  console.log(children, loading, user, "slice data");
 
   useEffect(() => {
-    if (user?.userId && (!children || children.length === 0)) {
+    if (!hasFetchedChildren && user?.userId) {
       dispatch(fetchChildDetails(user.userId));
     }
-  }, [user?.userId, children, dispatch]);
+  }, [dispatch, user?.userId, hasFetchedChildren]);
 
   const totalChildren = children?.length || 0;
   const totalAssignments = children?.reduce(
@@ -123,6 +121,16 @@ const LibraryAndAssignments = () => {
       {/* ✅ Child Assignments */}
       {loading ? (
         <LoaderModal open={loading} messages={["Fetching Child Data..."]} />
+      ) : totalChildren === 0 ? (
+        <Box sx={{ textAlign: "center", mt: 6 }}>
+          <Typography variant="h6" color="textSecondary" gutterBottom>
+            No children found.
+          </Typography>
+          <Typography variant="body2" color="textSecondary">
+            You haven't added any children yet. Please add a child to monitor
+            their progress.
+          </Typography>
+        </Box>
       ) : (
         <Grid container spacing={3}>
           {children?.map((child) => (

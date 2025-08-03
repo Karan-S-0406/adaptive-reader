@@ -211,7 +211,12 @@ export default function UploadAssignmentSection() {
 
       <FormControl fullWidth margin="dense">
         <InputLabel>Assignment Type</InputLabel>
-        <Select name="type" value={formData.type} onChange={handleChange}>
+        <Select
+          name="type"
+          value={formData.type}
+          onChange={handleChange}
+          label="Assignment Type"
+        >
           {ASSIGNMENT_TYPES.map((t) => (
             <MenuItem key={t.value} value={t.value}>
               {t.label}
@@ -226,6 +231,7 @@ export default function UploadAssignmentSection() {
           name="gradeTargeted"
           value={formData.gradeTargeted}
           onChange={handleChange}
+          label="Grade"
         >
           {GRADES.map((g) => (
             <MenuItem key={g.value} value={g.value}>

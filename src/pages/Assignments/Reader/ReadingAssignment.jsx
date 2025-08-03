@@ -93,6 +93,10 @@ export default function ReadingAssignment({ selectedAssignment }) {
   const [rightLevel, setRightLevel] = useState("A");
   const [selectedGrade, setSelectedGrade] = useState("1");
   const [rightContent, setRightContent] = useState("");
+  const [isListening, setIsListening] = useState(false);
+  const [mediaRecorder, setMediaRecorder] = useState(null);
+  const [recordedText, setRecordedText] = useState("");
+  const [stream, setStream] = useState(null);
 
   // ✅ Progress Tracking
   const [readPages, setReadPages] = useState(new Set());
@@ -297,6 +301,41 @@ export default function ReadingAssignment({ selectedAssignment }) {
     setTimeSpent(0);
   };
 
+  const startListening = async () => {
+    if (isListening) return;
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      setStream(stream);
+      const newMediaRecorder = new MediaRecorder(stream);
+      setMediaRecorder(newMediaRecorder);
+      setIsListening(true);
+      setRecordedText(""); // Clear previous text
+
+      newMediaRecorder.ondataavailable = (event) => {
+        // Send the audio data to your backend for transcription
+        if (event.data.size > 0) {
+          sendAudioToBackend(event.data);
+        }
+      };
+
+      newMediaRecorder.start(1000); // Capture audio every 1 second
+      console.log("Recording started...");
+    } catch (err) {
+      console.error("Error accessing microphone:", err);
+      setIsListening(false);
+    }
+  };
+
+  const stopListening = () => {
+    if (mediaRecorder) {
+      mediaRecorder.stop();
+      mediaRecorder.stream.getTracks().forEach((track) => track.stop());
+    }
+    setIsListening(false);
+    console.log("Recording stopped.");
+  };
+  
   return (
     <div className="dual-reader-root">
       <div className="dual-reader-card">
@@ -404,6 +443,26 @@ export default function ReadingAssignment({ selectedAssignment }) {
                 <IconButton onClick={() => window.speechSynthesis.cancel()}>
                   <StopIcon />
                 </IconButton>
+                {/* ... inside your dual-panel-controls ... */}
+                <Tooltip title="Start Reading">
+                  <IconButton onClick={startListening} disabled={isListening}>
+                    <PlayArrowIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Stop Reading">
+                  <IconButton onClick={stopListening} disabled={!isListening}>
+                    <StopIcon />
+                  </IconButton>
+                </Tooltip>
+                {/* ... and a place to show the transcribed text ... */}
+                <Box mt={2}>
+                  <Typography variant="body2" color="textSecondary">
+                    Your reading:
+                  </Typography>
+                  <Box className="transcribed-text-box">
+                    {recordedText || "Start reading to see your words here."}
+                  </Box>
+                </Box>
               </div>
 
               <div className="dual-panel-content">
