@@ -61,7 +61,7 @@ export default function MathAssignment({ storagePath }) {
             />
           ) : (
             <>
-              <Typography variant="h5" sx={{fontWeight: "bold", mb: 3}}>
+              <Typography variant="h5" sx={{fontWeight: "bold", mb: 5}}>
                 Assignment Image
               </Typography>
               <img

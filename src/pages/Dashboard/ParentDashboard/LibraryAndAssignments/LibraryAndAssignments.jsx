@@ -3,7 +3,6 @@ import {
   Box,
   Typography,
   Card,
-  CardContent,
   Avatar,
   LinearProgress,
   Accordion,
@@ -21,6 +20,7 @@ import GroupIcon from "@mui/icons-material/Group";
 import { useDispatch, useSelector } from "react-redux";
 import LoaderModal from "../../../Loader/LoaderModal";
 import { fetchChildDetails } from "../../../store/action/users.action";
+import "./LibraryAndAssignments.css";
 
 const LibraryAndAssignments = () => {
   const dispatch = useDispatch();
@@ -61,17 +61,18 @@ const LibraryAndAssignments = () => {
       : 0;
 
   return (
-    <Box sx={{ p: 4, backgroundColor: "#F9FAFB", minHeight: "100vh" }}>
+    <Box sx={{ p: 4, display: "flex", flexDirection: "column",gap: 4 }}>
+      <Typography variant="h6" gutterBottom color="black">
+        Assignment Progress
+      </Typography>
       <Typography variant="body1" color="text.secondary" gutterBottom>
         Monitor your child’s assignments and reading progress.
       </Typography>
 
-      {/* ✅ Summary Section */}
+      {/* Summary Cards */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} md={3}>
-          <Paper
-            sx={{ p: 3, textAlign: "center", borderRadius: 3, boxShadow: 2 }}
-          >
+        <Grid item xs={12} sm={6} md={3}>
+          <Paper className="summary-card">
             <GroupIcon color="primary" fontSize="large" />
             <Typography variant="h6">{totalChildren}</Typography>
             <Typography variant="body2" color="textSecondary">
@@ -79,10 +80,8 @@ const LibraryAndAssignments = () => {
             </Typography>
           </Paper>
         </Grid>
-        <Grid item xs={12} md={3}>
-          <Paper
-            sx={{ p: 3, textAlign: "center", borderRadius: 3, boxShadow: 2 }}
-          >
+        <Grid item xs={12} sm={6} md={3}>
+          <Paper className="summary-card">
             <AssignmentIcon color="secondary" fontSize="large" />
             <Typography variant="h6">{totalAssignments}</Typography>
             <Typography variant="body2" color="textSecondary">
@@ -90,10 +89,8 @@ const LibraryAndAssignments = () => {
             </Typography>
           </Paper>
         </Grid>
-        <Grid item xs={12} md={3}>
-          <Paper
-            sx={{ p: 3, textAlign: "center", borderRadius: 3, boxShadow: 2 }}
-          >
+        <Grid item xs={12} sm={6} md={3}>
+          <Paper className="summary-card">
             <CheckCircleIcon sx={{ color: "#4CAF50" }} fontSize="large" />
             <Typography variant="h6">{completedAssignments}</Typography>
             <Typography variant="body2" color="textSecondary">
@@ -101,14 +98,12 @@ const LibraryAndAssignments = () => {
             </Typography>
           </Paper>
         </Grid>
-        <Grid item xs={12} md={3}>
-          <Paper
-            sx={{ p: 3, textAlign: "center", borderRadius: 3, boxShadow: 2 }}
-          >
+        <Grid item xs={12} sm={6} md={3}>
+          <Paper className="summary-card">
             <LinearProgress
               variant="determinate"
               value={avgProgress}
-              sx={{ height: 8, borderRadius: 4, mb: 1 }}
+              sx={{ width: "100%", height: 8, borderRadius: 4, marginBottom: 8 }}
             />
             <Typography variant="h6">{avgProgress}%</Typography>
             <Typography variant="body2" color="textSecondary">
@@ -118,7 +113,7 @@ const LibraryAndAssignments = () => {
         </Grid>
       </Grid>
 
-      {/* ✅ Child Assignments */}
+      {/* Child Assignments */}
       {loading ? (
         <LoaderModal open={loading} messages={["Fetching Child Data..."]} />
       ) : totalChildren === 0 ? (
@@ -135,12 +130,12 @@ const LibraryAndAssignments = () => {
         <Grid container spacing={3}>
           {children?.map((child) => (
             <Grid item xs={12} md={6} lg={4} key={child.id}>
-              <Card sx={{ borderRadius: 3, boxShadow: 3, p: 2 }}>
-                <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-                  <Avatar sx={{ width: 56, height: 56, bgcolor: "#42A5F5" }}>
+              <Card className="child-card">
+                <Box className="child-header">
+                  <Avatar className="child-avatar">
                     {child.name.charAt(0)}
                   </Avatar>
-                  <Box sx={{ ml: 2 }}>
+                  <Box className="child-info">
                     <Typography variant="h6">{child.name}</Typography>
                     <Typography variant="body2" color="textSecondary">
                       Grade: {child.grade} | Level: {child.level}
@@ -169,22 +164,11 @@ const LibraryAndAssignments = () => {
                           <Typography variant="subtitle1" fontWeight="500">
                             {progress.assignment?.book?.title}
                           </Typography>
-                          <Box
-                            sx={{
-                              display: "flex",
-                              alignItems: "center",
-                              mt: 1,
-                            }}
-                          >
+                          <Box className="progress-wrapper">
                             <LinearProgress
                               variant="determinate"
                               value={progress?.progressPercent}
-                              sx={{
-                                flex: 1,
-                                height: 8,
-                                borderRadius: 4,
-                                mr: 1,
-                              }}
+                              className="accordion-progress-bar"
                             />
                             <Typography variant="caption" sx={{ minWidth: 35 }}>
                               {progress.progressPercent}%

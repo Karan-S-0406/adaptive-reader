@@ -1,0 +1,49 @@
+/* Summary cards */
+.summary-card {
+  padding: 24px;
+  border-radius: 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  min-height: 80px;
+  height: 100%;
+}
+
+/* Child card layout */
+.child-card {
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Avatar and name layout */
+.child-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.child-avatar {
+  width: 56px;
+  height: 56px;
+  background-color: #42a5f5;
+}
+
+.child-info {
+  margin-left: 16px;
+}
+
+.accordion-progress-bar {
+  height: 8px;
+  border-radius: 4px;
+  margin-right: 8px;
+}
+
+.progress-wrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
