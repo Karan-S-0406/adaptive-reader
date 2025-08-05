@@ -7,6 +7,7 @@ import {
   CircularProgress,
   Grid,
   Chip,
+  Tooltip,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AssignmentIcon from "@mui/icons-material/Assignment";
@@ -16,11 +17,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAssignmentsByGrade } from "../../../../store/action/students.action";
 import SideBySideReader from "../../../../Assignments/SideBySideReader";
 import { useLocation } from "react-router-dom";
+import "./Assignments.css"; // Assuming you have some styles for this component
 
 export default function Assignments() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
+  const [statusFilter, setStatusFilter] = useState("all");
   const selectedType = location.state?.type || "reading"; // fallback to reading
 
   const user = useSelector((state) => state.storeData.userData);
@@ -30,6 +33,8 @@ export default function Assignments() {
   const assignmentsFromStore = useSelector(
     (state) => state.storeData.studentsData.assignments
   );
+
+  const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
   useEffect(() => {
     // ✅ If assignments already exist in store, use them and skip API call
@@ -66,7 +71,7 @@ export default function Assignments() {
     };
 
     fetchAssignments();
-  }, [assignmentsFromStore, dispatch, user?.grade, user?.userId]);
+  }, [assignmentsFromStore, dispatch, selectedType, user?.grade, user?.userId]);
 
   const handleBack = () => {
     setSelectedAssignment(null);
@@ -82,45 +87,54 @@ export default function Assignments() {
     return pdfUrl.startsWith(prefix) ? pdfUrl.slice(prefix.length) : pdfUrl;
   };
 
+  const filteredAssignments = assignments.filter((a) => {
+    if (statusFilter === "all") return true;
+    if (statusFilter === "new") return a.readingProgress === null;
+    if (statusFilter === "in-progress")
+      return a.readingProgress && a.readingProgress.isCompleted === false;
+    if (statusFilter === "completed")
+      return a.readingProgress && a.readingProgress.isCompleted === true;
+    return true;
+  });
+
   return (
-    <Box sx={{ p: 3, backgroundColor: "#f9fafc", minHeight: "70vh" }}>
-      <Paper
-        sx={{
-          p: 3,
-          borderRadius: "16px",
-          boxShadow: "0 6px 20px rgba(0,0,0,0.05)",
-        }}
-      >
+    <Box className="reading-container">
+      <Paper className="reading-card">
         {/* Header */}
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          mb={3}
-        >
-          <Typography
-            variant="h5"
-            sx={{ fontWeight: "bold", color: "#1B6CA8" }}
-          >
+        <Box className="reading-header">
+          <Typography variant="h5" className="section-title">
             {selectedType === "math"
               ? "🧮 Math Assignments"
               : "📚 Reading Assignments"}
           </Typography>
 
-          <Button
-            variant="outlined"
-            startIcon={<ArrowBackIcon />}
-            onClick={() =>
-              selectedAssignment ? handleBack() : navigate("/dashboard/student")
-            }
-            sx={{
-              textTransform: "none",
-              borderRadius: "8px",
-              fontWeight: 500,
-            }}
-          >
-            Back to {selectedAssignment ? "Assignments" : "Dashboard"}
-          </Button>
+          <Box className="assignment-controls">
+            <Typography className="status-label">Status:</Typography>
+
+            <select
+              className="status-filter"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <option value="all">All</option>
+              <option value="new">New</option>
+              <option value="in-progress">In-Progress</option>
+              <option value="completed">Completed</option>
+            </select>
+
+            <Button
+              variant="outlined"
+              startIcon={<ArrowBackIcon />}
+              onClick={() =>
+                selectedAssignment
+                  ? handleBack()
+                  : navigate("/dashboard/student")
+              }
+              className="back-button"
+            >
+              Back to {selectedAssignment ? "Assignments" : "Dashboard"}
+            </Button>
+          </Box>
         </Box>
 
         {/* Assignment View */}
@@ -136,89 +150,77 @@ export default function Assignments() {
             onBack={handleBack}
           />
         ) : loading ? (
-          <Box
-            sx={{
-              textAlign: "center",
-              py: 6,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
+          <Box className="loading-container">
             <CircularProgress color="primary" />
-            <Typography sx={{ mt: 2, color: "#666" }}>
+            <Typography className="loading-text">
               Loading assignments...
             </Typography>
           </Box>
         ) : assignments.length === 0 ? (
-          <Box textAlign="center" py={6}>
+          <Box className="no-data-container">
             <Typography variant="h6" color="text.secondary">
               No assignments available.
             </Typography>
           </Box>
         ) : (
-          <Grid container spacing={3}>
-            {assignments.map((a, i) => (
-              <Grid item xs={12} sm={6} md={4} key={i}>
-                <Paper
-                  elevation={3}
-                  sx={{
-                    p: 3,
-                    borderRadius: "12px",
-                    background:
-                      "linear-gradient(135deg, #ffffff 60%, #f0f8ff 100%)",
-                    cursor: "pointer",
-                    transition: "0.3s",
-                    "&:hover": {
-                      transform: "translateY(-4px)",
-                      boxShadow: "0 8px 24px rgba(0,0,0,0.1)",
-                    },
-                  }}
-                  onClick={() => handleAssignmentClick(a)}
-                >
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    mb={2}
-                    width={"250px"}
+          <Box className="assignments-wrapper">
+            {filteredAssignments.length === 0 ? (
+              <Box textAlign="center" py={6}>
+                <Typography variant="h6" color="text.secondary">
+                  {`No assignments found for the selected status: ${capitalize(
+                    statusFilter
+                  )}.`}
+                </Typography>
+              </Box>
+            ) : (
+              <Box className="assignments-wrapper">
+                {filteredAssignments.map((a, i) => (
+                  <Grid
+                    item
+                    xs={12}
+                    sm={6}
+                    md={4}
+                    key={i}
+                    className="assignment-grid"
                   >
-                    <AssignmentIcon sx={{ color: "#1B6CA8", mr: 1 }} />
-                    <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                      {a.title}
-                    </Typography>
-                  </Box>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ mb: 1 }}
-                  >
-                    <CalendarTodayIcon
-                      sx={{ fontSize: "16px", color: "#888", mr: 0.5 }}
-                    />
-                    Due in {a.dueDate} days
-                  </Typography>
-                  <Chip
-                    label={`Grade ${a.grade}`}
-                    color="primary"
-                    size="small"
-                    sx={{ mb: 1 }}
-                  />
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      color: "#444",
-                      display: "-webkit-box",
-                      WebkitBoxOrient: "vertical",
-                      overflow: "hidden",
-                      WebkitLineClamp: 3,
-                    }}
-                  >
-                    {a.description}
-                  </Typography>
-                </Paper>
-              </Grid>
-            ))}
-          </Grid>
+                    <Paper
+                      className="assignment-card"
+                      elevation={3}
+                      onClick={() => handleAssignmentClick(a)}
+                    >
+                      <Box className="assignment-title-wrapper">
+                        <AssignmentIcon className="assignment-icon" />
+                        <Tooltip title={a.title} arrow>
+                          <Typography variant="h6" className="assignment-title">
+                            {a.title}
+                          </Typography>
+                        </Tooltip>
+                      </Box>
+
+                      <Typography variant="body2" className="due-date">
+                        <CalendarTodayIcon className="calendar-icon" />
+                        Due in {a.dueDate} days
+                      </Typography>
+
+                      <Chip
+                        label={`Grade ${a.grade}`}
+                        color="primary"
+                        size="small"
+                        className="grade-chip"
+                      />
+
+                      <Typography
+                        variant="body2"
+                        className="assignment-description"
+                      >
+                        {a.description}
+                      </Typography>
+                    </Paper>
+                  </Grid>
+                ))}
+              </Box>
+            )}
+          </Box>
         )}
       </Paper>
     </Box>

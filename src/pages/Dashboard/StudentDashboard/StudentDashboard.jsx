@@ -43,7 +43,7 @@ export default function StudentDashboard() {
         <Typography variant="h4" fontWeight={700} color="#1B6CA8">
           Welcome, {user?.name || "Student"}!
         </Typography>
-        <Box className="dashboard-buttons">
+        {/* <Box className="dashboard-buttons">
           <Button
             className="nav-btn reading-btn"
             startIcon={<MenuBookIcon />}
@@ -56,13 +56,11 @@ export default function StudentDashboard() {
           <Button
             className="nav-btn math-btn"
             startIcon={<CalculateIcon />}
-            onClick={() =>
-              navigate("assignments", { state: { type: "math" } })
-            }
+            onClick={() => navigate("assignments", { state: { type: "math" } })}
           >
             Math
           </Button>
-          {/* <Tooltip title="Settings">
+          <Tooltip title="Settings">
             <IconButton onClick={handleSettingsClick} className="settings-icon">
               <SettingsIcon />
             </IconButton>
@@ -74,8 +72,8 @@ export default function StudentDashboard() {
             <MenuItem onClick={() => alert("Log out clicked!")}>
               Log Out
             </MenuItem>
-          </Menu> */}
-        </Box>
+          </Menu>
+        </Box> */}
       </Box>
 
       <Grid container spacing={2}>
@@ -189,10 +187,6 @@ export default function StudentDashboard() {
                 <ListItemIcon>🥈</ListItemIcon>
                 <ListItemText primary="Ethan J. — 2900 XP" />
               </ListItem>
-              <ListItem>
-                <ListItemIcon>🥉</ListItemIcon>
-                <ListItemText primary="Liam P. — 2750 XP" />
-              </ListItem>
             </List>
           </Paper>
         </Grid>
@@ -203,9 +197,33 @@ export default function StudentDashboard() {
             <Typography variant="subtitle1" fontWeight={600}>
               📢 Announcement
             </Typography>
+
+            <Typography fontSize={14} mt={1}>
+              🗓️ <strong>Reading Week starts Monday!</strong> Complete{" "}
+              <strong>3 assignments</strong> by Friday to earn rewards!
+            </Typography>
+
+            <Typography fontSize={14} mt={1}>
+              🎁 Top 5 students will win bonus XP and exclusive badges!
+            </Typography>
+
+            <Typography fontSize={14} mt={1}>
+              🕒 New reading challenges drop every morning at 8 AM.
+            </Typography>
+          </Paper>
+        </Grid>
+
+        {/* Engagement Tip */}
+        <Grid item xs={12} md={6}>
+          <Paper className="student-dashboard-card fade-in">
+            <Typography variant="subtitle1" fontWeight={600}>
+              💬 Engagement Tip
+            </Typography>
+            <Typography fontSize={14} mt={1}>
+              ✅ Complete 1 reading & 1 math assignment every day!
+            </Typography>
             <Typography fontSize={14}>
-              🗓️ Reading Week starts Monday! Complete 3 assignments by Friday to
-              earn rewards!
+              🚀 Track your progress and climb the leaderboard!
             </Typography>
           </Paper>
         </Grid>

@@ -116,7 +116,7 @@ const Header = () => {
         color="inherit"
         elevation={1}
         sx={{
-          height:"4.5rem",
+          height: "4.5rem",
           background: "linear-gradient(90deg, #dce3f2, #d5e7e0)",
           px: { xs: 1, md: 5 },
         }}
@@ -168,17 +168,36 @@ const Header = () => {
           >
             <Button
               className="nav-pill"
+              disabled={!user || user?.role !== "student"}
+              onClick={() =>
+                navigate("/dashboard/student/assignments", {
+                  state: { type: "reading" },
+                })
+              }
+              sx={{
+                cursor:
+                  !user || user?.role !== "student" ? "not-allowed" : "pointer",
+              }}
             >
               📖 Reading
             </Button>
-            <Button className="nav-pill">
-              🧮 Math
-            </Button>
+
             <Button
               className="nav-pill"
+              disabled={!user || user?.role !== "student"}
+              onClick={() =>
+                navigate("/dashboard/student/assignments", {
+                  state: { type: "math" },
+                })
+              }
+              sx={{
+                cursor:
+                  !user || user?.role !== "student" ? "not-allowed" : "pointer",
+              }}
             >
-              🏆 Rewards
+              🧮 Math
             </Button>
+            <Button className="nav-pill">🏆 Rewards</Button>
           </Box>
 
           {/* Right: Auth / Avatar */}
@@ -207,20 +226,18 @@ const Header = () => {
                   className="login-btn"
                   onClick={() => openModal("student")}
                 >
-                  <PersonIcon sx={{ fontSize: 18, mr: 1, color:"purple" }} />
+                  <PersonIcon sx={{ fontSize: 18, mr: 1, color: "purple" }} />
                   Student Login
                 </Button>
                 <Button
                   className="login-btn"
                   onClick={() => openModal("parent")}
                 >
-                  <PersonIcon sx={{ fontSize: 18, mr: 1, color:"orange" }} />
+                  <PersonIcon sx={{ fontSize: 18, mr: 1, color: "orange" }} />
                   Parent Login
                 </Button>
-                <Button
-                  className="profile-btn"
-                >
-                  <PersonIcon sx={{ fontSize: 18, mr: 1, color:"skyblue" }} />
+                <Button className="profile-btn">
+                  <PersonIcon sx={{ fontSize: 18, mr: 1, color: "skyblue" }} />
                   Profile
                 </Button>
               </Box>

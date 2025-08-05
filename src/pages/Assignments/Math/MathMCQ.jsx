@@ -209,7 +209,7 @@ export default function MathMCQ({ storagePath }) {
 
   if (!questionData) {
     return (
-      <Box className="error-state">
+      <Box className="error-state" sx={{ margin: "20px" }}>
         <Typography color="error">
           {feedbackEmoji || "Could not load math question."}
         </Typography>
@@ -284,11 +284,7 @@ export default function MathMCQ({ storagePath }) {
           </Box>
 
           <Box className="button-group">
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={checkAnswer}
-            >
+            <Button variant="contained" color="primary" onClick={checkAnswer}>
               Check Answer
             </Button>
           </Box>

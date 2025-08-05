@@ -80,16 +80,23 @@ const AddChildForm = ({ kids, setKids, setLoaderMessages }) => {
 
   return (
     <Box
-      sx={{ display: "flex", gap: 3, flexWrap: "wrap", overflowX: "hidden" }}
+      sx={{
+        display: "flex",
+        flexWrap: "wrap",
+        overflowX: "hidden",
+        boxShadow: 3,
+        width: "100%",
+        boxSizing: "border-box",
+      }}
     >
       <Paper
-        elevation={3}
+      
         sx={{
+          boxShadow: 'none',
           p: 4,
           width: "100%",
           maxWidth: 850,
           borderRadius: 3,
-          backgroundColor: "#fafafa",
         }}
       >
         <Typography variant="h6" sx={{ mb: 3, fontWeight: 600 }}>
@@ -217,6 +224,7 @@ const AddChildForm = ({ kids, setKids, setLoaderMessages }) => {
       <Paper
         sx={{
           p: 3,
+          margin: 3,
           flex: 1,
           minWidth: 300,
           maxWidth: 400,

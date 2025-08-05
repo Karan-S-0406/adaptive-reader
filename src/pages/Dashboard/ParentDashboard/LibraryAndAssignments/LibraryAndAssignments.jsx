@@ -61,7 +61,17 @@ const LibraryAndAssignments = () => {
       : 0;
 
   return (
-    <Box sx={{ p: 4, display: "flex", flexDirection: "column",gap: 4 }}>
+    <Box
+      sx={{
+        p: 4,
+        display: "flex",
+        flexDirection: "column",
+        gap: 4,
+        boxShadow: 3,
+        width: "100%",
+        boxSizing: "border-box",
+      }}
+    >
       <Typography variant="h6" gutterBottom color="black">
         Assignment Progress
       </Typography>
@@ -103,7 +113,12 @@ const LibraryAndAssignments = () => {
             <LinearProgress
               variant="determinate"
               value={avgProgress}
-              sx={{ width: "100%", height: 8, borderRadius: 4, marginBottom: 8 }}
+              sx={{
+                width: "100%",
+                height: 8,
+                borderRadius: 4,
+                marginBottom: 8,
+              }}
             />
             <Typography variant="h6">{avgProgress}%</Typography>
             <Typography variant="body2" color="textSecondary">

@@ -12,15 +12,12 @@ import {
   Typography,
   Switch,
   FormControlLabel,
-  List,
-  ListItem,
-  ListItemText,
 } from "@mui/material";
 import Swal from "sweetalert2";
 import { uploadAssignment } from "../../../store/action/teachers.action";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-
+import logo from "../../../../assets/logo.png";
 const GRADES = Array.from({ length: 12 }, (_, i) => ({
   value: `${i + 1}`,
   label: `${i + 1}`,
@@ -428,7 +425,6 @@ export default function UploadAssignmentSection() {
                           gridTemplateColumns:
                             "repeat(auto-fill, minmax(150px, 1fr))",
                           gap: 2,
-                          maxHeight: 300,
                           overflowY: "auto",
                           paddingRight: 1,
                         }}
@@ -461,21 +457,17 @@ export default function UploadAssignmentSection() {
                                 }}
                               />
                             ) : (
-                              <Box
-                                sx={{
+                              <img
+                                src={logo}
+                                alt="No Cover"
+                                style={{
                                   width: "100%",
                                   height: "120px",
-                                  backgroundColor: "#e0e0e0",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
+                                  objectFit: "contain",
                                   borderRadius: "4px",
-                                  fontSize: "12px",
-                                  color: "#666",
+                                  opacity: 0.6,
                                 }}
-                              >
-                                No Cover
-                              </Box>
+                              />
                             )}
                             <Typography
                               variant="body2"
